@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { SlackServiceCollection } from '../services/slack/slack.service';
 import { RTMMessage, DataStore } from '../services/slack/slack.types';
 
@@ -11,7 +11,7 @@ export class AppComponent {
   messages: RTMMessage[];
   count: number = 0;
 
-  constructor(private services: SlackServiceCollection) {
+  constructor(private services: SlackServiceCollection, private detector: ChangeDetectorRef) {
     this.messages = [];
 
     services.slacks.forEach(slack => {
@@ -35,5 +35,7 @@ export class AppComponent {
     this.messages.push(message);
     console.log(this.messages.length);
     this.count = this.messages.length;
+
+    this.detector.detectChanges ();
   }
 }
