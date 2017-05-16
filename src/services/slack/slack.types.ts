@@ -1,16 +1,45 @@
+export interface EditedMessage {
+    ts: string;
+    type: string;
+    user: string;
+    text: string;
+}
+
 export interface RTMMessage {
     type: string;
     channel: string;
     user: string;
+    bot_id: string;
     text: string;
     ts: string;
+    team_id: string;
     source_team: string;
+
+    subtype: string;
+
+    // deleted
+    deleted_ts: string;
+
+    // changed
+    message: EditedMessage;
 }
 
 export interface User {
     id: string;
     name: string;
     team_id: string;
+    profile: UserProfile;
+}
+
+export interface UserProfile {
+    email: string;
+
+    image_24: string;
+    image_32: string;
+    image_48: string;
+    image_72: string;
+    image_192: string;
+    image_512: string;
 }
 
 export interface Channel {
@@ -84,9 +113,9 @@ export interface DataStore {
     getDMById(dmId: string): DM;
     getDMByName(name: string): DM;
     getDMByName(userId: string): DM;
-    getBotById(botId: string): any;
-    getBotByName(name: string): any;
-    getBotByUserId(userId: string): any;
+    getBotById(botId: string): User;
+    getBotByName(name: string): User;
+    getBotByUserId(userId: string): User;
     getTeamById(name: string): Team;
     getUnreadCount(): number;
 }
