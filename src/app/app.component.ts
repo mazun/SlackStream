@@ -1,60 +1,87 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { SlackServiceCollection, SlackMessage } from '../services/slack/slack.service';
-import { RTMMessage, DataStore } from '../services/slack/slack.types';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { SlackServiceCollection, SlackMessage, SlackService } from '../services/slack/slack.service';
+import { SlackParser, ComposedParser, LinkParser, EmojiParser } from '../services/slack/slack-parser.service';
 
 class DisplaySlackMessageInfo {
     edited: boolean;
 
-    constructor(public message: SlackMessage) {
+    constructor(
+      public message: SlackMessage,
+      public parser: SlackParser
+    ) {
+    }
+
+    get text(): string {
+      return this.parser.parse(this.message.text, this.message.dataStore);
     }
 }
 
 @Component({
   selector: 'ss-app',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   messages: DisplaySlackMessageInfo[] = [];
+  slackServices: SlackService[];
 
-  constructor(private services: SlackServiceCollection, private detector: ChangeDetectorRef) {
-    services.slacks.forEach(slack => {
-      slack.start();
-      slack.messages.subscribe(message => this.onReceiveMessage(message));
-    });
+  get doesHaveMultipleTeams(): boolean {
+    return this.slackServices.length >= 2;
   }
 
-  onReceiveMessage(message: SlackMessage): void {
-    switch(message.rawMessage.subtype) {    
-      case "message_deleted":
-        this.deleteMessage(message);
+  get showTeamName(): boolean {
+    return false;
+  }
+
+  constructor(
+    private services: SlackServiceCollection,
+    private detector: ChangeDetectorRef
+  ) {
+    this.slackServices = services.slacks;
+  }
+
+  ngOnInit(): void {
+    for(const slack of this.slackServices) {
+        const parser = new ComposedParser([
+            new LinkParser (),
+            new EmojiParser (slack)
+        ]);
+        slack.start();
+        slack.messages.subscribe(message => this.onReceiveMessage(message, parser));
+    }
+  }
+
+  async onReceiveMessage(message: SlackMessage, parser: SlackParser): Promise<void> {
+    switch(message.rawMessage.subtype) {
+      case 'message_deleted':
+        await this.deleteMessage(message, parser);
         break;
-      case "message_changed":
-        this.changeMessage(message);
+      case 'message_changed':
+        await this.changeMessage(message, parser);
         break;
       default:
-        this.addMessage(message);
+        await this.addMessage(message, parser);
         break;
     }
 
     this.detector.detectChanges();
   }
 
-  addMessage(message: SlackMessage): void {
+  async addMessage(message: SlackMessage, parser: SlackParser): Promise<void> {
     console.log(message.rawDataStore.getUserById(message.rawMessage.user));
     console.log(message.rawMessage);
 
-    this.messages.push(new DisplaySlackMessageInfo(message));
+    this.messages.unshift(new DisplaySlackMessageInfo(message, parser));
   }
 
-  deleteMessage(message: SlackMessage): void {
-    this.messages = this.messages.filter (m => message.rawMessage.deleted_ts != m.message.rawMessage.ts);
+  async deleteMessage(message: SlackMessage, parser: SlackParser): Promise<void> {
+    this.messages = this.messages.filter (m => message.rawMessage.deleted_ts !== m.message.rawMessage.ts);
   }
 
-  changeMessage(message: SlackMessage): void {
+  async changeMessage(message: SlackMessage, parser: SlackParser): Promise<void> {
     console.log(message);
 
-    const edited = this.messages.find(m => m.message.rawMessage.ts == message.rawMessage.message.ts);
+    const edited = this.messages.find(m => m.message.rawMessage.ts === message.rawMessage.message.ts);
     if(edited) {
         edited.edited = true;
         edited.message.text = message.rawMessage.message.text;

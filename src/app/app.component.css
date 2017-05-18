@@ -1,7 +1,56 @@
-main {
-  padding: 1em;
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-  margin-top: 50px;
-  display: block;
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+td:nth-child(1) {
+  width: 40px;
+}
+
+td {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+a {
+  word-break: break-all;
+}
+
+.edit-mark {
+  font-size: small;
+  color: #aaaaaa;
+}
+
+.timestamp {
+  font-size: small;
+  color: #aaaaaa;
+  float: right;
+  margin-top: 3px;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-thumbnail {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 3px;
+}
+
+.team-thumbnail {
+  width: 16px;
+  height: 16px;
+
+  margin-top: -4px;
+  border-radius: 3px;  
+}
+
+.channel-name {
+  font-weight: bold;
+}
+
+.contents {
+    margin-top: 2px;
 }

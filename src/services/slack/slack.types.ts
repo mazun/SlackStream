@@ -12,6 +12,9 @@ export interface RTMMessage {
     bot_id: string;
     text: string;
     ts: string;
+
+    // which one?
+    team: string;
     team_id: string;
     source_team: string;
 
@@ -29,6 +32,22 @@ export interface User {
     name: string;
     team_id: string;
     profile: UserProfile;
+
+    status_emoji: string;
+    status_text: string;
+}
+
+export interface Bot {
+    id: string;
+    name: string;
+
+    icons: BotIcons;
+}
+
+export interface BotIcons {
+    image_36: string;
+    image_48: string;
+    image_72: string;
 }
 
 export interface UserProfile {
@@ -113,9 +132,9 @@ export interface DataStore {
     getDMById(dmId: string): DM;
     getDMByName(name: string): DM;
     getDMByName(userId: string): DM;
-    getBotById(botId: string): User;
-    getBotByName(name: string): User;
-    getBotByUserId(userId: string): User;
+    getBotById(botId: string): Bot;
+    getBotByName(name: string): Bot;
+    getBotByUserId(userId: string): Bot;
     getTeamById(name: string): Team;
     getUnreadCount(): number;
 }

@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { RTMClientWrapper } from './wrapper/rtmwrapper';
 import { WebClientWrapper } from './wrapper/webwrapper';
-import { RTMMessage, DataStore } from './slack.types';
+import { RTMMessage, DataStore, Team } from './slack.types';
 import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
+
+import * as emojione from 'emojione';
 
 export class SlackMessage {
     constructor (public message: RTMMessage, public dataStore: DataStore) {
@@ -18,10 +20,24 @@ export class SlackMessage {
         this.message.text = value;
     }
 
+    get team(): Team {
+        return this.dataStore.getTeamById(this.teamID);
+    }
+
     get teamName(): string {
-        const team = this.dataStore.getTeamById(this.message.team_id || this.message.source_team);
-        const teamName = team ? team.name : '???';
-        return teamName;
+        return this.team ? this.team.name : '???';
+    }
+
+    get teamThumbnail(): string {
+        return this.team ? this.team.icon.image_68 : '';
+    }
+
+    get teamID(): string {
+        return this.message.team_id || this.message.source_team || this.message.team || '';
+    }
+
+    get channelID(): string {
+        return this.message.channel;
     }
 
     get userName(): string {
@@ -41,14 +57,15 @@ export class SlackMessage {
     get userThumbnail(): string {
         if(this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
-            return user ? user.profile.image_32 : '';
+            console.log(user);
+            return user ? user.profile.image_48 : '';
         }
 
         if(this.message.bot_id) {
             const bot = this.dataStore.getBotById(this.message.bot_id);
-            return bot ? bot.profile.image_32 : '';
+            return bot ? bot.icons.image_48 : '';
         }
-        return '';
+        return 'https://ca.slack-edge.com/T2T2ETX4H-USLACKBOT-sv1444671949-48';
     }
 
 
@@ -67,6 +84,10 @@ export class SlackMessage {
 
     get subType(): string {
         return this.message.subtype;
+    }
+
+    get ts(): string {
+        return this.message.ts;
     }
 
     get rawMessage(): RTMMessage {
@@ -92,11 +113,37 @@ export class SlackServiceCollection {
 export interface SlackService {
     messages: Observable<SlackMessage>;
     start(): void;
+    getEmoji(): Promise<{string: string}>;
+}
+
+export class EmojiService {
+    emojiList: {string: string};
+
+    constructor(private client: SlackService) {
+
+    }
+
+    async initExternalEmojis(): Promise<void> {
+        if(!this.emojiList) {
+            this.emojiList = await this.client.getEmoji();
+        }
+    }
+
+    convertEmoji(emoji: string): string {
+        if (emoji != emojione.shortnameToImage(emoji)) {
+            return emojione.shortnameToImage(emoji);
+        } else if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length-2)]) {
+            let image_url = this.emojiList[emoji.substr(1, emoji.length-2)];
+            return `<img class="emojione" src="${image_url}" />`;
+        } else {
+            return emoji;
+        }
+    }
 }
 
 export class SlackServiceImpl implements SlackService {
-    private rtm: RTMClientWrapper;
-    private web: WebClientWrapper;
+    rtm: RTMClientWrapper;
+    web: WebClientWrapper;
 
     constructor(private token: string) {
         this.rtm = new RTMClientWrapper(token);
@@ -109,5 +156,9 @@ export class SlackServiceImpl implements SlackService {
 
     get messages(): Observable<SlackMessage> {
         return this.rtm.messages;
+    }
+
+    async getEmoji(): Promise<{string: string}> {
+        return this.web.getEmoji();
     }
 }
