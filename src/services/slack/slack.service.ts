@@ -57,7 +57,6 @@ export class SlackMessage {
     get userThumbnail(): string {
         if(this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
-            console.log(user);
             return user ? user.profile.image_48 : '';
         }
 
@@ -114,6 +113,7 @@ export interface SlackService {
     messages: Observable<SlackMessage>;
     start(): void;
     getEmoji(): Promise<{string: string}>;
+    postMessage(channel: string, text: string): Promise<{string: any}>;
 }
 
 export class EmojiService {
@@ -161,4 +161,9 @@ export class SlackServiceImpl implements SlackService {
     async getEmoji(): Promise<{string: string}> {
         return this.web.getEmoji();
     }
+
+    async postMessage(channel: string, text: string): Promise<{string: any}> {
+        return this.web.postMessage(channel, text);
+    }
+
 }

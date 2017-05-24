@@ -1,0 +1,46 @@
+.message-textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    resize: none;
+    padding-top: 0px;
+}
+
+.message-textarea:focus {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.message-form {
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    z-index: 999;
+}
+
+.message-window {
+  padding: 3px 5px 5px 5px;
+  border:solid 1px #CCCCCC;
+  display: inline-block;
+  width: 100%;
+}
+
+.message-close {
+  font-size: 12px;
+}
+
+.message-close:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}

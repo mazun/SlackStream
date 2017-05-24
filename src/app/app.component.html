@@ -1,3 +1,14 @@
+<div *ngIf="showForm" class="message-form">
+    <ss-messageform
+        [channelName]="submitContext.channelName"
+        [channelID]="submitContext.channelID"
+        [teamID]="submitContext.teamID"
+        (submit)="submitForm($event)"
+        (close)="closeForm()"
+    >
+    </ss-messageform>
+</div>
+
 <table class="table table-striped">
     <tr *ngFor="let info of messages">
         <td>
@@ -11,6 +22,10 @@
                 <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
                 <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
                 <span class="timestamp">{{info.message.ts | ts2time}}</span>
+            </div>
+
+            <div class="buttons">
+                <span class="glyphicon glyphicon-pencil message-button" (click)="onClickWrite(info)"></span>
             </div>
 
             <div class="contents">
