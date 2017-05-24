@@ -1,0 +1,56 @@
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+td {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+td:nth-child(1) {
+  width: 40px;
+}
+
+a {
+  word-break: break-all;
+}
+
+.edit-mark {
+  font-size: small;
+  color: #aaaaaa;
+}
+
+.timestamp {
+  font-size: small;
+  color: #aaaaaa;
+  float: right;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-thumbnail {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 3px;
+}
+
+.team-thumbnail {
+  width: 16px;
+  height: 16px;
+}
+
+.channel-name {
+  font-weight: bold;
+}
+
+.contents {
+  margin-top: 2px;
+}
+
+.message-form {
+  width: 100%;
+}
