@@ -13,8 +13,8 @@ cd path-to-this-reposritory
 yarn install
 
 # Set your api token(s)
-cp src/services/slack/token.ts.sample src/services/slack/token.ts
-vi src/services/slack/token.ts
+cp src/services/token.ts.sample src/services/token.ts
+vi src/services/token.ts
 
 # Run server
 yarn start
