@@ -3,6 +3,37 @@ export interface EditedMessage {
     type: string;
     user: string;
     text: string;
+    attachments: Attachment[];
+}
+
+export interface Attachment {
+    ts: string;
+
+    fallback: string;
+    from_url: string;
+
+    id: number;
+
+    service_icon: string;
+    service_name: string;
+
+    text: string;
+
+    image_url: string;
+    thumb_height: number;
+    thumb_url: string;
+    thumb_width: number;
+
+    title: string;
+    title_link: string;
+
+    author_icon: string;
+    author_link: string;
+    author_name: string;
+    author_subname: string;
+
+    footer: string;
+    footer_icon: string;
 }
 
 export interface RTMMessage {
@@ -12,6 +43,8 @@ export interface RTMMessage {
     bot_id: string;
     text: string;
     ts: string;
+
+    attachments: Attachment[];
 
     // which one?
     team: string;
@@ -25,6 +58,29 @@ export interface RTMMessage {
 
     // changed
     message: EditedMessage;
+}
+
+export interface ReactionTarget {
+    channel: string;
+    ts: string;
+    type: string;
+}
+
+export interface RTMReactionBase {
+    event_ts: string;
+    item: ReactionTarget;
+    item_user: string;
+    reaction: string;
+    ts: string;
+    type: string;
+    user: string;
+}
+
+export interface RTMReactionAdded extends RTMReactionBase {
+
+}
+
+export interface RTMReactionRemoved extends RTMReactionBase {
 }
 
 export interface User {

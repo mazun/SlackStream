@@ -27,7 +27,6 @@ export class LinkParser implements SlackParser {
     parse(text: string, dataStore: DataStore): string {
         return text.replace(/<([^>]+)>/g, (value: string) => {
             value = value.substr(1, value.length - 2);
-            console.log(value);
             const bar = value.indexOf('|');
             if (bar >= 0) {
                 const text1 = value.substr(0, bar);
@@ -69,12 +68,22 @@ export class LinkParser implements SlackParser {
     }
 }
 
+export class NewLineParser implements SlackParser {
+    parse(text: string, dataStore: DataStore): string {
+        return text
+            .replace(/(\r\n|\n|\r)$/, '')
+            .replace(/\r\n|\n|\r/g, '<br>');
+    }
+}
+
 export class ComposedParser implements SlackParser {
     constructor(private parsers: [SlackParser]) {
     }
 
     parse(text: string, dataStore: DataStore): string {
-        if(!text) return text;
+        if (!text) {
+            return text;
+        }
         return this.parsers.reduce((res, parser, index, arr) => {
             return parser.parse(res, dataStore);
         }, text);

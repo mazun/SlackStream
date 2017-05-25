@@ -1,0 +1,40 @@
+.service-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.service-name {
+    color: #AAA;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.attachment {
+    display: flex;
+    padding-left: 10px;
+
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    border-left: 3px solid #cccccc;
+}
+
+.thumbnail {
+    width: 80px;
+    height: auto;
+    border-radius: 3px;
+    border-style: none;
+}
+
+.image {
+    margin-top: 5px;
+    border-radius: 3px;
+    border-style: none;
+}
+
+.right {
+    margin-left: 10px;
+    margin-right: 10px;
+}

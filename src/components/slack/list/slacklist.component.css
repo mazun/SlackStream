@@ -41,6 +41,8 @@ a {
 .team-thumbnail {
   width: 16px;
   height: 16px;
+
+  border-radius: 3px;
 }
 
 .channel-name {
@@ -48,9 +50,25 @@ a {
 }
 
 .contents {
-  margin-top: 2px;
+  margin-top: 0px;
 }
 
 .message-form {
   width: 100%;
+}
+
+.icon-button {
+    opacity: 0.5;
+}
+
+.icon-button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.buttons {
+    text-align: right;
+
+    margin-top: -2px;
+    margin-bottom: -2px;
 }

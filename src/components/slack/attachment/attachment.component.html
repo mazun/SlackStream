@@ -1,0 +1,58 @@
+<div class="attachment">
+    <span class="left">
+        <!-- Author -->
+        <span *ngIf="!!attachment.author_link" class="author">
+            <img *ngIf="!!attachment.author_icon" [src]="attachment.author_icon" class="author-icon" />
+            <span>
+                <a class="author-name" [href]="attachment.author_link">{{attachment.author_name}}</a>
+
+                <span class="author-subname" *ngIf="!!attachment.author_subname">
+                    <a class="author-subname" [href]="attachment.author_link">{{attachment.author_subname}}</a>
+                </span>
+            </span>
+        </span>
+
+        <!-- Service -->
+        <div *ngIf="!!attachment.service_name" class="service">
+            <img *ngIf="!!attachment.service_icon" [src]="attachment.service_icon" class="service-icon"/>
+
+            <span class="service-name">
+                {{attachment.service_name}}
+            </span>
+        </div>
+
+        <!-- Title -->
+        <div *ngIf="!!attachment.title" class="title">
+            <span [ngSwitch]="!!attachment.title_link">
+                <a class="title" [href]="attachment.title_link" *ngSwitchCase="true">{{attachment.title}}</a>
+                <b class="title" *ngSwitchDefault>{{attachment.title}}</b>
+            </span>
+        </div>
+
+        <!-- Text -->
+        <div *ngIf="!!attachment.text" class="text" [innerHTML]="attachment.text | safeHtml">
+        </div>
+
+        <!-- Footer -->
+        <div *ngIf="!!attachment.footer" class="footer">
+            <span *ngIf="!!attachment.footer_icon" class="footer-icon">
+                <img [src]="attachment.footer_icon" />
+            </span>
+
+            <span class="footer-text">{{footer.text}}</span>
+
+            <a class="footer-ts" [href]="attachment.from_url">{{attachment.ts | ts2time}}</a>
+        </div>
+
+        <div *ngIf="!!attachment.image_url">
+            <img [src]="attachment.image_url" class="image"/>
+        </div>
+    </span>
+
+    <div *ngIf="!!attachment.thumb_url" class="right">
+        <!-- Image -->
+        <div *ngIf="!!attachment.thumb_url">
+            <img [src]="attachment.thumb_url" class="thumbnail"/>
+        </div>
+    </div>
+</div>

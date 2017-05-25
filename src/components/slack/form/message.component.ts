@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgForm } from '@angular/forms';
   templateUrl: './message.component.html',
   styles: [ require('./message.component.css').toString() ],
 })
-export class MessageFormComponent {
+export class MessageFormComponent implements OnInit {
     @Output() submit = new EventEmitter<string> ();
     @Output() close = new EventEmitter ();
 
@@ -16,6 +16,9 @@ export class MessageFormComponent {
 
     text = '';
 
+    ngOnInit(): void {
+    }
+
     onClose(): void {
         this.close.emit ();
     }
@@ -23,5 +26,16 @@ export class MessageFormComponent {
     onSubmit(): void {
         this.submit.emit (this.text);
         console.log (this.text);
+    }
+
+    onKeyPress(event: KeyboardEvent): void {
+        if(event.key == 'Enter') {
+            if(!event.altKey) {
+                this.onSubmit ();
+                event.preventDefault ();
+            } else {
+                // 改行どうやって入れるの
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { RTMClientWrapper } from './wrapper/rtmwrapper';
 import { WebClientWrapper } from './wrapper/webwrapper';
-import { RTMMessage, DataStore, Team } from './slack.types';
+import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved } from './slack.types';
 import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
 
@@ -98,6 +98,16 @@ export class SlackMessage {
     }
 }
 
+export class SlackReactionAdded {
+    constructor (public reaction: RTMReactionAdded, public dataStore: DataStore) {
+    }
+}
+
+export class SlackReactionRemoved {
+    constructor (public reaction: RTMReactionRemoved, public dataStore: DataStore) {
+    }
+}
+
 @Injectable()
 export class SlackServiceCollection {
     slacks: SlackService[];
@@ -111,7 +121,10 @@ export class SlackServiceCollection {
 
 export interface SlackService {
     messages: Observable<SlackMessage>;
+    reactionAdded: Observable<SlackReactionAdded>;
+    reactionRemoved: Observable<SlackReactionRemoved>;
     start(): void;
+    stop(): void;
     getEmoji(): Promise<{string: string}>;
     postMessage(channel: string, text: string): Promise<{string: any}>;
 }
@@ -124,7 +137,7 @@ export class EmojiService {
     }
 
     async initExternalEmojis(): Promise<void> {
-        if(!this.emojiList) {
+        if (!this.emojiList) {
             this.emojiList = await this.client.getEmoji();
         }
     }
@@ -154,8 +167,20 @@ export class SlackServiceImpl implements SlackService {
         this.rtm.start();
     }
 
+    stop(): void {
+        this.rtm.stop();
+    }
+
     get messages(): Observable<SlackMessage> {
         return this.rtm.messages;
+    }
+
+    get reactionAdded(): Observable<SlackReactionAdded> {
+        return this.rtm.reactionAdded;
+    }
+
+    get reactionRemoved(): Observable<SlackReactionRemoved> {
+        return this.rtm.reactionRemoved;
     }
 
     async getEmoji(): Promise<{string: string}> {

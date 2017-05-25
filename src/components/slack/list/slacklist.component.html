@@ -24,14 +24,19 @@
                 <span class="timestamp">{{info.message.ts | ts2time}}</span>
             </div>
 
-            <div class="buttons">
-                <span class="glyphicon glyphicon-pencil message-button" (click)="onClickWrite(info)"></span>
-            </div>
-
             <div class="contents">
                 <span [innerHTML]="info.text | safeHtml"></span>
                 <span *ngIf="info.edited" class="edit-mark"> (edited)</span>
             </div>
+
+            <div class="buttons">
+                <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
+            </div>
+
+            <div *ngFor="let attachment of info.attachments">
+                <ss-attachment [attachment]="attachment"></ss-attachment>
+            </div>
         </td>
     </tr>
+
 </table>

@@ -1,20 +1,44 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { SlackServiceCollection, SlackMessage, SlackService } from '../../../services/slack/slack.service';
-import { SlackParser, ComposedParser, LinkParser, EmojiParser } from '../../../services/slack/slack-parser.service';
+import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import {
+    SlackServiceCollection,
+    SlackMessage,
+    SlackService,
+    SlackReactionAdded,
+    SlackReactionRemoved
+} from '../../../services/slack/slack.service';
+
+import {
+    SlackParser,
+    ComposedParser,
+    LinkParser,
+    EmojiParser,
+    NewLineParser
+} from '../../../services/slack/slack-parser.service';
+
+import { Attachment } from '../../../services/slack/slack.types';
+
+class DisplaySlackReactionInfo {
+}
 
 class DisplaySlackMessageInfo {
-    edited: boolean;
+    edited: boolean = false;
+    reactions: DisplaySlackReactionInfo[] = [];
 
     constructor(
         public message: SlackMessage,
         public parser: SlackParser,
         public client: SlackService
     ) {
-
     }
 
     get text(): string {
         return this.parser.parse(this.message.text, this.message.dataStore);
+    }
+
+    get attachments(): Attachment[] {
+        return this.message.rawMessage.attachments
+            ? this.message.rawMessage.attachments
+            : [];
     }
 }
 
@@ -45,7 +69,7 @@ class PostMessageContext implements SubmitContext {
   templateUrl: './slacklist.component.html',
   styles: [ require('./slacklist.component.css').toString() ],
 })
-export class SlackListComponent implements OnInit {
+export class SlackListComponent implements OnInit, OnDestroy {
   messages: DisplaySlackMessageInfo[] = [];
   slackServices: SlackService[];
   submitContext: SubmitContext = null;
@@ -69,12 +93,31 @@ export class SlackListComponent implements OnInit {
     for (const slack of this.slackServices) {
         const parser = new ComposedParser([
             new LinkParser (),
+            new NewLineParser (),
             new EmojiParser (slack)
         ]);
-        slack.start();
+
         slack.messages.subscribe(message => this.onReceiveMessage(message, parser, slack));
+        slack.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, slack));
+        slack.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, slack));
+        slack.start();
     }
-    console.log('ready');
+  }
+
+  ngOnDestroy(): void {
+      for (const slack of this.slackServices) {
+          slack.stop();
+      }
+  }
+
+  async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {
+    // TODO
+    console.log(reaction.reaction);
+  }
+
+  async onReactionRemoved(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {
+    // TODO
+    console.log(reaction.reaction);
   }
 
   async onReceiveMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
@@ -117,6 +160,7 @@ export class SlackListComponent implements OnInit {
     if (edited) {
         edited.edited = true;
         edited.message.text = message.rawMessage.message.text;
+        edited.message.rawMessage.attachments = message.rawMessage.message.attachments;
     }
   }
 
