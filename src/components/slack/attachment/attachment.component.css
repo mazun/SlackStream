@@ -3,7 +3,16 @@
     height: 18px;
 }
 
+.author-icon {
+    width: 18px;
+    height: 18px;
+}
+
 .service-name {
+    color: #AAA;
+}
+
+.author-name {
     color: #AAA;
 }
 
@@ -32,9 +41,21 @@
     margin-top: 5px;
     border-radius: 3px;
     border-style: none;
+
+    max-width: 100%;
 }
 
 .right {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.footer-text {
+    color: #AAA;
+    font-size: small;
+}
+
+.footer-ts {
+    color: #AAA;
+    font-size: small;
 }

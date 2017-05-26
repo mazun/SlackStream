@@ -61,9 +61,13 @@ export class LinkParser implements SlackParser {
             // <ss-channelname> does not work...
             return `<span class="channel-name" style="color: ${color};">#${text2}</span>`;
         } else if (text1[0] === '@' || text1[0] === '!') {
-            return `@${text2}`;
+            if(text2[0] === '@') {
+                return text2;
+            } else {
+                return `@${text2}`;
+            }
         } else {
-            return `<a href="${text2}">${text1}</a>`;
+            return `<a href="${text1}">${text2}</a>`;
         }
     }
 }

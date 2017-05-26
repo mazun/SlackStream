@@ -18,6 +18,21 @@ import {
 import { Attachment } from '../../../services/slack/slack.types';
 
 class DisplaySlackReactionInfo {
+    constructor (public reaction: string, public users: string[]) {
+    }
+
+    addUser(user: string) {
+        this.removeUser (user);
+        this.users.push(user);
+    }
+
+    removeUser(user: string) {
+        this.users = this.users.filter(u => u != user);
+    }
+
+    get count(): number {
+        return this.users.length;
+    }
 }
 
 class DisplaySlackMessageInfo {
@@ -39,6 +54,35 @@ class DisplaySlackMessageInfo {
         return this.message.rawMessage.attachments
             ? this.message.rawMessage.attachments
             : [];
+    }
+
+    get doesReactionExist(): boolean {
+        return this.reactions.length > 0;
+    }
+
+    addReaction(info: SlackReactionAdded) {
+        const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
+        const user = info.reaction.user;
+        const target = this.reactions.find(r => r.reaction == reaction);
+
+        if(target) {
+            target.addUser(user);
+        } else {
+            this.reactions.push(new DisplaySlackReactionInfo(reaction, [user]));
+        }
+    }
+
+    removeReaction(info: SlackReactionRemoved) {
+        const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
+        const target = this.reactions.find(r => r.reaction == reaction);
+
+        if(target) {
+            target.removeUser(info.reaction.user);
+
+            if(target.count == 0) {
+                this.reactions = this.reactions.filter(r => r.reaction != reaction);
+            }
+        }
     }
 }
 
@@ -111,13 +155,21 @@ export class SlackListComponent implements OnInit, OnDestroy {
   }
 
   async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {
-    // TODO
+    const target = this.messages.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+    if(target) {
+        target.addReaction(reaction);
+    }
     console.log(reaction.reaction);
+    this.detector.detectChanges();
   }
 
   async onReactionRemoved(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {
-    // TODO
+    const target = this.messages.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+    if(target) {
+        target.removeReaction(reaction);
+    }
     console.log(reaction.reaction);
+    this.detector.detectChanges();
   }
 
   async onReceiveMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {

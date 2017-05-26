@@ -33,6 +33,13 @@
                 <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
             </div>
 
+            <div *ngIf="info.doesReactionExist" class="reactions">
+                <span *ngFor="let reaction of info.reactions" class="reaction">
+                    <span [innerHTML]="reaction.reaction"></span>
+                    <span>{{reaction.count}}</span>
+                </span>
+            </div>
+
             <div *ngFor="let attachment of info.attachments">
                 <ss-attachment [attachment]="attachment"></ss-attachment>
             </div>

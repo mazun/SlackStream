@@ -13,7 +13,16 @@ export class SlackMessage {
     }
 
     get text(): string {
-        return this.message.text;
+        if(this.message.text) {
+            return this.message.text;
+        } else if(this.rawMessage.attachments) {
+            for(var attachment of this.rawMessage.attachments) {
+                if(attachment.pretext) {
+                    return attachment.pretext;
+                }
+            }
+        }
+        return '';
     }
 
     set text(value: string) {

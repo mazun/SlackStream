@@ -9,4 +9,5 @@ import { Attachment } from '../../../services/slack/slack.types';
 })
 export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
+    // TODO: parse text
 }

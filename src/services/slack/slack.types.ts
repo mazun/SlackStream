@@ -18,6 +18,7 @@ export interface Attachment {
     service_name: string;
 
     text: string;
+    pretext: string;
 
     image_url: string;
     thumb_height: number;
