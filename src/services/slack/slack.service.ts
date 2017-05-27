@@ -136,6 +136,7 @@ export interface SlackService {
     stop(): void;
     getEmoji(): Promise<{string: string}>;
     postMessage(channel: string, text: string): Promise<{string: any}>;
+    markRead(channel: string, timestamp: string): Promise<void>;
 }
 
 export class EmojiService {
@@ -198,6 +199,10 @@ export class SlackServiceImpl implements SlackService {
 
     async postMessage(channel: string, text: string): Promise<{string: any}> {
         return this.web.postMessage(channel, text);
+    }
+
+    async markRead(channel: string, timestamp: string): Promise<void> {
+	return this.web.markRead(channel, timestamp);
     }
 
 }

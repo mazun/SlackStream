@@ -196,6 +196,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
   async addMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
     if (message.message) {
         this.messages.unshift(new DisplaySlackMessageInfo(message, parser, client));
+	client.markRead(message.channelID, message.ts);
     }
   }
 

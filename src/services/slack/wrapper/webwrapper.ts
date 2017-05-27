@@ -30,4 +30,16 @@ export class WebClientWrapper {
             })
         });
     }
+
+    async markRead(channel: string, timestamp: string): Promise<void> {
+	return new Promise<void>((resolve, reject) => {
+	    this.client.channels.mark(channel, timestamp, (err) => {
+		if(err) {
+		    reject();
+		} else {
+		    resolve();
+		}
+	    })
+	});
+    }
 }
