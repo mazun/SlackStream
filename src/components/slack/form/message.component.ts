@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import * as $ from 'jquery';
+import '../../../jquery.textcomplete.js';
+import { default_emojies } from './default_emoji'
 
 @Component({
   selector: 'ss-messageform',
@@ -16,22 +19,46 @@ export class MessageFormComponent implements OnInit {
 
     text = '';
 
+    constructor(
+	private detector: ChangeDetectorRef
+    ) {
+	; // empty
+    }
+
     ngOnInit(): void {
+	$('#slack_message_input').textcomplete([
+        { // emojis
+          match: /\B:([\-+\w]*)$/,
+          search: function (term, callback) {
+	    callback($.map(default_emojies, function (emoji) {
+              return emoji.indexOf(term) != -1 ? emoji : null;
+            }));
+          },
+          template: function (value) {
+	      return ':' + value + ': ';
+          },
+          replace: function(value){
+            return ':' + value + ': ';
+          },
+          index: 1
+        }]);
     }
 
     onClose(): void {
         this.close.emit ();
     }
 
-    onSubmit(): void {
-        this.submit.emit (this.text);
-        console.log (this.text);
+    onSubmit(value: string): void {
+	console.log (value);
+	this.submit.emit (value);
+
     }
 
-    onKeyPress(event: KeyboardEvent): void {
+    onKeyPress(event: KeyboardEvent, value: string): void {
+	this.detector.detectChanges();
         if(event.key == 'Enter') {
             if(!event.altKey) {
-                this.onSubmit ();
+                this.onSubmit (value);
                 event.preventDefault ();
             } else {
                 // 改行どうやって入れるの
