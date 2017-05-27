@@ -35,7 +35,7 @@ export class WebClientWrapper {
 	return new Promise<void>((resolve, reject) => {
 	    this.client.channels.mark(channel, timestamp, (err) => {
 		if(err) {
-		    reject();
+		    reject(err);
 		} else {
 		    resolve();
 		}
