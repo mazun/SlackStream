@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
@@ -16,14 +16,6 @@ export class MessageFormComponent implements OnInit {
     @Input() channelName: string = '';
     @Input() channelID: string = '';
     @Input() teamID: string = '';
-
-    text = '';
-
-    constructor(
-	private detector: ChangeDetectorRef
-    ) {
-	; // empty
-    }
 
     ngOnInit(): void {
 	$('#slack_message_input').textcomplete([
@@ -49,13 +41,10 @@ export class MessageFormComponent implements OnInit {
     }
 
     onSubmit(value: string): void {
-	console.log (value);
 	this.submit.emit (value);
-
     }
 
     onKeyPress(event: KeyboardEvent, value: string): void {
-	this.detector.detectChanges();
         if(event.key == 'Enter') {
             if(!event.altKey) {
                 this.onSubmit (value);

@@ -9,10 +9,9 @@
         wrap="soft"
         rows="3"
         id="slack_message_input"
-        [(ngModel)]="text"
         (keypress)="onKeyPress($event, textArea.value)"
-       [autofocus]
-       #textArea
+        [autofocus]
+        #textArea
     >
     </textarea>
     <button class="btn btn-default btn-xs pull-right" type="button" (click)="onSubmit(textArea.value)">Post</button>
