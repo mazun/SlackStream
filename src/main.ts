@@ -7,7 +7,8 @@ import * as $ from 'jquery';
 
 require('bootstrap/dist/css/bootstrap.min.css');
 require('bootstrap/dist/css/bootstrap-theme.min.css');
-require('emojione/extras/css/emojione.min.css');
+require('emojione/assets/css/emojione.min.css');
+require('emojione/assets/css/emojione-awesome.css');
 require('./assets/css/styles.css');
 
 if (process.env.ENV === 'production') {

@@ -33,7 +33,7 @@
     "core-js": "^2.4.1",
     "dateformat": "^2.0.0",
     "electron": "^1.6.7",
-    "emojione": "^3.0.3",
+    "emojione": "^2.2.7",
     "jquery": "^3.2.1",
     "rxjs": "5.0.1",
     "seedrandom": "^2.4.3",
