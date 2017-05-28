@@ -37,6 +37,14 @@ export class SlackMessage {
         return this.team ? this.team.name : '???';
     }
 
+    get shortTeamName(): string {
+        return this.team ? this.team.name[0] : '?';
+    }
+
+    get teamHasThumbnail(): boolean {
+	return this.team ? !this.team.icon.image_default : false;
+    }
+
     get teamThumbnail(): string {
         return this.team ? this.team.icon.image_68 : '';
     }
