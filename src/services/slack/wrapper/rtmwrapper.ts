@@ -35,6 +35,6 @@ export class RTMClientWrapper {
     }
 
     stop(): void {
-        this.client.stop();
+        this.client.disconnect();
     }
 }

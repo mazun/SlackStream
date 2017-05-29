@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
@@ -67,6 +67,10 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+ipcMain.on('ready', (event, args) => {
+    event.sender.send('userData', app.getPath("userData"));
 });
 
 // In this file you can include the rest of your app's specific main process

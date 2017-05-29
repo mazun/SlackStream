@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import {
     SlackServiceCollection,
     SlackMessage,
@@ -146,12 +147,20 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
   constructor(
     private services: SlackServiceCollection,
-    private detector: ChangeDetectorRef
+    private detector: ChangeDetectorRef,
+    private router: Router
   ) {
     this.slackServices = services.slacks;
   }
 
   ngOnInit(): void {
+    if (this.slackServices.length === 0) {
+        this.router.navigate(['/setting']);
+        return;
+    }
+
+    this.services.refresh();
+
     for (const slack of this.slackServices) {
         const parser = new ComposedParser([
             new LinkParser (),

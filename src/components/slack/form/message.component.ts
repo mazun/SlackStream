@@ -23,7 +23,7 @@ export class MessageFormComponent implements OnInit {
             match: /\B:([\-+\w]*)$/,
             search: function (term, callback) {
                 callback($.map(default_emojies, function (emoji) {
-                    return emoji.indexOf(term) != -1 ? emoji : null;
+                    return emoji.indexOf(term) !== -1 ? emoji : null;
                 }));
             },
             template: function (value) {

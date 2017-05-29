@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="setting">
+        <h3>Token</h3>
+        <div>
+            Visit <a href="https://api.slack.com/custom-integrations/legacy-tokens">here</a> and input your token.
+        </div>
+
+        <div *ngFor="let index of tokenIndexes">
+            <input type="text" name="token" [(ngModel)]="tokens[index]" placeholder="Your token">
+            <button class="btn btn-danger" (click)="removeToken(index)">Remove</button>
+        </div>
+
+        <button class="btn btn-primary btn-sm" (click)="addToken()">Add token</button>
+    </div>
+
+    <hr>
+    <button class="btn btn-primary" (click)="exit()">Save</button>
+</div>

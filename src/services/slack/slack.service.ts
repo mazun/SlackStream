@@ -13,10 +13,10 @@ export class SlackMessage {
     }
 
     get text(): string {
-        if(this.message.text) {
+        if (this.message.text) {
             return this.message.text;
-        } else if(this.rawMessage.attachments) {
-            for(var attachment of this.rawMessage.attachments) {
+        } else if (this.rawMessage.attachments) {
+            for (const attachment of this.rawMessage.attachments) {
                 if(attachment.pretext) {
                     return attachment.pretext;
                 }
@@ -42,7 +42,7 @@ export class SlackMessage {
     }
 
     get teamHasThumbnail(): boolean {
-	return this.team ? !this.team.icon.image_default : false;
+        return this.team ? !this.team.icon.image_default : false;
     }
 
     get teamThumbnail(): string {
@@ -133,8 +133,12 @@ export class SlackReactionRemoved {
 export class SlackServiceCollection {
     slacks: SlackService[];
 
-    constructor(setting: SettingService) {
-        this.slacks = setting.tokens.map(token => {
+    constructor(private setting: SettingService) {
+        this.refresh();
+    }
+
+    refresh() {
+        this.slacks = this.setting.tokens.map(token => {
             return new SlackServiceImpl(token) as SlackService;
         });
     }
