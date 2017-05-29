@@ -44,13 +44,14 @@ export class MessageFormComponent implements OnInit {
         this.submit.emit (value);
     }
 
-    onKeyPress(event: KeyboardEvent, value: string): void {
+    onKeyPress(event: KeyboardEvent, textArea: any): void {
+        console.log(textArea);
         if(event.key == 'Enter') {
             if(!event.altKey) {
-                this.onSubmit (value);
+                this.onSubmit (textArea.value);
                 event.preventDefault ();
             } else {
-                // 改行どうやって入れるの
+                textArea.value += '\n';
             }
         }
     }
