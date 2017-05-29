@@ -115,7 +115,7 @@ export class SlackMessage {
     }
 
     get mine(): boolean {
-        return this.userName == this.dataStore.getUserById(this.myUserId).name;
+        return this.message.user == this.myUserId;
     }
 }
 
