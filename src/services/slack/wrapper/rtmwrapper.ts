@@ -20,7 +20,7 @@ export class RTMClientWrapper {
         });
 
         this.client.on(RTM_EVENTS.MESSAGE, (message: RTMMessage) => {
-            this.messages.next(new SlackMessage(message, this.client.dataStore as DataStore));
+            this.messages.next(new SlackMessage(message, this.client.dataStore as DataStore, this.client.activeUserId));
         });
 
         this.client.on(RTM_EVENTS.REACTION_ADDED, (reaction: RTMReactionAdded) => {

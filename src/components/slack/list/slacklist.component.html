@@ -33,6 +33,7 @@
             </div>
 
             <div class="buttons">
+                <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
                 <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
             </div>
 

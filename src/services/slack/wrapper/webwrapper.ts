@@ -19,6 +19,18 @@ export class WebClientWrapper {
         });
     }
 
+    async deleteMessage(channel: string, timestamp: string) {
+        return new Promise<void>((resolve, reject) => {
+            this.client.chat.delete(timestamp, channel, { "as_user": true }, (err) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
     async getEmoji(): Promise<{string: string}> {
         return new Promise<{string: string}>((resolve, reject) => {
             this.client.emoji.list((err, info) => {
