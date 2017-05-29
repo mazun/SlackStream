@@ -5,7 +5,7 @@ import { SlackParser } from '../../../services/slack/slack-parser.service';
 @Component({
     selector: 'ss-attachment',
     templateUrl: './attachment.component.html',
-    styles: [ require('./attachment.component.css').toString() ]
+    styles: [require('./attachment.component.css').toString()]
 })
 export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
@@ -17,8 +17,8 @@ export class SlackAttachmentComponent {
     }
 
     get borderColor(): string {
-        if(this.attachment.color) {
-            if(this.attachment.color[0] === '#') {
+        if (this.attachment.color) {
+            if (this.attachment.color[0] === '#') {
                 return this.attachment.color;
             } else {
                 return '#' + this.attachment.color;

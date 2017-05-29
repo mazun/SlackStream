@@ -4,9 +4,9 @@ import { Subject } from 'rxjs';
 import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from '../slack.service';
 
 export class RTMClientWrapper {
-    messages = new Subject<SlackMessage> ();
-    reactionAdded = new Subject<SlackReactionAdded> ();
-    reactionRemoved = new Subject<SlackReactionRemoved> ();
+    messages = new Subject<SlackMessage>();
+    reactionAdded = new Subject<SlackReactionAdded>();
+    reactionRemoved = new Subject<SlackReactionRemoved>();
 
     client: any;
 

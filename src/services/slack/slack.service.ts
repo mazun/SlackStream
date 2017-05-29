@@ -9,7 +9,7 @@ import { SettingService } from '../setting.service';
 import * as emojione from 'emojione';
 
 export class SlackMessage {
-    constructor (public message: RTMMessage, public dataStore: DataStore, public myUserId: string) {
+    constructor(public message: RTMMessage, public dataStore: DataStore, public myUserId: string) {
     }
 
     get text(): string {
@@ -17,7 +17,7 @@ export class SlackMessage {
             return this.message.text;
         } else if (this.rawMessage.attachments) {
             for (const attachment of this.rawMessage.attachments) {
-                if(attachment.pretext) {
+                if (attachment.pretext) {
                     return attachment.pretext;
                 }
             }
@@ -58,12 +58,12 @@ export class SlackMessage {
     }
 
     get userName(): string {
-        if(this.message.user) {
+        if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
             return user ? user.name : '???';
         }
 
-        if(this.message.bot_id) {
+        if (this.message.bot_id) {
             const bot = this.dataStore.getBotById(this.message.bot_id);
             return bot ? bot.name : '???';
         }
@@ -72,12 +72,12 @@ export class SlackMessage {
     }
 
     get userThumbnail(): string {
-        if(this.message.user) {
+        if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
             return user ? user.profile.image_48 : '';
         }
 
-        if(this.message.bot_id) {
+        if (this.message.bot_id) {
             const bot = this.dataStore.getBotById(this.message.bot_id);
             return bot ? bot.icons.image_48 : '';
         }
@@ -115,17 +115,17 @@ export class SlackMessage {
     }
 
     get mine(): boolean {
-        return this.message.user == this.myUserId;
+        return this.message.user === this.myUserId;
     }
 }
 
 export class SlackReactionAdded {
-    constructor (public reaction: RTMReactionAdded, public dataStore: DataStore) {
+    constructor(public reaction: RTMReactionAdded, public dataStore: DataStore) {
     }
 }
 
 export class SlackReactionRemoved {
-    constructor (public reaction: RTMReactionRemoved, public dataStore: DataStore) {
+    constructor(public reaction: RTMReactionRemoved, public dataStore: DataStore) {
     }
 }
 
@@ -150,8 +150,8 @@ export interface SlackService {
     reactionRemoved: Observable<SlackReactionRemoved>;
     start(): void;
     stop(): void;
-    getEmoji(): Promise<{string: string}>;
-    postMessage(channel: string, text: string): Promise<{string: any}>;
+    getEmoji(): Promise<{ string: string }>;
+    postMessage(channel: string, text: string): Promise<{ string: any }>;
     deleteMessage(channel: string, timestamp: string): Promise<void>;
     markRead(channel: string, timestamp: string): Promise<void>;
     addReaction(reaction: string, channel: string, ts: string): Promise<void>;
@@ -159,7 +159,7 @@ export interface SlackService {
 }
 
 export class EmojiService {
-    emojiList: {string: string};
+    emojiList: { string: string };
 
     constructor(private client: SlackService) {
 
@@ -212,15 +212,15 @@ export class SlackServiceImpl implements SlackService {
         return this.rtm.reactionRemoved;
     }
 
-    async getEmoji(): Promise<{string: string}> {
+    async getEmoji(): Promise<{ string: string }> {
         return this.web.getEmoji();
     }
 
-    async postMessage(channel: string, text: string): Promise<{string: any}> {
+    async postMessage(channel: string, text: string): Promise<{ string: any }> {
         return this.web.postMessage(channel, text);
     }
 
-    async deleteMessage(channel: string, timestamp: string): Promise<void>{
+    async deleteMessage(channel: string, timestamp: string): Promise<void> {
         return this.web.deleteMessage(channel, timestamp);
     }
 

@@ -3,25 +3,21 @@ import { Directive, ElementRef, Renderer, Input } from '@angular/core';
 @Directive({
     selector: '[autofocus]'
 })
-export class AutofocusDirective
-{
+export class AutofocusDirective {
     private _autofocus;
-    constructor(private el: ElementRef, private renderer: Renderer)
-    {
+    constructor(private el: ElementRef, private renderer: Renderer) {
     }
 
-    ngOnInit()
-    {
+    ngOnInit() {
     }
 
-    ngAfterViewInit()
-    {
-        if (this._autofocus || typeof this._autofocus === "undefined")
+    ngAfterViewInit() {
+        if (this._autofocus || typeof this._autofocus === 'undefined') {
             this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
+        }
     }
 
-    @Input() set autofocus(condition: boolean)
-    {
-        this._autofocus = condition != false;
+    @Input() set autofocus(condition: boolean) {
+        this._autofocus = condition !== false;
     }
 }

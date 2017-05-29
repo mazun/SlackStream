@@ -13,7 +13,7 @@ export class EmojiParser implements SlackParser {
     constructor(slack: SlackService) {
         this.emojiService = new EmojiService(slack);
         // TODO: synchronize
-        this.emojiService.initExternalEmojis ();
+        this.emojiService.initExternalEmojis();
     }
 
     parse(text: string, dataStore: DataStore): string {
@@ -61,7 +61,7 @@ export class LinkParser implements SlackParser {
             // <ss-channelname> does not work...
             return `<span class="channel-name" style="color: ${color};">#${text2}</span>`;
         } else if (text1[0] === '@' || text1[0] === '!') {
-            if(text2[0] === '@') {
+            if (text2[0] === '@') {
                 return text2;
             } else {
                 return `@${text2}`;

@@ -5,7 +5,7 @@ import { SettingService } from '../../services/setting.service';
 @Component({
     selector: 'ss-setting',
     templateUrl: './setting.component.html',
-    styles: [ require('./setting.component.css').toString() ]
+    styles: [require('./setting.component.css').toString()]
 })
 export class SettingComponent implements OnInit {
     tokens: string[];
@@ -18,7 +18,7 @@ export class SettingComponent implements OnInit {
         this.tokens = this.setting.tokens;
     }
 
-    ngOnInit () {
+    ngOnInit() {
 
     }
 

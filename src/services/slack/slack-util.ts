@@ -3,10 +3,10 @@ import * as seedrandom from 'seedrandom';
 export class SlackUtil {
     static channelColor(channelName: string): string {
         let res = '#';
-        for(let i = 0; i < 3; i++) {
-            let rng = seedrandom (channelName + i);
+        for (let i = 0; i < 3; i++) {
+            let rng = seedrandom(channelName + i);
             let colorNum = Math.floor(rng() * 180).toString(16);
-            if(colorNum.length === 1) {
+            if (colorNum.length === 1) {
                 colorNum = '0' + colorNum;
             }
             res += colorNum;

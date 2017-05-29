@@ -12,14 +12,14 @@ require('emojione/assets/css/emojione.min.css');
 require('emojione/assets/css/emojione-awesome.css');
 require('./assets/css/styles.css');
 
-$(document).on('click', 'a[href^="http"]', function(event) {
-  event.preventDefault();
-  shell.openExternal(this.href);
+$(document).on('click', 'a[href^="http"]', function (event) {
+    event.preventDefault();
+    shell.openExternal(this.href);
 });
 
-document.ondragover = document.ondrop = function(e) {
-  e.preventDefault();
-  return false;
+document.ondragover = document.ondrop = function (e) {
+    e.preventDefault();
+    return false;
 };
 
 ipcRenderer.on('userData', (event, arg) => {
