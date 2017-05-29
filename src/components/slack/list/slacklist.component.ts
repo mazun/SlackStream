@@ -127,6 +127,35 @@ class PostMessageContext implements SubmitContext {
     }
 }
 
+interface FilterContext {
+    soloMode: boolean;
+    shouldShow(info: DisplaySlackMessageInfo): boolean;
+}
+
+class NoFilterContext implements FilterContext {
+    get soloMode(): boolean {
+        return false;
+    }
+
+    shouldShow(info: DisplaySlackMessageInfo): boolean {
+        return true;
+    }
+}
+
+class SoloChannelFilterContext implements FilterContext {
+    constructor(private channel: string) {
+    }
+
+    get soloMode(): boolean {
+        return true;
+    }
+
+    shouldShow(info: DisplaySlackMessageInfo): boolean {
+        return info.message.channelID === this.channel;
+    }
+}
+
+
 @Component({
     selector: 'ss-list',
     templateUrl: './slacklist.component.html',
@@ -136,6 +165,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
     messages: DisplaySlackMessageInfo[] = [];
     slackServices: SlackService[];
     submitContext: SubmitContext = null;
+    filterContext: FilterContext = new NoFilterContext();
+
+    get soloMode(): boolean {
+        return this.filterContext.soloMode;
+    }
+
+    get filteredMessages(): DisplaySlackMessageInfo[] {
+        return this.messages.filter(m => this.filterContext.shouldShow(m));
+    }
 
     get doesHaveMultipleTeams(): boolean {
         return this.slackServices.length >= 2;
@@ -269,6 +307,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickDelete(info: DisplaySlackMessageInfo) {
         this.deleteMessage(info.message, info.client);
+    }
+
+    onClickSoloMode(info: DisplaySlackMessageInfo) {
+        if (this.filterContext.soloMode) {
+            this.filterContext = new NoFilterContext();
+        } else {
+            this.filterContext = new SoloChannelFilterContext(info.message.channelID);
+        }
+        this.detector.detectChanges();
     }
 
     async submitForm(text: string) {

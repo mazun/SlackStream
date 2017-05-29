@@ -66,6 +66,16 @@ a {
     cursor: pointer;
 }
 
+.solo-mode {
+    color: lightgreen;
+    opacity: 1;
+}
+
+.solo-mode:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .buttons {
     text-align: right;
 

@@ -10,7 +10,7 @@
 </div>
 
 <table class="table table-striped">
-    <tr *ngFor="let info of messages">
+    <tr *ngFor="let info of filteredMessages">
         <td>
             <img class="user-thumbnail" [src]="info.message.userThumbnail"/>
         </td>
@@ -24,6 +24,7 @@
                 <span class="user-name">{{info.message.userName}}</span>
                 <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
                 <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
+                <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" (click)="onClickSoloMode(info)"></span>
                 <span class="timestamp">{{info.message.ts | ts2time}}</span>
             </div>
 
