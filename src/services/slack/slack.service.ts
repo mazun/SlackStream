@@ -9,7 +9,7 @@ import { SettingService } from '../setting.service';
 import * as emojione from 'emojione';
 
 export class SlackMessage {
-    constructor (public message: RTMMessage, public dataStore: DataStore) {
+    constructor (public message: RTMMessage, public dataStore: DataStore, public myUserId: string) {
     }
 
     get text(): string {
@@ -113,6 +113,10 @@ export class SlackMessage {
     get rawDataStore(): DataStore {
         return this.dataStore;
     }
+
+    get mine(): boolean {
+        return this.message.user == this.myUserId;
+    }
 }
 
 export class SlackReactionAdded {
@@ -144,6 +148,7 @@ export interface SlackService {
     stop(): void;
     getEmoji(): Promise<{string: string}>;
     postMessage(channel: string, text: string): Promise<{string: any}>;
+    deleteMessage(channel: string, timestamp: string): Promise<void>;
     markRead(channel: string, timestamp: string): Promise<void>;
     addReaction(reaction: string, channel: string, ts: string): Promise<void>;
     removeReaction(reaction: string, channel: string, ts: string): Promise<void>;
@@ -209,6 +214,10 @@ export class SlackServiceImpl implements SlackService {
 
     async postMessage(channel: string, text: string): Promise<{string: any}> {
         return this.web.postMessage(channel, text);
+    }
+
+    async deleteMessage(channel: string, timestamp: string): Promise<void>{
+        return this.web.deleteMessage(channel, timestamp);
     }
 
     async markRead(channel: string, timestamp: string): Promise<void> {

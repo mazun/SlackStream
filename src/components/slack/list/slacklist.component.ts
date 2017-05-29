@@ -195,7 +195,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     switch (message.rawMessage.subtype) {
       case 'message_deleted':
-        await this.deleteMessage(message, parser, client);
+        await this.removeDeletedMessage(message, parser, client);
         break;
       case 'message_changed':
         await this.changeMessage(message, parser, client);
@@ -218,11 +218,17 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
   }
 
+  async deleteMessage(message: SlackMessage, client: SlackService): Promise<void> {
+      if (message.message) {
+          client.deleteMessage(message.channelID, message.ts);
+      }
+  }
+
   async replyMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
       // TODO
   }
 
-  async deleteMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
+  async removeDeletedMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
     this.messages = this.messages.filter (m => message.rawMessage.deleted_ts !== m.message.rawMessage.ts);
   }
 
@@ -248,6 +254,10 @@ export class SlackListComponent implements OnInit, OnDestroy {
           this.messages
       );
       this.detector.detectChanges();
+  }
+
+  onClickDelete(info: DisplaySlackMessageInfo) {
+      this.deleteMessage(info.message, info.client);
   }
 
   async submitForm(text: string) {
