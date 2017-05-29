@@ -18,21 +18,21 @@ export class MessageFormComponent implements OnInit {
     @Input() teamID: string = '';
 
     ngOnInit(): void {
-	$('#slack_message_input').textcomplete([
-        { // emojis
-          match: /\B:([\-+\w]*)$/,
-          search: function (term, callback) {
-	    callback($.map(default_emojies, function (emoji) {
-              return emoji.indexOf(term) != -1 ? emoji : null;
-            }));
-          },
-          template: function (value) {
-	      return ':' + value + ': ';
-          },
-          replace: function(value){
-            return ':' + value + ': ';
-          },
-          index: 1
+        $('#slack_message_input').textcomplete([
+            { // emojis
+            match: /\B:([\-+\w]*)$/,
+            search: function (term, callback) {
+                callback($.map(default_emojies, function (emoji) {
+                    return emoji.indexOf(term) != -1 ? emoji : null;
+                }));
+            },
+            template: function (value) {
+                return ':' + value + ': ';
+            },
+            replace: function(value){
+                return ':' + value + ': ';
+            },
+            index: 1
         }]);
     }
 
@@ -41,7 +41,7 @@ export class MessageFormComponent implements OnInit {
     }
 
     onSubmit(value: string): void {
-	this.submit.emit (value);
+        this.submit.emit (value);
     }
 
     onKeyPress(event: KeyboardEvent, value: string): void {

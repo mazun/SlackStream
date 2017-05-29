@@ -32,14 +32,38 @@ export class WebClientWrapper {
     }
 
     async markRead(channel: string, timestamp: string): Promise<void> {
-	return new Promise<void>((resolve, reject) => {
-	    this.client.channels.mark(channel, timestamp, (err) => {
-		if(err) {
-		    reject(err);
-		} else {
-		    resolve();
-		}
-	    })
-	});
+        return new Promise<void>((resolve, reject) => {
+            this.client.channels.mark(channel, timestamp, (err) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            })
+        });
+    }
+
+    async addReaction(reaction: string, channel: string, ts: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.client.reactions.add(reaction, { "timestamp": ts, "channel": channel}, (err, info) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async removeReaction(reaction: string, channel: string, ts: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.client.reactions.remove(reaction, { "timestamp": ts, "channel": channel}, (err, info) => {
+                if(err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 }

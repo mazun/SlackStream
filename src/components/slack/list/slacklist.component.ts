@@ -99,12 +99,30 @@ class PostMessageContext implements SubmitContext {
         public client: SlackService,
         public channelName: string,
         public channelID: string,
-        public teamID: string
+        public teamID: string,
+        public infos: DisplaySlackMessageInfo[]
     ) {
     }
 
+    get lastMessageTs(): string {
+        for(let i = this.infos.length - 1; i >= 0; i--) {
+            if(this.infos[i].message.channelID == this.channelID) {
+                return this.infos[i].message.ts;
+            }
+        }
+        return '';
+    }
+
     async submit(text: string): Promise<any> {
-        return this.client.postMessage(this.channelID, text);
+        if(text.trim().match(/^\+:(.*):$/)) {
+            let reaction = text.trim().match(/^\+:(.*):$/)[1];
+            this.client.addReaction (reaction, this.channelID, this.lastMessageTs);
+        } else if(text.trim().match(/^\-:(.*):$/)) {
+            let reaction = text.trim().match(/^\-:(.*):$/)[1];
+            this.client.removeReaction (reaction, this.channelID, this.lastMessageTs);
+        } else {
+            return this.client.postMessage(this.channelID, text);
+        }
     }
 }
 
@@ -226,7 +244,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
           info.client,
           info.message.channelName,
           info.message.channelID,
-          info.message.teamID
+          info.message.teamID,
+          this.messages
       );
       this.detector.detectChanges();
   }
