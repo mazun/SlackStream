@@ -27,7 +27,8 @@
     padding-top: 3px;
     padding-bottom: 3px;
 
-    border-left: 3px solid #cccccc;
+    border-left-width: 3px;
+    border-left-style: solid;
 }
 
 .thumbnail {
@@ -48,6 +49,10 @@
 .right {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.footer-icon {
+    height: 5px;
 }
 
 .footer-text {

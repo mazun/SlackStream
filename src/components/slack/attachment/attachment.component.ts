@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Attachment } from '../../../services/slack/slack.types';
-
+import { Attachment, DataStore } from '../../../services/slack/slack.types';
+import { SlackParser } from '../../../services/slack/slack-parser.service';
 
 @Component({
     selector: 'ss-attachment',
@@ -9,5 +9,23 @@ import { Attachment } from '../../../services/slack/slack.types';
 })
 export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
-    // TODO: parse text
+    @Input() parser: SlackParser;
+    @Input() dataStore: DataStore;
+
+    parse(text: string): string {
+        return this.parser.parse(text, this.dataStore);
+    }
+
+    get borderColor(): string {
+        console.log(this.attachment.color);
+        if(this.attachment.color) {
+            if(this.attachment.color[0] === '#') {
+                return this.attachment.color;
+            } else {
+                return '#' + this.attachment.color;
+            }
+        } else {
+            return '#cccccc';
+        }
+    }
 }

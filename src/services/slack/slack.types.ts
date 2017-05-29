@@ -9,6 +9,8 @@ export interface EditedMessage {
 export interface Attachment {
     ts: string;
 
+    color: string;
+
     fallback: string;
     from_url: string;
 
