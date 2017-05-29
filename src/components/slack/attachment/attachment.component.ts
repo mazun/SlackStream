@@ -17,7 +17,6 @@ export class SlackAttachmentComponent {
     }
 
     get borderColor(): string {
-        console.log(this.attachment.color);
         if(this.attachment.color) {
             if(this.attachment.color[0] === '#') {
                 return this.attachment.color;

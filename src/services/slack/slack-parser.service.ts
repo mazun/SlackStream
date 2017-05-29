@@ -48,7 +48,7 @@ export class LinkParser implements SlackParser {
             if (bot) {
                 return `@${bot.name}`;
             }
-            return text;
+            return '@' + text.substr(1);
         } else {
             return `<a href="${text}">${text}</a>`;
         }
