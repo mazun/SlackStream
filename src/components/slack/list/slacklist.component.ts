@@ -105,7 +105,7 @@ class PostMessageContext implements SubmitContext {
     }
 
     get lastMessageTs(): string {
-        for(let i = this.infos.length - 1; i >= 0; i--) {
+        for(let i = 0; i < this.infos.length; i++) {
             if(this.infos[i].message.channelID == this.channelID) {
                 return this.infos[i].message.ts;
             }
