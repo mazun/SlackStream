@@ -36,7 +36,7 @@ class DisplaySlackReactionInfo {
     }
 }
 
-class DisplaySlackMessageInfo {
+export class DisplaySlackMessageInfo {
     edited: boolean = false;
     reactions: DisplaySlackReactionInfo[] = [];
 
@@ -151,6 +151,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
         private router: Router
     ) {
         this.slackServices = services.slacks;
+        this.messages = services.savedInfos;
     }
 
     ngOnInit(): void {
@@ -179,6 +180,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
         for (const slack of this.slackServices) {
             slack.stop();
         }
+        this.services.savedInfos = this.messages;
     }
 
     async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {

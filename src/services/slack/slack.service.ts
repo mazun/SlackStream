@@ -5,6 +5,7 @@ import { WebClientWrapper } from './wrapper/webwrapper';
 import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved } from './slack.types';
 import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
+import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
 
 import * as emojione from 'emojione';
 
@@ -132,6 +133,7 @@ export class SlackReactionRemoved {
 @Injectable()
 export class SlackServiceCollection {
     slacks: SlackService[];
+    savedInfos: DisplaySlackMessageInfo[] = [];
 
     constructor(private setting: SettingService) {
         this.refresh();
