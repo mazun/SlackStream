@@ -45,7 +45,6 @@ export class MessageFormComponent implements OnInit {
     }
 
     onKeyPress(event: KeyboardEvent, textArea: any): void {
-        console.log(textArea);
         if (event.key === 'Enter') {
             if (!event.altKey) {
                 this.onSubmit(textArea.value);
