@@ -6,11 +6,17 @@
         </div>
 
         <div *ngFor="let index of tokenIndexes">
-            <input type="text" name="token" [(ngModel)]="tokens[index]" placeholder="Your token">
-            <button class="btn btn-danger" (click)="removeToken(index)">Remove</button>
+            <div class="input-group token">
+                <input type="text" class="form-control" [(ngModel)]="tokens[index]" placeholder="Your token">
+                <span class="input-group-btn">
+                    <button class="btn" (click)="removeToken(index)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </span>
+            </div>
         </div>
 
-        <button class="btn btn-primary btn-sm" (click)="addToken()">Add token</button>
+        <button class="btn btn-primary btn-sm" (click)="addToken()">Add new token</button>
     </div>
 
     <hr>
