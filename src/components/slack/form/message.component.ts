@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
-import { default_emojies } from './default_emoji'
+import { default_emojies } from './default_emoji';
 
 @Component({
     selector: 'ss-messageform',
@@ -46,7 +46,7 @@ export class MessageFormComponent implements OnInit {
 
     onKeyPress(event: KeyboardEvent, textArea: any): void {
         console.log(textArea);
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             if (!event.altKey) {
                 this.onSubmit(textArea.value);
                 event.preventDefault();

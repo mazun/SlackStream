@@ -15,7 +15,7 @@ export class WebClientWrapper {
                 } else {
                     resolve(info);
                 }
-            })
+            });
         });
     }
 
@@ -39,7 +39,7 @@ export class WebClientWrapper {
                 } else {
                     resolve(info.emoji as { string: string });
                 }
-            })
+            });
         });
     }
 
@@ -51,7 +51,7 @@ export class WebClientWrapper {
                 } else {
                     resolve();
                 }
-            })
+            });
         });
     }
 

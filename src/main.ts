@@ -2,7 +2,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { enableProdMode } from '@angular/core';
 import { AppModule } from './app/app.module';
 import { shell, ipcRenderer } from 'electron';
-import { setSettingPath } from './services/setting.service'
+import { setSettingPath } from './services/setting.service';
 import * as $ from 'jquery';
 import * as path from 'path';
 

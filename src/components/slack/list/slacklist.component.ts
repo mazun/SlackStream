@@ -28,7 +28,7 @@ class DisplaySlackReactionInfo {
     }
 
     removeUser(user: string) {
-        this.users = this.users.filter(u => u != user);
+        this.users = this.users.filter(u => u !== user);
     }
 
     get count(): number {
@@ -64,7 +64,7 @@ class DisplaySlackMessageInfo {
     addReaction(info: SlackReactionAdded) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
         const user = info.reaction.user;
-        const target = this.reactions.find(r => r.reaction == reaction);
+        const target = this.reactions.find(r => r.reaction === reaction);
 
         if (target) {
             target.addUser(user);
@@ -75,13 +75,13 @@ class DisplaySlackMessageInfo {
 
     removeReaction(info: SlackReactionRemoved) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
-        const target = this.reactions.find(r => r.reaction == reaction);
+        const target = this.reactions.find(r => r.reaction === reaction);
 
         if (target) {
             target.removeUser(info.reaction.user);
 
-            if (target.count == 0) {
-                this.reactions = this.reactions.filter(r => r.reaction != reaction);
+            if (target.count === 0) {
+                this.reactions = this.reactions.filter(r => r.reaction !== reaction);
             }
         }
     }
@@ -107,7 +107,7 @@ class PostMessageContext implements SubmitContext {
 
     get lastMessageTs(): string {
         for (let i = 0; i < this.infos.length; i++) {
-            if (this.infos[i].message.channelID == this.channelID) {
+            if (this.infos[i].message.channelID === this.channelID) {
                 return this.infos[i].message.ts;
             }
         }

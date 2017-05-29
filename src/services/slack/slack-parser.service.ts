@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { DataStore } from './slack.types';
 import { SlackUtil } from './slack-util';
 import { SlackService, EmojiService } from './slack.service';

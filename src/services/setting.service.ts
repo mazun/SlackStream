@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as fs from 'fs';
 
-let settingPath: string = '';
+let settingPath = '';
 export function setSettingPath(path: string) {
     settingPath = path;
 }
