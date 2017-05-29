@@ -9,7 +9,7 @@ import { SettingService } from '../setting.service';
 import * as emojione from 'emojione';
 
 export class SlackMessage {
-    constructor (public message: RTMMessage, public dataStore: DataStore) {
+    constructor (public message: RTMMessage, public dataStore: DataStore, public myUserId: string) {
     }
 
     get text(): string {
@@ -112,6 +112,10 @@ export class SlackMessage {
 
     get rawDataStore(): DataStore {
         return this.dataStore;
+    }
+
+    get mine(): boolean {
+        return this.userName == this.dataStore.getUserById(this.myUserId).name;
     }
 }
 
