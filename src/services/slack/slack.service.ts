@@ -231,8 +231,10 @@ export class SlackServiceImpl implements SlackService {
         const dataStore = this.rtm.dataStore;
         if (dataStore.getChannelById(channel)) {
             return this.web.markRead(channel, timestamp);
-        } else {
+        } else if(dataStore.getDMById(channel)) {
             return this.web.markReadDM(channel, timestamp);
+        } else {
+            return this.web.markReadGroup(channel, timestamp);
         }
     }
 
