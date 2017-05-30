@@ -158,6 +158,7 @@ export interface SlackService {
     markRead(channel: string, timestamp: string): Promise<void>;
     addReaction(reaction: string, channel: string, ts: string): Promise<void>;
     removeReaction(reaction: string, channel: string, ts: string): Promise<void>;
+    updateMessage(ts: string, channel: string, text: string): Promise<any>
 }
 
 export class EmojiService {
@@ -238,4 +239,7 @@ export class SlackServiceImpl implements SlackService {
         return this.web.removeReaction(reaction, channel, ts);
     }
 
+    async updateMessage(ts: string, channel: string, text: string): Promise<any> {
+        return this.web.updateMessage(ts, channel, text);
+    }
 }

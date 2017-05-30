@@ -16,6 +16,8 @@ export class MessageFormComponent implements OnInit {
     @Input() channelName: string = '';
     @Input() channelID: string = '';
     @Input() teamID: string = '';
+    @Input() initialText: string = '';
+    @Input() extraInfo: string = '';
 
     ngOnInit(): void {
         $('#slack_message_input').textcomplete([

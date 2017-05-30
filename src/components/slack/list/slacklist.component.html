@@ -3,6 +3,8 @@
         [channelName]="submitContext.channelName"
         [channelID]="submitContext.channelID"
         [teamID]="submitContext.teamID"
+        [initialText]="submitContext.initialText"
+        [extraInfo]="submitContext.extraInfo"
         (submit)="submitForm($event)"
         (close)="closeForm()"
     >
@@ -34,6 +36,7 @@
             </div>
 
             <div class="buttons">
+                <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
                 <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
                 <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
             </div>
