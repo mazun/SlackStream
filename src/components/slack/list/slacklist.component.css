@@ -97,6 +97,18 @@ a {
     font-size: small;
 }
 
+.reaction:hover {
+    border: solid 1px skyblue;
+    border-radius: 3px;
+
+    cursor: pointer;
+}
+
+.my-reaction {
+    border: solid 1px skyblue;
+    color: skyblue;
+}
+
 .reaction img {
     height: 5px;
 }
