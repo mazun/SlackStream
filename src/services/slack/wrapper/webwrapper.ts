@@ -67,6 +67,18 @@ export class WebClientWrapper {
         });
     }
 
+    async markReadDM(channel: string, timestamp: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.client.im.mark(channel, timestamp, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
     async addReaction(reaction: string, channel: string, ts: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.client.reactions.add(reaction, { 'timestamp': ts, 'channel': channel }, (err, info) => {

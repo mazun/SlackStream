@@ -228,7 +228,12 @@ export class SlackServiceImpl implements SlackService {
     }
 
     async markRead(channel: string, timestamp: string): Promise<void> {
-        return this.web.markRead(channel, timestamp);
+        const dataStore = this.rtm.dataStore;
+        if (dataStore.getChannelById(channel)) {
+            return this.web.markRead(channel, timestamp);
+        } else {
+            return this.web.markReadDM(channel, timestamp);
+        }
     }
 
     async addReaction(reaction: string, channel: string, ts: string): Promise<void> {

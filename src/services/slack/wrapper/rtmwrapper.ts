@@ -9,6 +9,9 @@ export class RTMClientWrapper {
     reactionRemoved = new Subject<SlackReactionRemoved>();
 
     client: any;
+    get dataStore(): DataStore {
+        return this.client.dataStore;
+    }
 
     constructor(private token: string) {
         this.client = new RtmClient(token, { logLevel: 'debug' }, new MemoryDataStore());
