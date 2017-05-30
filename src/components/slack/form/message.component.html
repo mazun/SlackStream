@@ -1,6 +1,7 @@
 <div class="message-form">
     <div class="message-window">
     <ss-channelname [channelName]="channelName" [channelID]="channelID" [teamID]="teamID"></ss-channelname>
+    <span class="extra-info">{{extraInfo}}</span>
     <span class="glyphicon glyphicon-remove pull-right message-close" (click)="onClose()"></span>
     <textarea
         type="text"
@@ -11,6 +12,7 @@
         id="slack_message_input"
         (keypress)="onKeyPress($event, textArea)"
         [autofocus]
+        [value]="initialText"
         #textArea
     ></textarea>
     <button class="btn btn-default btn-xs pull-right" type="button" (click)="onSubmit(textArea.value)">Post</button>

@@ -92,6 +92,9 @@ interface SubmitContext {
     channelID: string;
     teamID: string;
 
+    extraInfo: string;
+    initialText: string;
+
     submit(text: string): Promise<any>;
 }
 
@@ -114,6 +117,14 @@ class PostMessageContext implements SubmitContext {
         return '';
     }
 
+    get initialText(): string {
+        return '';
+    }
+
+    get extraInfo(): string {
+        return '';
+    }
+
     async submit(text: string): Promise<any> {
         if (text.trim().match(/^\+:(.*):$/)) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
@@ -124,6 +135,38 @@ class PostMessageContext implements SubmitContext {
         } else {
             return this.client.postMessage(this.channelID, text);
         }
+    }
+}
+
+class EditMessageContext implements SubmitContext {
+    constructor(
+        public client: SlackService,
+        public message: SlackMessage
+    ) {
+    }
+
+    get channelName(): string {
+        return this.message.channelName;
+    }
+
+    get channelID(): string {
+        return this.message.channelID;
+    }
+
+    get teamID(): string {
+        return this.message.teamID;
+    }
+
+    get initialText(): string {
+        return this.message.text;
+    }
+
+    get extraInfo(): string {
+        return '(editing)';
+    }
+
+    async submit(text: string): Promise<any> {
+        return this.client.updateMessage(this.message.ts, this.message.channelID, text);
     }
 }
 
@@ -315,6 +358,11 @@ export class SlackListComponent implements OnInit, OnDestroy {
         } else {
             this.filterContext = new SoloChannelFilterContext(info.message.channelID);
         }
+        this.detector.detectChanges();
+    }
+
+    onClickEdit(info: DisplaySlackMessageInfo) {
+        this.submitContext = new EditMessageContext(info.client, info.message);
         this.detector.detectChanges();
     }
 

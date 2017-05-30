@@ -19,6 +19,18 @@ export class WebClientWrapper {
         });
     }
 
+    async updateMessage(ts: string, channel: string, text: string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            this.client.chat.update(ts, channel, text, { 'as_user': true, 'link_names': 1 }, (err, info) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(info);
+                }
+            });
+        });
+    }
+
     async deleteMessage(channel: string, timestamp: string) {
         return new Promise<void>((resolve, reject) => {
             this.client.chat.delete(timestamp, channel, { 'as_user': true }, (err) => {
