@@ -19,7 +19,7 @@ import {
 import { Attachment } from '../../../services/slack/slack.types';
 
 class DisplaySlackReactionInfo {
-    constructor(public reaction: string, public users: string[]) {
+    constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
     }
 
     addUser(user: string) {
@@ -33,6 +33,10 @@ class DisplaySlackReactionInfo {
 
     get count(): number {
         return this.users.length;
+    }
+
+    get includeMine(): boolean {
+        return !!(this.users.find(u => u === this.target.message.myUserId));
     }
 }
 
@@ -69,7 +73,7 @@ export class DisplaySlackMessageInfo {
         if (target) {
             target.addUser(user);
         } else {
-            this.reactions.push(new DisplaySlackReactionInfo(reaction, [user]));
+            this.reactions.push(new DisplaySlackReactionInfo(this, info.reaction.reaction, reaction, [user]));
         }
     }
 
@@ -377,5 +381,14 @@ export class SlackListComponent implements OnInit, OnDestroy {
     closeForm() {
         this.submitContext = null;
         this.detector.detectChanges();
+    }
+
+    onClickReaction(reaction: DisplaySlackReactionInfo) {
+        const client = reaction.target.client;
+        if (!reaction.includeMine) {
+            client.addReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
+        } else {
+            client.removeReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
+        }
     }
 }

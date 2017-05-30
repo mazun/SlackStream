@@ -42,7 +42,7 @@
             </div>
 
             <div *ngIf="info.doesReactionExist" class="reactions">
-                <span *ngFor="let reaction of info.reactions" class="reaction">
+                <span *ngFor="let reaction of info.reactions" class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)">
                     <span [innerHTML]="reaction.reaction"></span>
                     <span>{{reaction.count}}</span>
                 </span>
