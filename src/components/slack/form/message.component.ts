@@ -56,4 +56,10 @@ export class MessageFormComponent implements OnInit {
             }
         }
     }
+
+    onKeyUp(event: KeyboardEvent): void {
+        if (event.which === 27) {
+            this.close.emit();
+        }
+    }
 }

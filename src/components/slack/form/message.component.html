@@ -11,6 +11,7 @@
         rows="3"
         id="slack_message_input"
         (keypress)="onKeyPress($event, textArea)"
+        (keyup)="onKeyUp($event)"
         [autofocus]
         [value]="initialText"
         #textArea
