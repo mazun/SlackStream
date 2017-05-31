@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
-import { default_emojies } from './default_emoji';
+import { EmojiService } from '../../../services/slack/slack.service';
 
 @Component({
     selector: 'ss-messageform',
@@ -18,13 +18,15 @@ export class MessageFormComponent implements OnInit {
     @Input() teamID: string = '';
     @Input() initialText: string = '';
     @Input() extraInfo: string = '';
+    @Input() emoji: EmojiService;
 
     ngOnInit(): void {
+        const emojis = this.emoji.allEmojis;
         $('#slack_message_input').textcomplete([
             { // emojis
                 match: /\B:([\-+\w]*)$/,
                 search: function (term, callback) {
-                    callback($.map(default_emojies, function (emoji) {
+                    callback($.map(emojis, function (emoji) {
                         return emoji.indexOf(term) !== -1 ? emoji : null;
                     }));
                 },

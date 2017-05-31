@@ -6,6 +6,7 @@ import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved } fro
 import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
 import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
+import { defaultEmojis } from './default_emoji';
 
 import * as emojione from 'emojione';
 
@@ -150,6 +151,7 @@ export interface SlackService {
     messages: Observable<SlackMessage>;
     reactionAdded: Observable<SlackReactionAdded>;
     reactionRemoved: Observable<SlackReactionRemoved>;
+    emoji: EmojiService;
     start(): void;
     stop(): void;
     getEmoji(): Promise<{ string: string }>;
@@ -163,9 +165,14 @@ export interface SlackService {
 
 export class EmojiService {
     emojiList: { string: string };
+    defaultEmojis = defaultEmojis;
+
+    get allEmojis(): string[] {
+        return defaultEmojis.concat(Object.keys(this.emojiList));
+    }
 
     constructor(private client: SlackService) {
-
+        this.initExternalEmojis();
     }
 
     async initExternalEmojis(): Promise<void> {
@@ -189,10 +196,12 @@ export class EmojiService {
 export class SlackServiceImpl implements SlackService {
     rtm: RTMClientWrapper;
     web: WebClientWrapper;
+    emoji: EmojiService;
 
     constructor(private token: string) {
         this.rtm = new RTMClientWrapper(token);
         this.web = new WebClientWrapper(token);
+        this.emoji = new EmojiService(this);
     }
 
     start(): void {
