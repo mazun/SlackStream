@@ -7,12 +7,7 @@ export interface SlackParser {
 }
 
 export class EmojiParser implements SlackParser {
-    emojiService: EmojiService;
-
-    constructor(slack: SlackService) {
-        this.emojiService = new EmojiService(slack);
-        // TODO: synchronize
-        this.emojiService.initExternalEmojis();
+    constructor(private emojiService: EmojiService) {
     }
 
     parse(text: string, dataStore: DataStore): string {

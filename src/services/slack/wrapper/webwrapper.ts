@@ -26,9 +26,9 @@ export class WebClientWrapper {
     }
 
     async getEmoji(): Promise<{ string: string }> {
-        return new Promise<{ string: string }>((resolve, reject) => {
-            this.client.emoji.list(this.handler<{ string: string }>(resolve, reject));
-        });
+        return new Promise<any>((resolve, reject) => {
+            this.client.emoji.list(this.handler<any>(resolve, reject));
+        }).then(res => res.emoji);
     }
 
     async markRead(channel: string, timestamp: string): Promise<any> {

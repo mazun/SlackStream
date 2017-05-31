@@ -5,7 +5,8 @@ import {
     SlackMessage,
     SlackService,
     SlackReactionAdded,
-    SlackReactionRemoved
+    SlackReactionRemoved,
+    EmojiService
 } from '../../../services/slack/slack.service';
 
 import {
@@ -102,6 +103,8 @@ interface SubmitContext {
     extraInfo: string;
     initialText: string;
 
+    emoji: EmojiService;
+
     submit(text: string): Promise<any>;
 }
 
@@ -111,8 +114,12 @@ class PostMessageContext implements SubmitContext {
         public channelName: string,
         public channelID: string,
         public teamID: string,
-        public infos: DisplaySlackMessageInfo[]
+        public infos: DisplaySlackMessageInfo[],
     ) {
+    }
+
+    get emoji(): EmojiService {
+        return this.client.emoji;
     }
 
     get lastMessageTs(): string {
@@ -148,8 +155,12 @@ class PostMessageContext implements SubmitContext {
 class EditMessageContext implements SubmitContext {
     constructor(
         public client: SlackService,
-        public message: SlackMessage
+        public message: SlackMessage,
     ) {
+    }
+
+    get emoji(): EmojiService {
+        return this.client.emoji;
     }
 
     get channelName(): string {
@@ -256,7 +267,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             const parser = new ComposedParser([
                 new LinkParser(),
                 new NewLineParser(),
-                new EmojiParser(slack)
+                new EmojiParser(slack.emoji)
             ]);
 
             this.subscription.add(slack.messages.subscribe(message => this.onReceiveMessage(message, parser, slack)));
@@ -266,7 +277,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
         }
 
         this.subscription.add(this.events.activateMessageForm.subscribe(() => this.activateMessageForm()));
-        this.subscription.add(this.events.keydown.filter(e => e.which == 38).subscribe(() => this.editLatestMessage()));
+        this.subscription.add(this.events.keydown.filter(e => e.which === 38).subscribe(() => this.editLatestMessage()));
     }
 
     ngOnDestroy(): void {

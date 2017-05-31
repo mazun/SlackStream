@@ -1,4 +1,4 @@
-export const default_emojies = [
+export const defaultEmojis = [
         'bowtie',
         'smile',
         'simple_smile',
