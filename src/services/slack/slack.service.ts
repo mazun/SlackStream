@@ -133,7 +133,7 @@ export class SlackReactionRemoved {
 
 @Injectable()
 export class SlackServiceCollection {
-    slacks: SlackService[];
+    slacks: SlackService[] = [];
     savedInfos: DisplaySlackMessageInfo[] = [];
 
     constructor(private setting: SettingService) {
@@ -141,8 +141,13 @@ export class SlackServiceCollection {
     }
 
     refresh() {
+        const cache: {[token: string]: SlackService} = {};
+        for(const slack of this.slacks) {
+            cache[slack.token] = slack;
+        }
+
         this.slacks = this.setting.tokens.map(token => {
-            return new SlackServiceImpl(token) as SlackService;
+            return cache[token] ? cache[token] : new SlackServiceImpl(token) as SlackService;
         });
     }
 }
@@ -152,6 +157,7 @@ export interface SlackService {
     reactionAdded: Observable<SlackReactionAdded>;
     reactionRemoved: Observable<SlackReactionRemoved>;
     emoji: EmojiService;
+    token: string;
     start(): void;
     stop(): void;
     getEmoji(): Promise<{ string: string }>;
@@ -198,7 +204,7 @@ export class SlackServiceImpl implements SlackService {
     web: WebClientWrapper;
     emoji: EmojiService;
 
-    constructor(private token: string) {
+    constructor(public token: string) {
         this.rtm = new RTMClientWrapper(token);
         this.web = new WebClientWrapper(token);
         this.emoji = new EmojiService(this);
