@@ -266,7 +266,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
         }
 
         this.subscription.add(this.events.activateMessageForm.subscribe(() => this.activateMessageForm()));
-        this.subscription.add(this.events.keydown.filter(e => e.which == 38).subscribe(() => this.activateMessageForm()));
+        this.subscription.add(this.events.keydown.filter(e => e.which == 38).subscribe(() => this.editLatestMessage()));
     }
 
     ngOnDestroy(): void {
@@ -414,6 +414,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
                     messages
                 );
                 this.detector.detectChanges();
+            }
+        }
+    }
+
+    editLatestMessage() {
+        for(const info of this.messages) {
+            if (info.message.mine) {
+                this.onClickEdit(info);
+                return;
             }
         }
     }
