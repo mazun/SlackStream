@@ -17,6 +17,9 @@ import {
 } from '../../../services/slack/slack-parser.service';
 
 import { Attachment } from '../../../services/slack/slack.types';
+import { GlobalEventService } from '../../../services/globalevent.service';
+
+import { Subscription } from 'rxjs';
 
 class DisplaySlackReactionInfo {
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
@@ -213,6 +216,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     slackServices: SlackService[];
     submitContext: SubmitContext = null;
     filterContext: FilterContext = new NoFilterContext();
+    subscription = new Subscription();
 
     get soloMode(): boolean {
         return this.filterContext.soloMode;
@@ -232,6 +236,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     constructor(
         private services: SlackServiceCollection,
+        private events: GlobalEventService,
         private detector: ChangeDetectorRef,
         private router: Router
     ) {
@@ -254,11 +259,13 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 new EmojiParser(slack)
             ]);
 
-            slack.messages.subscribe(message => this.onReceiveMessage(message, parser, slack));
-            slack.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, slack));
-            slack.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, slack));
+            this.subscription.add(slack.messages.subscribe(message => this.onReceiveMessage(message, parser, slack)));
+            this.subscription.add(slack.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, slack)));
+            this.subscription.add(slack.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, slack)));
             slack.start();
         }
+
+        this.subscription.add(this.events.activateMessageForm.subscribe(() => this.activateMessageForm()));
     }
 
     ngOnDestroy(): void {
@@ -266,6 +273,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             slack.stop();
         }
         this.services.savedInfos = this.messages;
+        this.subscription.unsubscribe();
     }
 
     async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackService): Promise<void> {
@@ -389,6 +397,23 @@ export class SlackListComponent implements OnInit, OnDestroy {
             client.addReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
         } else {
             client.removeReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
+        }
+    }
+
+    activateMessageForm() {
+        if(this.submitContext == null) {
+            const messages = this.filteredMessages;
+            if(messages.length != 0) {
+                var message = messages[0];
+                this.submitContext = new PostMessageContext(
+                    message.client,
+                    message.message.channelName,
+                    message.message.channelID,
+                    message.message.teamID,
+                    messages
+                );
+                this.detector.detectChanges();
+            }
         }
     }
 }

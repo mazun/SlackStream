@@ -19,6 +19,7 @@ import { SafeHtmlPipe, SafeURLPipe } from '../pipes/dom';
 // services
 import { SlackServiceCollection } from '../services/slack/slack.service';
 import { SettingService } from '../services/setting.service';
+import { GlobalEventService } from '../services/globalevent.service';
 
 // directives
 import { AutofocusDirective } from '../directives/autofocus';
@@ -55,6 +56,7 @@ const appRoutes: Routes = [
   providers: [
     SettingService,
     SlackServiceCollection,
+    GlobalEventService
   ],
   bootstrap: [ AppComponent ]
 })
