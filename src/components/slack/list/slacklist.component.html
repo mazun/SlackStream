@@ -36,17 +36,17 @@
                 <span *ngIf="info.edited" class="edit-mark"> (edited)</span>
             </div>
 
-            <div class="buttons">
+            <div class="buttons pull-right">
                 <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
                 <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
                 <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
             </div>
 
             <div *ngIf="info.doesReactionExist" class="reactions">
-                <span *ngFor="let reaction of info.reactions" class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)">
+                <div *ngFor="let reaction of info.reactions" class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)">
                     <span [innerHTML]="reaction.reaction"></span>
-                    <span>{{reaction.count}}</span>
-                </span>
+                    <span class="reaction-count">{{reaction.count}}</span>
+                </div>
             </div>
 
             <div *ngFor="let attachment of info.attachments">
