@@ -82,16 +82,26 @@ a {
     margin-bottom: -2px;
 }
 
+.reactions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .reaction {
     margin-left: 2px;
     margin-right: 2px;
     margin-top: 2px;
+    padding-top: 2px;
+    padding-bottom: 0;
     padding-right: 4px;
 
     border: solid 1px #dddddd;
     border-radius: 0.5em;
+}
 
-    font-size: small;
+.reaction-count {
+    margin-left: -3px;
+    font-size: smaller;
 }
 
 .reaction:hover {
