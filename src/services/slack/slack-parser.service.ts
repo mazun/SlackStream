@@ -51,7 +51,7 @@ export class LinkParser implements SlackParser {
     parse2(text1: string, text2: string, dataStore: DataStore): string {
         if (text1[0] === '#') {
             const channel = dataStore.getChannelById(text1.substr(1));
-            const color = SlackUtil.channelColor('#' + channel.name);
+            const color = SlackUtil.channelColor(channel.name);
             // <ss-channelname> does not work...
             return `<span class="channel-name" style="color: ${color};">#${text2}</span>`;
         } else if (text1[0] === '@' || text1[0] === '!') {
