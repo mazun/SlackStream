@@ -78,7 +78,6 @@ a {
 
 .buttons {
     text-align: right;
-
     margin-top: -2px;
     margin-bottom: -2px;
 }
@@ -86,21 +85,17 @@ a {
 .reaction {
     margin-left: 2px;
     margin-right: 2px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 1px;
-    padding-right: 1px;
+    margin-top: 2px;
+    padding-right: 4px;
 
-    border: solid 1px #aaaaaa;
-    border-radius: 3px;
+    border: solid 1px #dddddd;
+    border-radius: 0.5em;
 
     font-size: small;
 }
 
 .reaction:hover {
     border: solid 1px skyblue;
-    border-radius: 3px;
-
     cursor: pointer;
 }
 
@@ -110,5 +105,8 @@ a {
 }
 
 .reaction img {
-    height: 5px;
+    min-width: 0;
+    min-height: 0;
+    width: 1em;
+    height: 1em;
 }
