@@ -4,7 +4,7 @@
   "private": true,
   "description": "Streaming slack client",
   "scripts": {
-    "start": "yarn run webpack-dev-server --inline --progress --port 8080",
+    "start": "webpack-dev-server --inline --progress --port 8080",
     "electron": "electron .",
     "test": "karma start karma.webpack.conf.js",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --bail",
