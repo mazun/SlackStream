@@ -78,29 +78,34 @@ a {
 
 .buttons {
     text-align: right;
-
     margin-top: -2px;
     margin-bottom: -2px;
+}
+
+.reactions {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .reaction {
     margin-left: 2px;
     margin-right: 2px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 1px;
-    padding-right: 1px;
+    margin-top: 2px;
+    padding-top: 2px;
+    padding-bottom: 0;
+    padding-right: 4px;
 
-    border: solid 1px #aaaaaa;
-    border-radius: 3px;
+    border: solid 1px #dddddd;
+    border-radius: 0.5em;
+}
 
-    font-size: small;
+.reaction-count {
+    margin-left: -3px;
+    font-size: smaller;
 }
 
 .reaction:hover {
     border: solid 1px skyblue;
-    border-radius: 3px;
-
     cursor: pointer;
 }
 
@@ -110,5 +115,8 @@ a {
 }
 
 .reaction img {
-    height: 5px;
+    min-width: 0;
+    min-height: 0;
+    width: 1em;
+    height: 1em;
 }
