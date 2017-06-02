@@ -18,6 +18,9 @@ export class SettingComponent implements OnInit {
     constructor(public setting: SettingService, private router: Router) {
         this.tokens = this.setting.tokens;
         this.hide_buttons = this.setting.hide_buttons;
+        if(this.tokens.length == 0) {
+            this.tokens = [''];
+        }
     }
 
     ngOnInit() {
