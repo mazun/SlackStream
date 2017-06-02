@@ -442,10 +442,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     editLatestMessage() {
-        for(const info of this.messages) {
-            if (info.message.mine) {
-                this.onClickEdit(info);
-                return;
+        if(this.submitContext == null) {
+            for(const info of this.messages) {
+                if (info.message.mine) {
+                    this.onClickEdit(info);
+                    return;
+                }
             }
         }
     }
