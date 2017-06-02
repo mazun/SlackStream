@@ -8,6 +8,7 @@ export function setSettingPath(path: string) {
 
 interface Setting {
     tokens: string[];
+    hide_buttons: boolean;
 }
 
 @Injectable()
@@ -18,6 +19,10 @@ export class SettingService {
         return this.setting.tokens;
     }
 
+    get hide_buttons(): boolean {
+        return this.setting.hide_buttons;
+    }
+
     constructor() {
         try {
             this.setting = JSON.parse(fs.readFileSync(settingPath, 'utf8'));
@@ -26,7 +31,8 @@ export class SettingService {
             this.setting = {} as Setting;
         }
 
-        if (!this.setting.tokens) { this.setting.tokens = ['']; }
+        if (this.setting.tokens === undefined) { this.setting.tokens = ['']; }
+        if (this.setting.hide_buttons === undefined) { this.setting.hide_buttons = false; }
     }
 
     save() {
