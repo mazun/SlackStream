@@ -15,9 +15,6 @@ export class RTMClientWrapper {
 
     constructor(private token: string) {
         this.client = new RtmClient(token, { logLevel: 'debug' }, new MemoryDataStore());
-    }
-
-    start(): void {
         this.client.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
             console.log(`start ${this.token} ${rtmStartData}`);
         });
@@ -33,7 +30,9 @@ export class RTMClientWrapper {
         this.client.on(RTM_EVENTS.REACTION_REMOVED, (reaction: RTMReactionRemoved) => {
             this.reactionRemoved.next(new SlackReactionAdded(reaction, this.client.dataStore as DataStore));
         });
+    }
 
+    start(): void {
         this.client.start();
     }
 
