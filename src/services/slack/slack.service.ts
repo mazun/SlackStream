@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { RTMClientWrapper } from './wrapper/rtmwrapper';
 import { WebClientWrapper } from './wrapper/webwrapper';
-import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved } from './slack.types';
+import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
 import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
 import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
@@ -53,6 +53,10 @@ export class SlackMessage {
 
     get teamID(): string {
         return this.message.team_id || this.message.source_team || this.message.team || '';
+    }
+
+    get channel(): Channel {
+        return this.dataStore.getChannelById(this.channelID);
     }
 
     get channelID(): string {
@@ -158,6 +162,8 @@ export interface SlackService {
     reactionRemoved: Observable<SlackReactionRemoved>;
     emoji: EmojiService;
     token: string;
+    dataStore: DataStore;
+
     start(): void;
     stop(): void;
     getEmoji(): Promise<{ string: string }>;
@@ -216,6 +222,10 @@ export class SlackServiceImpl implements SlackService {
 
     stop(): void {
         this.rtm.stop();
+    }
+
+    get dataStore(): DataStore {
+        return this.rtm.dataStore;
     }
 
     get messages(): Observable<SlackMessage> {
