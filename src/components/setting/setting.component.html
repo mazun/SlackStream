@@ -17,6 +17,12 @@
         </div>
 
         <button class="btn btn-primary btn-sm" (click)="addToken()">Add new token</button>
+
+        <h3>View Settings</h3>
+        <div>
+            <input type="checkbox" value="true" id="hide-buttons-checkbox" [(ngModel)]="hide_buttons">
+            <label for="hide-buttons-checkbox">Hide buttons</label>
+        </div>
     </div>
 
     <hr>

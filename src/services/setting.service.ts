@@ -8,6 +8,7 @@ export function setSettingPath(path: string) {
 
 interface Setting {
     tokens: string[];
+    hide_buttons: boolean;
 }
 
 @Injectable()
@@ -16,6 +17,10 @@ export class SettingService {
 
     get tokens(): string[] {
         return this.setting.tokens;
+    }
+
+    get hide_buttons(): boolean {
+        return this.setting.hide_buttons;
     }
 
     constructor() {
@@ -27,6 +32,7 @@ export class SettingService {
         }
 
         if (!this.setting.tokens) { this.setting.tokens = ['']; }
+        if (!this.setting.hide_buttons) { this.setting.hide_buttons = false; }
     }
 
     save() {
