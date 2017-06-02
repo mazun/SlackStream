@@ -265,6 +265,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
         private router: Router,
         private setting: SettingService
     ) {
+        this.services.refresh();
         this.slackServices = services.slacks;
         this.messages = services.savedInfos;
     }
@@ -274,8 +275,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.router.navigate(['/setting']);
             return;
         }
-
-        this.services.refresh();
 
         for (const slack of this.slackServices) {
             const parser = new ComposedParser([
