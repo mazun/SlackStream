@@ -21,6 +21,7 @@ import { Attachment } from '../../../services/slack/slack.types';
 import { GlobalEventService } from '../../../services/globalevent.service';
 
 import { Subscription } from 'rxjs';
+import { Channel, DataStore } from '../../../services/slack/slack.types';
 
 class DisplaySlackReactionInfo {
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
@@ -96,8 +97,8 @@ export class DisplaySlackMessageInfo {
 }
 
 interface SubmitContext {
-    channelName: string;
-    channelID: string;
+    channel: Channel;
+    dataStore: DataStore;
     teamID: string;
 
     extraInfo: string;
@@ -111,11 +112,14 @@ interface SubmitContext {
 class PostMessageContext implements SubmitContext {
     constructor(
         public client: SlackService,
-        public channelName: string,
-        public channelID: string,
+        public channel: Channel,
         public teamID: string,
         public infos: DisplaySlackMessageInfo[],
     ) {
+    }
+
+    get dataStore(): DataStore {
+        return this.client.dataStore;
     }
 
     get emoji(): EmojiService {
@@ -124,7 +128,7 @@ class PostMessageContext implements SubmitContext {
 
     get lastMessageTs(): string {
         for (let i = 0; i < this.infos.length; i++) {
-            if (this.infos[i].message.channelID === this.channelID) {
+            if (this.infos[i].message.channelID === this.channel.id) {
                 return this.infos[i].message.ts;
             }
         }
@@ -142,12 +146,12 @@ class PostMessageContext implements SubmitContext {
     async submit(text: string): Promise<any> {
         if (text.trim().match(/^\+:(.*):$/)) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
-            this.client.addReaction(reaction, this.channelID, this.lastMessageTs);
+            this.client.addReaction(reaction, this.channel.id, this.lastMessageTs);
         } else if (text.trim().match(/^\-:(.*):$/)) {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
-            this.client.removeReaction(reaction, this.channelID, this.lastMessageTs);
+            this.client.removeReaction(reaction, this.channel.id, this.lastMessageTs);
         } else {
-            return this.client.postMessage(this.channelID, text);
+            return this.client.postMessage(this.channel.id, text);
         }
     }
 }
@@ -159,8 +163,16 @@ class EditMessageContext implements SubmitContext {
     ) {
     }
 
+    get dataStore(): DataStore {
+        return this.client.dataStore;
+    }
+
     get emoji(): EmojiService {
         return this.client.emoji;
+    }
+
+    get channel(): Channel {
+        return this.message.channel;
     }
 
     get channelName(): string {
@@ -364,8 +376,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     onClickWrite(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
             info.client,
-            info.message.channelName,
-            info.message.channelID,
+            info.message.channel,
             info.message.teamID,
             this.messages
         );
@@ -419,8 +430,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 var message = messages[0];
                 this.submitContext = new PostMessageContext(
                     message.client,
-                    message.message.channelName,
-                    message.message.channelID,
+                    message.message.channel,
                     message.message.teamID,
                     messages
                 );

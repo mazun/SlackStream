@@ -1,7 +1,7 @@
 <div *ngIf="showForm" class="message-form">
     <ss-messageform
-        [channelName]="submitContext.channelName"
-        [channelID]="submitContext.channelID"
+        [channel]="submitContext.channel"
+        [dataStore]="submitContext.dataStore"
         [teamID]="submitContext.teamID"
         [initialText]="submitContext.initialText"
         [extraInfo]="submitContext.extraInfo"
