@@ -31,8 +31,8 @@ export class SettingService {
             this.setting = {} as Setting;
         }
 
-        if (!this.setting.tokens) { this.setting.tokens = ['']; }
-        if (!this.setting.hide_buttons) { this.setting.hide_buttons = false; }
+        if (this.setting.tokens === undefined) { this.setting.tokens = ['']; }
+        if (this.setting.hide_buttons === undefined) { this.setting.hide_buttons = false; }
     }
 
     save() {
