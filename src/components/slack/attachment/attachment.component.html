@@ -35,8 +35,7 @@
 
         <!-- Fields -->
         <div *ngIf="!!attachment.fields">
-            <div *ngFor="let field of attachment.fields" class="field">
-                {{parse(field.value)}}
+            <div *ngFor="let field of attachment.fields" class="field" [innerHTML]="parse(field.value)">
             </div>
         </div>
 
@@ -46,7 +45,7 @@
                 <img [src]="attachment.footer_icon" />
             </span>
 
-            <span class="footer-text">{{parse(attachment.footer)}}</span>
+            <span class="footer-text" [innerHTML]="parse(attachment.footer)"></span>
 
             <a class="footer-ts" [href]="attachment.from_url">{{attachment.ts | ts2time}}</a>
         </div>
