@@ -120,3 +120,11 @@ a {
     width: 1em;
     height: 1em;
 }
+
+.hide-buttons {
+    opacity: 0;
+}
+
+.hide-buttons:hover {
+    opacity: 1;
+}

@@ -9,6 +9,7 @@ import { SettingService } from '../../services/setting.service';
 })
 export class SettingComponent implements OnInit {
     tokens: string[];
+    hide_buttons: boolean;
 
     get tokenIndexes(): number[] {
         return this.tokens.map((elem, index, array) => index);
@@ -16,6 +17,7 @@ export class SettingComponent implements OnInit {
 
     constructor(public setting: SettingService, private router: Router) {
         this.tokens = this.setting.tokens;
+        this.hide_buttons = this.setting.hide_buttons;
     }
 
     ngOnInit() {
@@ -28,6 +30,7 @@ export class SettingComponent implements OnInit {
 
     exit() {
         this.setting.setting.tokens = this.tokens;
+        this.setting.setting.hide_buttons = this.hide_buttons;
         this.setting.save();
         this.router.navigate(['/']);
     }
