@@ -22,6 +22,7 @@ import { GlobalEventService } from '../../../services/globalevent.service';
 
 import { Subscription } from 'rxjs';
 import { Channel, DataStore } from '../../../services/slack/slack.types';
+import { SettingService } from '../../../services/setting.service';
 
 class DisplaySlackReactionInfo {
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
@@ -261,7 +262,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
         private services: SlackServiceCollection,
         private events: GlobalEventService,
         private detector: ChangeDetectorRef,
-        private router: Router
+        private router: Router,
+        private setting: SettingService
     ) {
         this.slackServices = services.slacks;
         this.messages = services.savedInfos;
