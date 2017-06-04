@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
 import { EmojiService } from '../../../services/slack/slack.service';
-import { Channel, DataStore } from '../../../services/slack/slack.types';
+import { Channel, DM, DataStore } from '../../../services/slack/slack.types';
 
 @Component({
     selector: 'ss-messageform',
@@ -14,7 +14,7 @@ export class MessageFormComponent implements OnChanges {
     @Output() submit = new EventEmitter<string>();
     @Output() close = new EventEmitter();
 
-    @Input() channel: Channel;
+    @Input() channelLikeID: string;
     @Input() dataStore: DataStore;
 
     @Input() teamID: string = '';
@@ -22,17 +22,29 @@ export class MessageFormComponent implements OnChanges {
     @Input() extraInfo: string = '';
     @Input() emoji: EmojiService;
 
+    get channel(): Channel {
+        return this.dataStore.getChannelById(this.channelLikeID);
+    }
+
+    get dm(): DM {
+        return this.dataStore.getDMById(this.channelLikeID);
+    }
+
     get channelName(): string {
-        return this.channel.name;
+        if(this.channel)
+            return this.channel.name;
+        else
+            return "DM_" + this.dataStore.getUserById(this.dm.user).name;
     }
 
     get channelID(): string {
-        return this.channel.id;
+        return this.channelLikeID;
     }
 
     ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
-        const users = this.channel.members.map(m => this.dataStore.getUserById(m).name);
+        const users = (this.channel ? this.channel.members.map(m => this.dataStore.getUserById(m).name) : []);
+
         $('#slack_message_input').textcomplete('destroy');
         $('#slack_message_input').textcomplete([
             { // emojis
