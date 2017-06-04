@@ -43,7 +43,7 @@ export class MessageFormComponent implements OnChanges {
                     }));
                 },
                 template: (value) => {
-                    return ':' + value + ': ';
+                    return `${value} ${this.emoji.convertEmoji(":" + value + ":")}`;
                 },
                 replace: (value) => {
                     return ':' + value + ': ';
