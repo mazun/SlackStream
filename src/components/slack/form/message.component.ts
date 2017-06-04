@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
@@ -10,7 +10,7 @@ import { Channel, DataStore } from '../../../services/slack/slack.types';
     templateUrl: './message.component.html',
     styles: [require('./message.component.css').toString()],
 })
-export class MessageFormComponent implements OnInit {
+export class MessageFormComponent implements OnChanges {
     @Output() submit = new EventEmitter<string>();
     @Output() close = new EventEmitter();
 
@@ -30,9 +30,10 @@ export class MessageFormComponent implements OnInit {
         return this.channel.id;
     }
 
-    ngOnInit(): void {
+    ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
         const users = this.channel.members.map(m => this.dataStore.getUserById(m).name);
+        $('#slack_message_input').textcomplete('destroy');
         $('#slack_message_input').textcomplete([
             { // emojis
                 match: /\B:([\-+\w]*)$/,
