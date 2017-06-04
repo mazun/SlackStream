@@ -30,9 +30,12 @@ export class MessageFormComponent implements OnInit {
         return this.channel.id;
     }
 
-    ngOnInit(): void {
+    ngOnInit(): void { }
+
+    ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
         const users = this.channel.members.map(m => this.dataStore.getUserById(m).name);
+        $('#slack_message_input').textcomplete('destroy');
         $('#slack_message_input').textcomplete([
             { // emojis
                 match: /\B:([\-+\w]*)$/,
