@@ -25,6 +25,4 @@ export class GlobalEventService {
         this._keydown = new Subject<KeyboardEvent>();
         $(document).on('keydown', e => this._keydown.next(e));
     }
-
-    
 }

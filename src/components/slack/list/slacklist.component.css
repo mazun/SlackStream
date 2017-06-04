@@ -128,3 +128,7 @@ a {
 .hide-buttons:hover {
     opacity: 1;
 }
+
+.shared-image {
+    max-width: 100%;
+}

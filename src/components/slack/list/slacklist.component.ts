@@ -48,6 +48,7 @@ class DisplaySlackReactionInfo {
 
 export class DisplaySlackMessageInfo {
     edited: boolean = false;
+    image: string = null;
     reactions: DisplaySlackReactionInfo[] = [];
 
     constructor(
@@ -59,6 +60,14 @@ export class DisplaySlackMessageInfo {
 
     get text(): string {
         return this.parser.parse(this.message.text, this.message.dataStore);
+    }
+
+    get imageSrc(): string {
+        return `data:${this.message.rawMessage.file.mimetype};base64,${this.image}`;
+    }
+
+    get imageURL(): string {
+        return this.message.rawMessage.file.url_private;
     }
 
     get attachments(): Attachment[] {
@@ -342,9 +351,28 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     async addMessage(message: SlackMessage, parser: SlackParser, client: SlackService): Promise<void> {
         if (message.message) {
-            this.messages.unshift(new DisplaySlackMessageInfo(message, parser, client));
+            const info = new DisplaySlackMessageInfo(message, parser, client);
+            this.messages.unshift(info);
+
+            if (message.message.file && message.message.file.mimetype.indexOf('image') !== -1) {
+                info.image = await client.getImage(this.getMaximumThumbnail(message)).catch(e => {
+                    console.log('Getting image does not work in developing mode currently');
+                    return undefined;
+                });
+            }
+
             client.markRead(message.channelID, message.ts);
         }
+    }
+
+    getMaximumThumbnail(message: SlackMessage): string {
+        const file = message.rawMessage.file;
+        if (file.thumb_480) { return file.thumb_480; }
+        if (file.thumb_360) { return file.thumb_360; }
+        if (file.thumb_160) { return file.thumb_160; }
+        if (file.thumb_80) { return file.thumb_80; }
+        if (file.thumb_64) { return file.thumb_64; }
+        return '';
     }
 
     async deleteMessage(message: SlackMessage, client: SlackService): Promise<void> {
@@ -425,9 +453,9 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     activateMessageForm() {
-        if(this.submitContext == null) {
+        if (this.submitContext == null) {
             const messages = this.filteredMessages;
-            if(messages.length != 0) {
+            if (messages.length != 0) {
                 var message = messages[0];
                 this.submitContext = new PostMessageContext(
                     message.client,
@@ -441,8 +469,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     editLatestMessage() {
-        if(this.submitContext == null) {
-            for(const info of this.messages) {
+        if (this.submitContext == null) {
+            for (const info of this.messages) {
                 if (info.message.mine) {
                     this.onClickEdit(info);
                     return;
