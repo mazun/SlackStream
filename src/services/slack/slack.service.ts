@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
 import { RTMClientWrapper } from './wrapper/rtmwrapper';
 import { WebClientWrapper } from './wrapper/webwrapper';
@@ -140,7 +141,7 @@ export class SlackServiceCollection {
     slacks: SlackService[] = [];
     savedInfos: DisplaySlackMessageInfo[] = [];
 
-    constructor(private setting: SettingService) {
+    constructor(private setting: SettingService, private http: Http) {
         this.refresh();
     }
 
@@ -151,7 +152,7 @@ export class SlackServiceCollection {
         }
 
         this.slacks = this.setting.tokens.map(token => {
-            return cache[token] ? cache[token] : new SlackServiceImpl(token) as SlackService;
+            return cache[token] ? cache[token] : new SlackServiceImpl(token, this.http) as SlackService;
         });
     }
 }
@@ -173,6 +174,7 @@ export interface SlackService {
     addReaction(reaction: string, channel: string, ts: string): Promise<void>;
     removeReaction(reaction: string, channel: string, ts: string): Promise<void>;
     updateMessage(ts: string, channel: string, text: string): Promise<any>
+    getImage(url: string): Promise<string>;
 }
 
 export class EmojiService {
@@ -210,9 +212,9 @@ export class SlackServiceImpl implements SlackService {
     web: WebClientWrapper;
     emoji: EmojiService;
 
-    constructor(public token: string) {
+    constructor(public token: string, private http: Http) {
         this.rtm = new RTMClientWrapper(token);
-        this.web = new WebClientWrapper(token);
+        this.web = new WebClientWrapper(token, http);
         this.emoji = new EmojiService(this);
     }
 
@@ -273,5 +275,9 @@ export class SlackServiceImpl implements SlackService {
 
     async updateMessage(ts: string, channel: string, text: string): Promise<any> {
         return this.web.updateMessage(ts, channel, text);
+    }
+
+    async getImage(url: string): Promise<string> {
+        return this.web.getImage(url);
     }
 }

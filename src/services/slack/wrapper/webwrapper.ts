@@ -1,9 +1,10 @@
 import { WebClient } from '@slack/client';
+import { Http, RequestOptions, RequestOptionsArgs, ResponseContentType } from '@angular/http';
 
 export class WebClientWrapper {
     client: any;
 
-    constructor(private token: string) {
+    constructor(private token: string, private http: Http) {
         this.client = new WebClient(token);
     }
 
@@ -70,4 +71,39 @@ export class WebClientWrapper {
             }
         }
     }
+
+    async getImage(imageURL: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            const request = new XMLHttpRequest();
+            request.open('GET', imageURL, true);
+            request.responseType = 'arraybuffer';
+            request.setRequestHeader('Authorization', `Bearer ${this.token}`);
+            request.onreadystatechange = () => {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status === 200) {
+                        const response = request.response;
+                        resolve(new Buffer(response).toString('base64'));
+                    } else {
+                        reject(request.status);
+                    }
+                }
+            };
+            request.send();
+        });
+
+        /* bellow code doesn't work. Why?
+        const headers = new Headers();
+        headers.append('Authorization', `Bearer ${this.token}`);
+        const options = new RequestOptions({
+             headers: headers,
+             withCredentials: true,
+             responseType: ResponseContentType.ArrayBuffer
+        } as RequestOptionsArgs);
+
+        return this.http.get(imageURL, options)
+            .map(res => new Buffer(res.arrayBuffer()).toString('base64'))
+            .toPromise();
+        */
+    }
 }
+

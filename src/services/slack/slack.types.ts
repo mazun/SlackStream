@@ -39,6 +39,17 @@ export interface Attachment {
     footer_icon: string;
 }
 
+export interface FileDescription {
+    mimetype: string;
+    url_private: string;
+
+    thumb_64: string;
+    thumb_80: string;
+    thumb_160: string;
+    thumb_360: string;
+    thumb_480: string;
+}
+
 export interface RTMMessage {
     type: string;
     channel: string;
@@ -48,6 +59,8 @@ export interface RTMMessage {
     ts: string;
 
     attachments: Attachment[];
+
+    file: FileDescription;
 
     // which one?
     team: string;

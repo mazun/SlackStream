@@ -26,7 +26,6 @@ export class SettingService {
     constructor() {
         try {
             this.setting = JSON.parse(fs.readFileSync(settingPath, 'utf8'));
-            console.log(this.setting);
         } catch (e) {
             this.setting = {} as Setting;
         }
