@@ -107,7 +107,7 @@ export class DisplaySlackMessageInfo {
 }
 
 interface SubmitContext {
-    channel: Channel;
+    channelLikeID: string;
     dataStore: DataStore;
     teamID: string;
 
@@ -122,7 +122,7 @@ interface SubmitContext {
 class PostMessageContext implements SubmitContext {
     constructor(
         public client: SlackService,
-        public channel: Channel,
+        public channelLikeID: string,
         public teamID: string,
         public infos: DisplaySlackMessageInfo[],
     ) {
@@ -138,7 +138,7 @@ class PostMessageContext implements SubmitContext {
 
     get lastMessageTs(): string {
         for (let i = 0; i < this.infos.length; i++) {
-            if (this.infos[i].message.channelID === this.channel.id) {
+            if (this.infos[i].message.channelID === this.channelLikeID) {
                 return this.infos[i].message.ts;
             }
         }
@@ -156,12 +156,12 @@ class PostMessageContext implements SubmitContext {
     async submit(text: string): Promise<any> {
         if (text.trim().match(/^\+:(.*):$/)) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
-            this.client.addReaction(reaction, this.channel.id, this.lastMessageTs);
+            this.client.addReaction(reaction, this.channelLikeID, this.lastMessageTs);
         } else if (text.trim().match(/^\-:(.*):$/)) {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
-            this.client.removeReaction(reaction, this.channel.id, this.lastMessageTs);
+            this.client.removeReaction(reaction, this.channelLikeID, this.lastMessageTs);
         } else {
-            return this.client.postMessage(this.channel.id, text);
+            return this.client.postMessage(this.channelLikeID, text);
         }
     }
 }
@@ -181,8 +181,8 @@ class EditMessageContext implements SubmitContext {
         return this.client.emoji;
     }
 
-    get channel(): Channel {
-        return this.message.channel;
+    get channelLikeID(): string {
+        return this.message.channelID;
     }
 
     get channelName(): string {
@@ -405,7 +405,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     onClickWrite(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
             info.client,
-            info.message.channel,
+            info.message.channelID,
             info.message.teamID,
             this.messages
         );
@@ -459,7 +459,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 var message = messages[0];
                 this.submitContext = new PostMessageContext(
                     message.client,
-                    message.message.channel,
+                    message.message.channelID,
                     message.message.teamID,
                     messages
                 );
