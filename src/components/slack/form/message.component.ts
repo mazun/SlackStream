@@ -30,8 +30,6 @@ export class MessageFormComponent implements OnChanges {
         return this.channel.id;
     }
 
-    ngOnInit(): void { }
-
     ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
         const users = this.channel.members.map(m => this.dataStore.getUserById(m).name);
