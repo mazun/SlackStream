@@ -11,9 +11,15 @@ Another/Angular Slack Stream is another implimentation of https://github.com/Taz
 cd path-to-this-reposritory
 yarn install
 
-# Run server
-yarn start
+# Compile
+yarn build
 
-# Run electron (in another shell)
+# Run electron
+
+# Windows
+set ENV=production
 yarn electron
+
+# Others
+ENV=production yarn electron
 ```
