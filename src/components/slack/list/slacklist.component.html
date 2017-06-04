@@ -52,6 +52,10 @@
             <div *ngFor="let attachment of info.attachments">
                 <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
             </div>
+
+            <div *ngIf="!!info.image">
+                <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
+            </div>
         </td>
     </tr>
 
