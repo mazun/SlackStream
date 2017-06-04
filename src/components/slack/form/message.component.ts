@@ -52,7 +52,7 @@ export class MessageFormComponent implements OnInit {
             { // usernames
                 match: /\B\@([_a-zA-Z\.]*)$/,
                 search: (term, callback) => {
-                    callback($.map(users, user => term == "" || user.indexOf(term) ? user : null));
+                    callback($.map(users, user => term == "" || user.indexOf(term) !== -1 ? user : null));
                 },
                 template: (value) => {
                     return "@" + value;
