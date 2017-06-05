@@ -21,17 +21,17 @@ function createWindow () {
   win = new BrowserWindow(bounds);
 
   // and load the index.html of the app.
-  if(process.env.ENV === 'production') {
+  if(process.env.ENV === 'development') {
+    // Open the DevTools.
+    win.webContents.openDevTools();
+    win.loadURL("http://localhost:8080");
+  } else {
     win.setMenu(null);
     win.loadURL(url.format({
       pathname: path.join(__dirname, '../dist/index.html'),
       protocol: 'file:',
       slashes: true
     }));
-  } else {
-    // Open the DevTools.
-    win.webContents.openDevTools();
-    win.loadURL("http://localhost:8080");
   }
 
   win.on('close', function () {
