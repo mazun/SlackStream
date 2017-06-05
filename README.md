@@ -15,11 +15,5 @@ yarn install
 yarn build
 
 # Run electron
-
-# Windows
-set ENV=production
 yarn electron
-
-# Others
-ENV=production yarn electron
 ```
