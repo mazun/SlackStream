@@ -14,8 +14,9 @@
         (keyup)="onKeyUp($event)"
         [autofocus]
         [value]="initialText"
+        [disabled]="!enable"
         #textArea
     ></textarea>
-    <button class="btn btn-default btn-xs pull-right" type="button" (click)="onSubmit(textArea.value)">Post</button>
+    <button class="btn btn-default btn-xs pull-right" type="button" [disabled]="!enable" (click)="onSubmit(textArea.value)">Post</button>
     </div>
 </div>
