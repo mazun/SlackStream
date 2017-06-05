@@ -14,6 +14,7 @@ import {
     ComposedParser,
     LinkParser,
     EmojiParser,
+    MarkDownParser,
     NewLineParser
 } from '../../../services/slack/slack-parser.service';
 
@@ -289,7 +290,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
             const parser = new ComposedParser([
                 new LinkParser(),
                 new NewLineParser(),
-                new EmojiParser(slack.emoji)
+                new EmojiParser(slack.emoji),
+                new MarkDownParser()
             ]);
 
             this.subscription.add(slack.messages.subscribe(message => this.onReceiveMessage(message, parser, slack)));
