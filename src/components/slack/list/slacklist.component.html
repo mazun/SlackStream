@@ -36,6 +36,10 @@
                 <span *ngIf="info.edited" class="edit-mark"> (edited)</span>
             </div>
 
+            <div *ngFor="let attachment of info.attachments">
+                <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+            </div>
+
             <div class="buttons pull-right" [class.hide-buttons]="setting.hide_buttons">
                 <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
                 <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
@@ -47,10 +51,6 @@
                     <span [innerHTML]="reaction.reaction"></span>
                     <span class="reaction-count">{{reaction.count}}</span>
                 </div>
-            </div>
-
-            <div *ngFor="let attachment of info.attachments">
-                <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
             </div>
 
             <div *ngIf="!!info.image">
