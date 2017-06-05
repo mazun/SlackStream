@@ -23,6 +23,7 @@ export class MessageFormComponent implements OnChanges {
     @Input() initialText: string = '';
     @Input() extraInfo: string = '';
     @Input() emoji: EmojiService;
+    @Input() enable: boolean;
 
     get channel(): Channel {
         return this.dataStore.getChannelById(this.channelLikeID);
@@ -82,7 +83,9 @@ export class MessageFormComponent implements OnChanges {
     }
 
     onSubmit(value: string): void {
-        this.submit.emit(value);
+        if(this.enable) {
+            this.submit.emit(value);
+        }
     }
 
     onKeyPress(event: KeyboardEvent, textArea: any): void {
