@@ -26,7 +26,7 @@ ipcRenderer.on('userData', (event, arg) => {
     const userData = arg;
     setSettingPath(path.join(userData, 'setting.json'));
 
-    if (process.env.ENV === 'production') {
+    if (process.env.ENV !== 'development') {
         enableProdMode();
     }
 
