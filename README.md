@@ -17,3 +17,7 @@ yarn build
 # Run electron
 yarn electron
 ```
+
+## Download
+
+https://github.com/mazun/ASlack-Stream/releases
