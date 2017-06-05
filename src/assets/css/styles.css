@@ -1,3 +1,77 @@
 body {
     font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, Osaka, 'MS PGothic', arial, helvetica, sans-serif;
 }
+
+.md-bold {
+    font-weight: bold;
+}
+
+.md-italic {
+    font-style: italic;
+}
+
+.md-code {
+    background-color: #F9F9F9;
+    border: 1px solid #E1E1E1;
+}
+
+.md-code .md-bold {
+    font-weight: normal;
+}
+
+.md-code .md-bold::before {
+    content: '*';
+}
+
+.md-code .md-bold::after {
+    content: '*';
+}
+
+.md-code .md-italic {
+    font-style: normal;
+}
+
+.md-code .md-italic::before {
+    content: '_';
+}
+
+.md-code .md-italic::after {
+    content: '_';
+}
+
+.md-pre .md-bold {
+    font-weight: normal;
+}
+
+.md-pre .md-bold::before {
+    content: '*';
+}
+
+.md-pre .md-bold::after {
+    content: '*';
+}
+
+.md-pre .md-italic {
+    font-style: normal;
+}
+
+.md-pre .md-italic::before {
+    content: '_';
+}
+
+.md-pre .md-italic::after {
+    content: '_';
+}
+
+.md-pre .md-code {
+    background-color: inherit !important;
+    border: none !important;
+}
+
+.md-pre .md-code::before {
+    content: '`';
+}
+
+.md-pre .md-code::after {
+    content: '`';
+}
