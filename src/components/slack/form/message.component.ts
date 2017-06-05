@@ -31,10 +31,20 @@ export class MessageFormComponent implements OnChanges {
     }
 
     get channelName(): string {
-        if(this.channel)
-            return this.channel.name;
-        else
-            return "DM_" + this.dataStore.getUserById(this.dm.user).name;
+        const channel = this.dataStore.getChannelById(this.channelID);
+        if(channel) { return channel.name; }
+
+        const group = this.dataStore.getGroupById(this.channelID);
+        if(group) { return group.name; }
+
+        const dm = this.dataStore.getDMById(this.channelID);
+        if(dm) {
+            const user = this.dataStore.getUserById(dm.user);
+            if(user) { return `DM_to_${user.name}`; }
+            const bot = this.dataStore.getBotById(dm.user);
+            if(bot) { return `DM_to_${bot.name}`; }
+        }
+        return '???';
     }
 
     get channelID(): string {
