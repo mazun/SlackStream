@@ -94,9 +94,20 @@ export class SlackMessage {
 
     get channelName(): string {
         const channel = this.dataStore.getChannelById(this.message.channel);
+        if(channel) { return channel.name; }
+
         const group = this.dataStore.getGroupById(this.message.channel);
-        const channelName = channel ? channel.name : group ? group.name : 'DM';
-        return channelName;
+        if(group) { return group.name; }
+
+        const dm = this.dataStore.getDMById(this.message.channel);
+        if(dm) {
+            const user = this.dataStore.getUserById(dm.user);
+            if(user) { return `DM_to_${user.name}`; }
+            const bot = this.dataStore.getBotById(dm.user);
+            if(bot) { return `DM_to_${bot.name}`; }
+        }
+
+        return '???';
     }
 
     get channelLink(): string {
