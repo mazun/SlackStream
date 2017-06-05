@@ -19,6 +19,19 @@ Another/Angular Slack Stream is another implimentation of https://github.com/Taz
 
 https://github.com/mazun/ASlack-Stream/releases
 
+## Keyboard shortcuts
+
+- **Ctrl+Alt+Enter**:
+Activate ASlack-Stream window and open message writing form (target channel is the channel of latest message).
+You can use this shortcut even when ASlack-Stream window is not active.
+
+- **↑**:
+Edit latest your own message.
+
+- **Alt+↑/↓(when inputing your message)**:
+Change target channel.
+
+
 ## How to use(for developer)
 
 1. Install Node.js
