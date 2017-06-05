@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
 import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
 import { defaultEmojis } from './default_emoji';
+import { SlackUtil } from './slack-util';
 
 import * as emojione from 'emojione';
 
@@ -93,21 +94,7 @@ export class SlackMessage {
 
 
     get channelName(): string {
-        const channel = this.dataStore.getChannelById(this.message.channel);
-        if(channel) { return channel.name; }
-
-        const group = this.dataStore.getGroupById(this.message.channel);
-        if(group) { return group.name; }
-
-        const dm = this.dataStore.getDMById(this.message.channel);
-        if(dm) {
-            const user = this.dataStore.getUserById(dm.user);
-            if(user) { return `DM_to_${user.name}`; }
-            const bot = this.dataStore.getBotById(dm.user);
-            if(bot) { return `DM_to_${bot.name}`; }
-        }
-
-        return '???';
+        return SlackUtil.getChannelName(this.message.channel, this.dataStore);
     }
 
     get channelLink(): string {
