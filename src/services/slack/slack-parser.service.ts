@@ -21,7 +21,7 @@ export class MarkDownParser implements SlackParser {
     parse(text: string, dataStore: DataStore): string {
         let translated_text = text.replace(/(\B|[_\`>]+)\*([^*]*)\*(\B|[<_\`]+)/g, '$1<span class="md-bold">$2</span>$3');
         translated_text = translated_text.replace(/(\b|[*\`>]+)_([^_]*)_(\b|[<*\`]+)/g, '$1<span class="md-italic">$2</span>$3');
-        translated_text = translated_text.replace(/(\B|[*\`>]+)```(.*)```(\B|[<*\`]+)/g, '$1<pre class="md-pre">$2</pre>$3');
+        translated_text = translated_text.replace(/(\B|[*\`>]+)```(?:<br>)?(.*)```(\B|[<*\`]+)/g, '$1<pre class="md-pre">$2</pre>$3');
         translated_text = translated_text.replace(/(\B|[*\`>]+)`([^`]*)`(\B|[<*\`]+)/g, '$1<code class="md-code">$2</code>$3');
         return translated_text;
     }
