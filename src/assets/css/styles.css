@@ -19,11 +19,11 @@ body {
     font-weight: normal;
 }
 
-.md-code .md-bold:before {
+.md-code .md-bold::before {
     content: '*';
 }
 
-.md-code .md-bold:after {
+.md-code .md-bold::after {
     content: '*';
 }
 
@@ -31,11 +31,11 @@ body {
     font-style: normal;
 }
 
-.md-code .md-italic:before {
+.md-code .md-italic::before {
     content: '_';
 }
 
-.md-code .md-italic:after {
+.md-code .md-italic::after {
     content: '_';
 }
 
