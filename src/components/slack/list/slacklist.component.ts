@@ -159,10 +159,10 @@ class PostMessageContext implements SubmitContext {
     async submit(text: string): Promise<any> {
         if (text.trim().match(/^\+:(.*):$/)) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
-            this.client.addReaction(reaction, this.channelLikeID, this.lastMessageTs);
+            return this.client.addReaction(reaction, this.channelLikeID, this.lastMessageTs);
         } else if (text.trim().match(/^\-:(.*):$/)) {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
-            this.client.removeReaction(reaction, this.channelLikeID, this.lastMessageTs);
+            return this.client.removeReaction(reaction, this.channelLikeID, this.lastMessageTs);
         } else {
             return this.client.postMessage(this.channelLikeID, text);
         }
@@ -271,6 +271,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     submitContext: SubmitContext = null;
     filterContext: FilterContext = new NoFilterContext();
     subscription = new Subscription();
+    submitting: boolean;
 
     get soloMode(): boolean {
         return this.filterContext.soloMode;
@@ -454,7 +455,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     async submitForm(text: string) {
         if (this.submitContext != null) {
+            this.submitting = true;
+            this.detector.detectChanges();
+
             await this.submitContext.submit(text);
+
+            this.submitting = false;
             this.submitContext = null;
             this.detector.detectChanges();
         }
