@@ -14,6 +14,7 @@ import { SlackUtil } from '../../../services/slack/slack-util';
 export class MessageFormComponent implements OnChanges {
     @Output() submit = new EventEmitter<string>();
     @Output() close = new EventEmitter();
+    @Output() changeChannel = new EventEmitter<boolean>();
 
     @Input() channelLikeID: string;
     @Input() dataStore: DataStore;
@@ -98,6 +99,18 @@ export class MessageFormComponent implements OnChanges {
     onKeyUp(event: KeyboardEvent): void {
         if (event.which === 27) {
             this.close.emit();
+        } else if (event.which === 38) {
+            // up
+            if(event.altKey) {
+                event.preventDefault();
+                this.changeChannel.emit(false);
+            }
+        } else if (event.which === 40) {
+            // down
+            if(event.altKey) {
+                event.preventDefault();
+                this.changeChannel.emit(true);
+            }
         }
     }
 }

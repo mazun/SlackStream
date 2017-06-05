@@ -118,6 +118,8 @@ interface SubmitContext {
     emoji: EmojiService;
 
     submit(text: string): Promise<any>;
+
+    changeChannelRequest(next: boolean);
 }
 
 class PostMessageContext implements SubmitContext {
@@ -165,6 +167,21 @@ class PostMessageContext implements SubmitContext {
             return this.client.postMessage(this.channelLikeID, text);
         }
     }
+
+    changeChannelRequest(next: boolean) {
+        const channels: string[] = [];
+        for(const info of this.infos) {
+            if(!channels.find(c => c === info.message.channelID)) {
+                channels.push(info.message.channelID);
+            }
+        }
+
+        if(channels.length === 0) { return; }
+
+        const index = channels.findIndex(c => c === this.channelLikeID);
+
+        this.channelLikeID = channels[(index + (next ? 1 : -1) + channels.length) % channels.length];
+    }
 }
 
 class EditMessageContext implements SubmitContext {
@@ -208,6 +225,9 @@ class EditMessageContext implements SubmitContext {
 
     async submit(text: string): Promise<any> {
         return this.client.updateMessage(this.message.ts, this.message.channelID, text);
+    }
+
+    changeChannelRequest(next: boolean) {
     }
 }
 
@@ -455,7 +475,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     activateMessageForm() {
-        if (this.submitContext == null) {
+        if (this.submitContext === null) {
             const messages = this.filteredMessages;
             if (messages.length != 0) {
                 var message = messages[0];
@@ -471,7 +491,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     editLatestMessage() {
-        if (this.submitContext == null) {
+        if (this.submitContext === null) {
             for (const info of this.messages) {
                 if (info.message.mine) {
                     this.onClickEdit(info);
@@ -479,5 +499,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    onChangeChannelRequest(next: boolean) {
+        if (this.submitContext) {
+            this.submitContext.changeChannelRequest(next);
+        }
+        this.detector.detectChanges();
     }
 }
