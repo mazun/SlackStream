@@ -169,18 +169,20 @@ class PostMessageContext implements SubmitContext {
     }
 
     changeChannelRequest(next: boolean) {
-        const channels: string[] = [];
+        const channels: [string, SlackService][] = [];
         for(const info of this.infos) {
-            if(!channels.find(c => c === info.message.channelID)) {
-                channels.push(info.message.channelID);
+            if(!channels.find(c => c[0] === info.message.channelID)) {
+                channels.push([info.message.channelID, info.client]);
             }
         }
 
         if(channels.length === 0) { return; }
 
-        const index = channels.findIndex(c => c === this.channelLikeID);
+        const index = channels.findIndex(c => c[0] === this.channelLikeID);
 
-        this.channelLikeID = channels[(index + (next ? 1 : -1) + channels.length) % channels.length];
+        const nextIndex = (index + (next ? 1 : -1) + channels.length) % channels.length;
+        this.channelLikeID = channels[nextIndex][0];
+        this.client = channels[nextIndex][1];
     }
 }
 
