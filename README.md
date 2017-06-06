@@ -6,14 +6,14 @@ Another/Angular Slack Stream is another implimentation of https://github.com/Taz
 
 ## Features
 
-- Everything shown in a single window
+- All messages of any channnel and any team are shown in a single column
 - Multi-platform. Runs in Windows, Mac and Linux
-- Multiple teams supported
-- Select one channel to focus on it
-- Smooth transition between Slack Stream and the official client
-- Message posting
-- Easily input emojis
-- Web sites and images thumbnailed
+- Open a channel in official slack client by clicking channel name
+- Many features you can use in official client are implimented
+  - Posting messages
+  - Emoji and username completion
+  - Reaction by posting +:some-emoji: or by clicking existing reaction
+  - etc
 
 ## Download
 
@@ -23,7 +23,7 @@ https://github.com/mazun/ASlack-Stream/releases
 
 ### Unstable latest build
 
-http://1341shangrila.dip.jp/aslackstream
+http://1341shangrila.dip.jp/aslackstream/build
 
 ## Keyboard shortcuts
 
@@ -38,18 +38,18 @@ Edit latest your own message.
 Change target channel.
 
 
-## How to use(for developer)
+## For developer
 
-1. Install Node.js
+1. Install Node.js and yarn
 2. Git clone this repository and run the following commands
 
 ```shell
 cd path-to-this-reposritory
 yarn install
 
-# Compile
-yarn build
+# Start dev-server
+yarn start
 
-# Run electron
+# Run electron (in another shell)
 yarn electron
 ```
