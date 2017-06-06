@@ -218,7 +218,22 @@ class EditMessageContext implements SubmitContext {
     }
 
     get initialText(): string {
-        return this.message.text;
+        const messageText = this.message.text;
+        return messageText.replace(/<([^>]+)>/g, (value: string) => {
+            value = value.substr(1, value.length - 2);
+            const bar = value.indexOf('|');
+            if (bar >= 0) {
+                // <#XXYYZZ|channel>  =>  #channel
+                if(value[0] == '#')
+                    return '#' + value.substr(bar + 1);
+                // <http://github.com|github.com>  =>  github.com
+                else
+                    return value.substr(bar + 1);
+            } else {
+                // <github.com>  =>  github.com
+                return value;
+            }
+        });
     }
 
     get extraInfo(): string {
