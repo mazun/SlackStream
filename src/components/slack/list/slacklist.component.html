@@ -22,7 +22,7 @@
 
         <td>
             <div class="header">
-                <img *ngIf="info.message.teamHasThumbnail" class="team-thumbnail" [src]="info.message.teamThumbnail"/>
+                <img *ngIf="info.message.teamHasThumbnail" class="team-thumbnail" [src]="info.message.teamThumbnail" [title]="info.message.teamName"/>
                 <span *ngIf="!info.message.teamHasThumbnail" [title]="info.message.teamName">
                     [{{info.message.shortTeamName}}]
                 </span>
