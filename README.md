@@ -17,7 +17,13 @@ Another/Angular Slack Stream is another implimentation of https://github.com/Taz
 
 ## Download
 
+### Stable
+
 https://github.com/mazun/ASlack-Stream/releases
+
+### Unstable latest build
+
+http://1341shangrila.dip.jp/aslackstream
 
 ## Keyboard shortcuts
 
