@@ -470,16 +470,28 @@ export class SlackListComponent implements OnInit, OnDestroy {
         this.detector.detectChanges();
     }
 
+    enableSubmitForm(){
+        this.submitting = false;
+        this.submitContext = null;
+        this.detector.detectChanges();
+    }
+
     async submitForm(text: string) {
         if (this.submitContext != null) {
             this.submitting = true;
             this.detector.detectChanges();
 
-            await this.submitContext.submit(text);
-
-            this.submitting = false;
-            this.submitContext = null;
-            this.detector.detectChanges();
+            this.submitContext.submit(text).then(
+                // everyting went well
+                () => {
+                    this.enableSubmitForm();
+                },
+                // slack server may have returned an error. print the error and re-enable the submit form anyway
+                (reason) => {
+                    console.log(reason);
+                    this.enableSubmitForm();
+                }
+            );
         }
     }
 
