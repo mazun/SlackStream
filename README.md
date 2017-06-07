@@ -51,5 +51,5 @@ yarn install
 yarn start
 
 # Run electron (in another shell)
-yarn electron
+ENV=development yarn electron
 ```
