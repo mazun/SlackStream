@@ -223,14 +223,14 @@ class EditMessageContext implements SubmitContext {
             value = value.substr(1, value.length - 2);
             const bar = value.indexOf('|');
             if (bar >= 0) {
-                // <#XXYYZZ|channel>  =>  #channel
+                // Channel: <#XXYYZZ|channel>  =>  #channel
                 if(value[0] == '#')
                     return '#' + value.substr(bar + 1);
-                // <http://github.com|github.com>  =>  github.com
+                // Url with no 'http': <http://github.com|github.com>  =>  github.com
                 else
                     return value.substr(bar + 1);
             } else {
-                // <github.com>  =>  github.com
+                // Full url: <https://github.com>  =>  https://github.com
                 return value;
             }
         });
