@@ -12,6 +12,7 @@ import { MessageFormComponent } from '../components/slack/form/message.component
 import { SlackListComponent } from '../components/slack/list/slacklist.component';
 import { SlackAttachmentComponent } from '../components/slack/attachment/attachment.component';
 import { SettingComponent } from '../components/setting/setting.component';
+import { TeamIconComponent } from '../components/slack/team/icon.component';
 
 // pipes
 import { ChannelColorPipe, TimeStampPipe } from '../pipes/slack';
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
     SlackListComponent,
     SlackAttachmentComponent,
     SettingComponent,
+    TeamIconComponent,
 
     // pipes
     ChannelColorPipe,

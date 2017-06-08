@@ -1,0 +1,4 @@
+<img *ngIf="teamHasThumbnail" class="team-thumbnail" [src]="teamThumbnail" [title]="teamName"/>
+<span *ngIf="!teamHasThumbnail" [title]="teamName">
+    [{{shortTeamName}}]
+</span>
