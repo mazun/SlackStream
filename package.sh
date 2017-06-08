@@ -4,9 +4,13 @@ yarn build
 mkdir package
 cp -r dist electron package.json package
 
-electron-packager package aslack-stream --platform=all --arch=all --overwrite
+electron-packager package aslack-stream --platform=darwin --arch=all --overwrite
+electron-packager package aslack-stream --platform=win32 --icon=icons/ss.ico --arch=all --overwrite
+electron-packager package aslack-stream --platform=linux --arch=all --overwrite
+
 for f in aslack-stream*
 do
+    echo "Creating zip: $f.zip"
     zip $f.zip -r $f > /dev/null
 done
 
