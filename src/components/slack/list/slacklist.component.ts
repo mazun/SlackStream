@@ -475,7 +475,9 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.submitting = true;
             this.detector.detectChanges();
 
-            await this.submitContext.submit(text);
+            await this.submitContext.submit(text).catch(
+                // slack server may have returned an error. print the error and continue
+                (e) => { console.log(e); });
 
             this.submitting = false;
             this.submitContext = null;
