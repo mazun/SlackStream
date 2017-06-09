@@ -26,7 +26,9 @@ function createWindow () {
     win.webContents.openDevTools();
     win.loadURL("http://localhost:8080");
   } else {
-    win.setMenu(null);
+    if (process.platform !== 'darwin') {
+      win.setMenu(null);
+    }
     win.loadURL(url.format({
       pathname: path.join(__dirname, '../dist/index.html'),
       protocol: 'file:',
