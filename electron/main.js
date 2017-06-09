@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, globalShortcut} = require('electron');
+const {app, BrowserWindow, ipcMain, globalShortcut, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
@@ -28,6 +28,33 @@ function createWindow () {
   } else {
     if (process.platform !== 'darwin') {
       win.setMenu(null);
+    } else {
+        var template = [
+            {
+                label: app.getName(),
+                submenu: [
+                    {role: 'about'},
+                    {type: 'separator'},
+                    {role: 'services', submenu: []},
+                    {type: 'separator'},
+                    {role: 'hide'},
+                    {role: 'hideothers'},
+                    {role: 'unhide'},
+                    {type: 'separator'},
+                    {role: 'quit'}
+                ]
+            },
+            {
+                label: "Edit",
+                submenu: [
+                    {role: 'cut'},
+                    {role: 'copy'},
+                    {role: 'paste'},
+                    {role: 'selectall'}
+                ]
+            }
+        ];
+        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
     }
     win.loadURL(url.format({
       pathname: path.join(__dirname, '../dist/index.html'),
