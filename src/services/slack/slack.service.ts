@@ -198,7 +198,11 @@ export class EmojiService {
             return emojione.shortnameToImage(emoji);
         } else if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
             let image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
-            return `<img class="emojione" src="${image_url}" />`;
+            if(image_url.substr(0, 6) === 'alias:') {
+                return this.convertEmoji(`:${image_url.substr(6)}:`);
+            } else {
+                return `<img class="emojione" src="${image_url}" />`;
+            }
         } else {
             return emoji;
         }
