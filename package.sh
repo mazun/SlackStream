@@ -4,7 +4,7 @@ yarn build
 mkdir package
 cp -r dist electron package.json package
 
-electron-packager package aslack-stream --platform=darwin --arch=all --overwrite
+electron-packager package aslack-stream --platform=darwin --icon=icons/ss.icns --arch=all --overwrite
 electron-packager package aslack-stream --platform=win32 --icon=icons/ss.ico --arch=all --overwrite
 electron-packager package aslack-stream --platform=linux --arch=all --overwrite
 
