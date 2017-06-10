@@ -18,7 +18,7 @@ function createWindow () {
   }
 
   if (process.platform == 'linux') {
-    bounds["icon"] = "./icons/ss.png";
+    bounds["icon"] = __dirname + "/../icons/ss.png";
   }
 
   // Create the browser window.
