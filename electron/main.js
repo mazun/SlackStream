@@ -17,6 +17,10 @@ function createWindow () {
     bounds = {width: 800, height: 600};
   }
 
+  if (process.platform == 'linux') {
+    bounds["icon"] = "./icons/ss.png";
+  }
+
   // Create the browser window.
   win = new BrowserWindow(bounds);
 
