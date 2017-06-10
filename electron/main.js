@@ -16,6 +16,7 @@ function createWindow () {
   } catch (e) {
     bounds = {width: 800, height: 600};
   }
+  bounds["icon"] = __dirname + "/../icons/ss.png";
 
   // Create the browser window.
   win = new BrowserWindow(bounds);
