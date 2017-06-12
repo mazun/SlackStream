@@ -98,7 +98,7 @@ export class MessageFormComponent implements OnChanges {
                                                          else if(c == '<')
                                                              return '&lt;';
                                                          else
-                                                             return '&gt';
+                                                             return '&gt;';
                                                      }));
                 event.preventDefault();
             } else {
