@@ -91,7 +91,15 @@ export class MessageFormComponent implements OnChanges {
     onKeyPress(event: KeyboardEvent, textArea: any): void {
         if (event.key === 'Enter') {
             if (!event.altKey) {
-                this.onSubmit(textArea.value.replace(/[<>]/g, (c: string) => {return c == "<" ? "&lt;" : "&gt;"}));
+                this.onSubmit(textArea.value.replace(/[<>&]/g,
+                                                     (c: string) => {
+                                                         if(c == '&')
+                                                             return '&amp;';
+                                                         else if(c == '<')
+                                                             return '&lt;';
+                                                         else
+                                                             return '&gt';
+                                                     }));
                 event.preventDefault();
             } else {
                 textArea.value += '\n';
