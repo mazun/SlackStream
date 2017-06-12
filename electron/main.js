@@ -48,6 +48,8 @@ function createWindow () {
             {
                 label: "Edit",
                 submenu: [
+                    {role: 'undo'},
+                    {role: 'redo'},
                     {role: 'cut'},
                     {role: 'copy'},
                     {role: 'paste'},
