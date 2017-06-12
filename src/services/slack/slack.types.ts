@@ -50,6 +50,12 @@ export interface FileDescription {
     thumb_480: string;
 }
 
+export interface Comment {
+    id: string;
+    comment: string;
+    user: string;
+}
+
 export interface RTMMessage {
     type: string;
     channel: string;
@@ -59,6 +65,7 @@ export interface RTMMessage {
     ts: string;
 
     attachments: Attachment[];
+    comment: Comment;
 
     file: FileDescription;
 
