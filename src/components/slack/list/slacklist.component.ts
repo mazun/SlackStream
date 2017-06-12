@@ -234,7 +234,7 @@ class EditMessageContext implements SubmitContext {
                 // Full url: <https://github.com>  =>  https://github.com
                 return value;
             }
-        });
+        }).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     }
 
     get extraInfo(): string {
