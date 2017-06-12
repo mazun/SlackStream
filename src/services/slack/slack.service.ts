@@ -66,6 +66,11 @@ export class SlackMessage {
     }
 
     get userName(): string {
+        if (this.message.comment) {
+            const user = this.dataStore.getUserById(this.message.comment.user);
+            return user ? user.name : '???';
+        }
+
         if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
             return user ? user.name : '???';
@@ -80,6 +85,11 @@ export class SlackMessage {
     }
 
     get userThumbnail(): string {
+        if (this.message.comment) {
+            const user = this.dataStore.getUserById(this.message.comment.user);
+            return user ? user.profile.image_48 : '';
+        }
+
         if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
             return user ? user.profile.image_48 : '';
