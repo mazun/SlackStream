@@ -1,4 +1,4 @@
-import { DataStore } from 'services/slack/slack.types';
+import { DataStore } from './slack.types';
 import * as seedrandom from 'seedrandom';
 
 export class SlackUtil {

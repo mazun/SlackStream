@@ -1,7 +1,7 @@
 import { RtmClient, RTM_EVENTS, MemoryDataStore, CLIENT_EVENTS } from '@slack/client';
-import { RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved } from 'services/slack/slack.types';
+import { RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved } from '../slack.types';
 import { Subject } from 'rxjs';
-import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from 'services/slack/slack.service';
+import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from '../slack.service';
 
 export class RTMClientWrapper {
     messages = new Subject<SlackMessage>();

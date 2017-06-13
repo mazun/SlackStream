@@ -1,6 +1,6 @@
-import { DataStore } from 'services/slack/slack.types';
-import { SlackUtil } from 'services/slack/slack-util';
-import { SlackService, EmojiService } from 'services/slack/slack.service';
+import { DataStore } from './slack.types';
+import { SlackUtil } from './slack-util';
+import { SlackService, EmojiService } from './slack.service';
 
 export interface SlackParser {
     parse(text: string, dataStore: DataStore): string;

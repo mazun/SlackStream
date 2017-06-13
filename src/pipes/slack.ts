@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { SlackUtil } from 'services/slack/slack-util';
+import { SlackUtil } from '../services/slack/slack-util';
 
 import * as dateformat from 'dateformat';
 
