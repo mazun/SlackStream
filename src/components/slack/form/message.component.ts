@@ -100,12 +100,10 @@ export class MessageFormComponent implements OnChanges {
                                                          else
                                                              return '&gt;';
                                                      }));
-                event.preventDefault();
             } else {
-                if (!event.shiftKey) {
-                    textArea.value += '\n';
-                }
+                textArea.value += '\n';
             }
+            event.preventDefault();
         }
     }
 
