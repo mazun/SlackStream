@@ -88,9 +88,9 @@ export class MessageFormComponent implements OnChanges {
         }
     }
 
-    onKeyPress(event: KeyboardEvent, textArea: any): void {
+    onKeyDown(event: KeyboardEvent, textArea: any): void {
         if (event.key === 'Enter') {
-            if (!event.altKey) {
+            if (!event.altKey && !event.shiftKey && !event.ctrlKey) {
                 this.onSubmit(textArea.value.replace(/[<>&]/g,
                                                      (c: string) => {
                                                          if(c == '&')
@@ -102,7 +102,9 @@ export class MessageFormComponent implements OnChanges {
                                                      }));
                 event.preventDefault();
             } else {
-                textArea.value += '\n';
+                if (!event.shiftKey) {
+                    textArea.value += '\n';
+                }
             }
         }
     }
