@@ -133,7 +133,7 @@ export class MessageFormComponent implements OnChanges {
             } else {
                 const position: number = textArea.selectionStart;
                 const text: string = textArea.value;
-                textArea.value = text.substr(0, position) + '\n' + text.substr(position);
+                textArea.value = text.substr(0, position) + '\n' + text.substr(textArea.selectionEnd);
                 textArea.selectionStart = position + 1;
                 textArea.selectionEnd = position + 1;
             }
