@@ -29,6 +29,7 @@ a {
 
 .user-name {
   font-weight: bold;
+  cursor: pointer;
 }
 
 .user-thumbnail {

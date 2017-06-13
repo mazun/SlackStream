@@ -23,7 +23,7 @@
         <td>
             <div class="header">
                 <ss-teamicon [teamID]="info.message.teamID" [dataStore]="info.message.rawDataStore"></ss-teamicon>
-                <span class="user-name">{{info.message.userName}}</span>
+                <span class="user-name" (click)="onClickSendDM(info)">{{info.message.userName}}</span>
                 <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
                 <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
                 <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickSoloMode(info)"></span>
