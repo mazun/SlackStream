@@ -42,7 +42,6 @@ class DisplaySlackReactionInfo {
 
     get count(): number {
         return this.users.length;
-
     }
 
     get includeMine(): boolean {
@@ -50,11 +49,9 @@ class DisplaySlackReactionInfo {
     }
 
     get userNames(): string {
-        const _this = this;
-        let userNames = this.users.map(function(userID){
-            return _this.target.message.dataStore.getUserById(userID).name;
-        });
-        return userNames.join(',');
+        return this.users.map((userID) => {
+            return this.target.message.dataStore.getUserById(userID).name;
+        }).join(',');
     }
 }
 
@@ -301,6 +298,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     filterContext: FilterContext = new NoFilterContext();
     subscription = new Subscription();
     submitting: boolean;
+    showing_reaction: number;
 
     get soloMode(): boolean {
         return this.filterContext.soloMode;
@@ -513,14 +511,14 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onMouseEnterReaction(reaction: DisplaySlackReactionInfo) {
         reaction.showReactionUsers = true;
-        const _this = this;
-        setTimeout(function(){
-            _this.detector.detectChanges();
+        this.showing_reaction = setTimeout(() => {
+            this.detector.detectChanges();
         }, 500);
     }
 
     onMouseLeaveReaction(reaction: DisplaySlackReactionInfo) {
         reaction.showReactionUsers = false;
+        clearTimeout(this.showing_reaction);
         this.detector.detectChanges();
     }
 
