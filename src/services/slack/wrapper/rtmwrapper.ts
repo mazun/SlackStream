@@ -7,6 +7,7 @@ export class RTMClientWrapper {
     messages = new Subject<SlackMessage>();
     reactionAdded = new Subject<SlackReactionAdded>();
     reactionRemoved = new Subject<SlackReactionRemoved>();
+    teamID: string;
 
     client: any;
     get dataStore(): DataStore {
@@ -17,10 +18,11 @@ export class RTMClientWrapper {
         this.client = new RtmClient(token, { logLevel: 'debug' }, new MemoryDataStore());
         this.client.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
             console.log(`start ${this.token} ${rtmStartData}`);
+            this.teamID = rtmStartData.team.id;
         });
 
         this.client.on(RTM_EVENTS.MESSAGE, (message: RTMMessage) => {
-            this.messages.next(new SlackMessage(message, this.client.dataStore as DataStore, this.client.activeUserId));
+            this.messages.next(new SlackMessage(message, this.client.dataStore as DataStore, this.teamID, this.client.activeUserId));
         });
 
         this.client.on(RTM_EVENTS.REACTION_ADDED, (reaction: RTMReactionAdded) => {
