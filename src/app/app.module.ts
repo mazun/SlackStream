@@ -6,25 +6,25 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 // components
-import { AppComponent } from './app.component';
-import { ChannelNameComponent } from '../components/slack/channel/name.component';
-import { MessageFormComponent } from '../components/slack/form/message.component';
-import { SlackListComponent } from '../components/slack/list/slacklist.component';
-import { SlackAttachmentComponent } from '../components/slack/attachment/attachment.component';
-import { SettingComponent } from '../components/setting/setting.component';
-import { TeamIconComponent } from '../components/slack/team/icon.component';
+import { AppComponent } from 'app/app.component';
+import { ChannelNameComponent } from 'components/slack/channel/name.component';
+import { MessageFormComponent } from 'components/slack/form/message.component';
+import { SlackListComponent } from 'components/slack/list/slacklist.component';
+import { SlackAttachmentComponent } from 'components/slack/attachment/attachment.component';
+import { SettingComponent } from 'components/setting/setting.component';
+import { TeamIconComponent } from 'components/slack/team/icon.component';
 
 // pipes
-import { ChannelColorPipe, TimeStampPipe } from '../pipes/slack';
-import { SafeHtmlPipe, SafeURLPipe } from '../pipes/dom';
+import { ChannelColorPipe, TimeStampPipe } from 'pipes/slack';
+import { SafeHtmlPipe, SafeURLPipe } from 'pipes/dom';
 
 // services
-import { SlackServiceCollection } from '../services/slack/slack.service';
-import { SettingService } from '../services/setting.service';
-import { GlobalEventService } from '../services/globalevent.service';
+import { SlackServiceCollection } from 'services/slack/slack.service';
+import { SettingService } from 'services/setting.service';
+import { GlobalEventService } from 'services/globalevent.service';
 
 // directives
-import { AutofocusDirective } from '../directives/autofocus';
+import { AutofocusDirective } from 'directives/autofocus';
 
 const appRoutes: Routes = [
   { path: '', component: SlackListComponent },

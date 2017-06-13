@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { DataStore, Team } from '../../../services/slack/slack.types';
+import { DataStore, Team } from 'services/slack/slack.types';
 
 @Component({
     selector: 'ss-teamicon',

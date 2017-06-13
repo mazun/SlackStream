@@ -7,7 +7,7 @@ import {
     SlackReactionAdded,
     SlackReactionRemoved,
     EmojiService
-} from '../../../services/slack/slack.service';
+} from 'services/slack/slack.service';
 
 import {
     SlackParser,
@@ -16,14 +16,14 @@ import {
     EmojiParser,
     MarkDownParser,
     NewLineParser
-} from '../../../services/slack/slack-parser.service';
+} from 'services/slack/slack-parser.service';
 
-import { Attachment } from '../../../services/slack/slack.types';
-import { GlobalEventService } from '../../../services/globalevent.service';
+import { Attachment } from 'services/slack/slack.types';
+import { GlobalEventService } from 'services/globalevent.service';
 
 import { Subscription } from 'rxjs';
-import { Channel, DataStore } from '../../../services/slack/slack.types';
-import { SettingService } from '../../../services/setting.service';
+import { Channel, DataStore } from 'services/slack/slack.types';
+import { SettingService } from 'services/setting.service';
 
 class DisplaySlackReactionInfo {
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
