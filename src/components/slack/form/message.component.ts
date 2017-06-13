@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core
 import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
-import { EmojiService } from '../../../services/slack/slack.service';
+import { EmojiService } from '../../../services/slack/emoji.service';
 import { Channel, DM, DataStore } from '../../../services/slack/slack.types';
 import { SlackUtil } from '../../../services/slack/slack-util';
 
