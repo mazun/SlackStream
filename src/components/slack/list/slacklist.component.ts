@@ -26,6 +26,8 @@ import { Channel, DataStore } from '../../../services/slack/slack.types';
 import { SettingService } from '../../../services/setting.service';
 
 class DisplaySlackReactionInfo {
+    public showReactionUsers = false;
+
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
     }
 
@@ -40,10 +42,19 @@ class DisplaySlackReactionInfo {
 
     get count(): number {
         return this.users.length;
+
     }
 
     get includeMine(): boolean {
         return !!(this.users.find(u => u === this.target.message.myUserId));
+    }
+
+    get userNames(): string {
+        const _this = this;
+        let userNames = this.users.map(function(userID){
+            return _this.target.message.dataStore.getUserById(userID).name;
+        });
+        return userNames.join(',');
     }
 }
 
@@ -498,6 +509,19 @@ export class SlackListComponent implements OnInit, OnDestroy {
         } else {
             client.removeReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
         }
+    }
+
+    onMouseEnterReaction(reaction: DisplaySlackReactionInfo) {
+        reaction.showReactionUsers = true;
+        const _this = this;
+        setTimeout(function(){
+            _this.detector.detectChanges();
+        }, 500);
+    }
+
+    onMouseLeaveReaction(reaction: DisplaySlackReactionInfo) {
+        reaction.showReactionUsers = false;
+        this.detector.detectChanges();
     }
 
     activateMessageForm() {
