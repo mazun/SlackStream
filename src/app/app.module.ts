@@ -19,7 +19,7 @@ import { ChannelColorPipe, TimeStampPipe } from '../pipes/slack';
 import { SafeHtmlPipe, SafeURLPipe } from '../pipes/dom';
 
 // services
-import { SlackServiceCollection } from '../services/slack/slack.service';
+import { SlackService } from '../services/slack/slack.service';
 import { SettingService } from '../services/setting.service';
 import { GlobalEventService } from '../services/globalevent.service';
 
@@ -59,7 +59,7 @@ const appRoutes: Routes = [
   ],
   providers: [
     SettingService,
-    SlackServiceCollection,
+    SlackService,
     GlobalEventService
   ],
   bootstrap: [ AppComponent ]
