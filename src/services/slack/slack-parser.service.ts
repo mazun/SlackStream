@@ -1,6 +1,6 @@
-import { DataStore } from './slack.types';
 import { SlackUtil } from './slack-util';
-import { SlackService, EmojiService } from './slack.service';
+import { EmojiService } from './emoji.service';
+import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
 
 export interface SlackParser {
     parse(text: string, dataStore: DataStore): string;

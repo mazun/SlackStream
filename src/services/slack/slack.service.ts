@@ -1,291 +1,251 @@
-import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 
-import { RTMClientWrapper } from './wrapper/rtmwrapper';
-import { WebClientWrapper } from './wrapper/webwrapper';
-import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
-import { Observable } from 'rxjs';
 import { SettingService } from '../setting.service';
-import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
-import { defaultEmojis } from './default_emoji';
-import { SlackUtil } from './slack-util';
+import { SlackClient, SlackClientImpl } from './slack-client';
+import { Attachment } from './slack.types';
+import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from './slack-client';
+import { SlackParser, LinkParser, EmojiParser, NewLineParser, MarkDownParser, ComposedParser } from './slack-parser.service';
 
-import * as emojione from 'emojione';
+export class DisplaySlackReactionInfo {
+    public showReactedUsers = false;
 
-export class SlackMessage {
-    constructor(public message: RTMMessage, public dataStore: DataStore, public teamID: string, public myUserId: string) {
+    constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
+    }
+
+    addUser(user: string) {
+        this.removeUser(user);
+        this.users.push(user);
+    }
+
+    removeUser(user: string) {
+        this.users = this.users.filter(u => u !== user);
+    }
+
+    get count(): number {
+        return this.users.length;
+    }
+
+    get includeMine(): boolean {
+        return !!(this.users.find(u => u === this.target.message.myUserId));
+    }
+
+    get userNames(): string {
+        return this.users.map((userID) => {
+            return this.target.message.dataStore.getUserById(userID).name;
+        }).join(',');
+    }
+}
+
+export class DisplaySlackMessageInfo {
+    edited: boolean = false;
+    image: string = null;
+    reactions: DisplaySlackReactionInfo[] = [];
+
+    constructor(
+        public message: SlackMessage,
+        public parser: SlackParser,
+        public client: SlackClient
+    ) {
     }
 
     get text(): string {
-        if (this.message.text) {
-            return this.message.text;
-        } else if (this.rawMessage.attachments) {
-            for (const attachment of this.rawMessage.attachments) {
-                if (attachment.pretext) {
-                    return attachment.pretext;
-                }
+        return this.parser.parse(this.message.text, this.message.dataStore);
+    }
+
+    get imageSrc(): string {
+        return `data:${this.message.rawMessage.file.mimetype};base64,${this.image}`;
+    }
+
+    get imageURL(): string {
+        return this.message.rawMessage.file.url_private;
+    }
+
+    get attachments(): Attachment[] {
+        return this.message.rawMessage.attachments
+            ? this.message.rawMessage.attachments
+            : [];
+    }
+
+    get doesReactionExist(): boolean {
+        return this.reactions.length > 0;
+    }
+
+    addReaction(info: SlackReactionAdded) {
+        const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
+        const user = info.reaction.user;
+        const target = this.reactions.find(r => r.reaction === reaction);
+
+        if (target) {
+            target.addUser(user);
+        } else {
+            this.reactions.push(new DisplaySlackReactionInfo(this, info.reaction.reaction, reaction, [user]));
+        }
+    }
+
+    removeReaction(info: SlackReactionRemoved) {
+        const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
+        const target = this.reactions.find(r => r.reaction === reaction);
+
+        if (target) {
+            target.removeUser(info.reaction.user);
+
+            if (target.count === 0) {
+                this.reactions = this.reactions.filter(r => r.reaction !== reaction);
             }
         }
-        return '';
-    }
-
-    set text(value: string) {
-        this.message.text = value;
-    }
-
-    get team(): Team {
-        return this.dataStore.getTeamById(this.teamID);
-    }
-
-    get teamName(): string {
-        return this.team ? this.team.name : '???';
-    }
-
-    get shortTeamName(): string {
-        return this.team ? this.team.name[0] : '?';
-    }
-
-    get teamHasThumbnail(): boolean {
-        return this.team ? !this.team.icon.image_default : false;
-    }
-
-    get teamThumbnail(): string {
-        return this.team ? this.team.icon.image_68 : '';
-    }
-
-    get channel(): Channel {
-        return this.dataStore.getChannelById(this.channelID);
-    }
-
-    get channelID(): string {
-        return this.message.channel;
-    }
-
-    get userName(): string {
-        if (this.message.comment) {
-            const user = this.dataStore.getUserById(this.message.comment.user);
-            return user ? user.name : '???';
-        }
-
-        if (this.message.user) {
-            const user = this.dataStore.getUserById(this.message.user);
-            return user ? user.name : '???';
-        }
-
-        if (this.message.bot_id) {
-            const bot = this.dataStore.getBotById(this.message.bot_id);
-            return bot ? bot.name : '???';
-        }
-
-        return 'slack-bot';
-    }
-
-    get userThumbnail(): string {
-        if (this.message.comment) {
-            const user = this.dataStore.getUserById(this.message.comment.user);
-            return user ? user.profile.image_48 : '';
-        }
-
-        if (this.message.user) {
-            const user = this.dataStore.getUserById(this.message.user);
-            return user ? user.profile.image_48 : '';
-        }
-
-        if (this.message.bot_id) {
-            const bot = this.dataStore.getBotById(this.message.bot_id);
-            return bot ? bot.icons.image_48 : '';
-        }
-        return 'https://ca.slack-edge.com/T2T2ETX4H-USLACKBOT-sv1444671949-48';
-    }
-
-
-    get channelName(): string {
-        return SlackUtil.getChannelName(this.message.channel, this.dataStore);
-    }
-
-    get channelLink(): string {
-        const team = this.dataStore.getTeamById(this.message.team_id);
-        const channel = this.dataStore.getChannelById(this.message.channel);
-        return `slack://channel?team=${team.id}&id=${channel.id}`;
-    }
-
-    get subType(): string {
-        return this.message.subtype;
-    }
-
-    get ts(): string {
-        return this.message.ts;
-    }
-
-    get rawMessage(): RTMMessage {
-        return this.message;
-    }
-
-    get rawDataStore(): DataStore {
-        return this.dataStore;
-    }
-
-    get mine(): boolean {
-        return this.message.user === this.myUserId;
     }
 }
 
-export class SlackReactionAdded {
-    constructor(public reaction: RTMReactionAdded, public dataStore: DataStore) {
-    }
-}
-
-export class SlackReactionRemoved {
-    constructor(public reaction: RTMReactionRemoved, public dataStore: DataStore) {
-    }
+class SlackClientInfo {
+    started: boolean;
+    client: SlackClient;
 }
 
 @Injectable()
-export class SlackServiceCollection {
-    slacks: SlackService[] = [];
-    savedInfos: DisplaySlackMessageInfo[] = [];
+export class SlackService {
+    clients: SlackClient[] = [];
+    infos: DisplaySlackMessageInfo[] = [];
+    private _onChange = new Subject<SlackService>();
+    private subscription = new Subscription();
+
+    get onChange(): Observable<SlackService> {
+        return this._onChange;
+    }
 
     constructor(private setting: SettingService, private http: Http) {
         this.refresh();
     }
 
     refresh() {
-        const cache: {[token: string]: SlackService} = {};
-        for(const slack of this.slacks) {
-            cache[slack.token] = slack;
+        this.subscription.unsubscribe();
+        this.subscription = new Subscription();
+
+        const cache: {[token: string]: [SlackClient, boolean]} = {};
+        for(const slack of this.clients) {
+            cache[slack.token] = [slack, false];
         }
 
-        this.slacks = this.setting.tokens.map(token => {
-            return cache[token] ? cache[token] : new SlackServiceImpl(token, this.http) as SlackService;
-        });
-    }
-}
-
-export interface SlackService {
-    messages: Observable<SlackMessage>;
-    reactionAdded: Observable<SlackReactionAdded>;
-    reactionRemoved: Observable<SlackReactionRemoved>;
-    emoji: EmojiService;
-    token: string;
-    dataStore: DataStore;
-
-    start(): void;
-    stop(): void;
-    getEmoji(): Promise<{ string: string }>;
-    postMessage(channel: string, text: string): Promise<{ string: any }>;
-    deleteMessage(channel: string, timestamp: string): Promise<void>;
-    markRead(channel: string, timestamp: string): Promise<void>;
-    addReaction(reaction: string, channel: string, ts: string): Promise<void>;
-    removeReaction(reaction: string, channel: string, ts: string): Promise<void>;
-    updateMessage(ts: string, channel: string, text: string): Promise<any>
-    getImage(url: string): Promise<string>;
-}
-
-export class EmojiService {
-    emojiList: { string: string };
-    defaultEmojis = defaultEmojis;
-
-    get allEmojis(): string[] {
-        return defaultEmojis.concat(Object.keys(this.emojiList));
-    }
-
-    constructor(private client: SlackService) {
-        this.initExternalEmojis();
-    }
-
-    async initExternalEmojis(): Promise<void> {
-        if (!this.emojiList) {
-            this.emojiList = await this.client.getEmoji();
-        }
-    }
-
-    convertEmoji(emoji: string): string {
-        if (emoji !== emojione.shortnameToImage(emoji)) {
-            return emojione.shortnameToImage(emoji);
-        } else if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
-            let image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
-            if(image_url.substr(0, 6) === 'alias:') {
-                return this.convertEmoji(`:${image_url.substr(6)}:`);
+        this.clients = this.setting.tokens.map(token => {
+            let client: SlackClient;
+            if(cache[token]) {
+                client = cache[token][0];
+                cache[token][1] = true
             } else {
-                return `<img class="emojione" src="${image_url}" />`;
+                client = new SlackClientImpl(token, this.http) as SlackClient;
+                client.start();
             }
-        } else {
-            return emoji;
-        }
-    }
-}
 
-export class SlackServiceImpl implements SlackService {
-    rtm: RTMClientWrapper;
-    web: WebClientWrapper;
-    emoji: EmojiService;
+            const parser = new ComposedParser([
+                new LinkParser(),
+                new NewLineParser(),
+                new EmojiParser(client.emoji),
+                new MarkDownParser()
+            ]);
 
-    constructor(public token: string, private http: Http) {
-        this.rtm = new RTMClientWrapper(token);
-        this.web = new WebClientWrapper(token, http);
-        this.emoji = new EmojiService(this);
-    }
+            this.subscription.add(client.messages.subscribe(message => this.onReceiveMessage(message, parser, client)));
+            this.subscription.add(client.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, client)));
+            this.subscription.add(client.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, client)));
 
-    start(): void {
-        this.rtm.start();
-    }
+            return client;
+        });
 
-    stop(): void {
-        this.rtm.stop();
-    }
-
-    get dataStore(): DataStore {
-        return this.rtm.dataStore;
-    }
-
-    get messages(): Observable<SlackMessage> {
-        return this.rtm.messages;
-    }
-
-    get reactionAdded(): Observable<SlackReactionAdded> {
-        return this.rtm.reactionAdded;
-    }
-
-    get reactionRemoved(): Observable<SlackReactionRemoved> {
-        return this.rtm.reactionRemoved;
-    }
-
-    async getEmoji(): Promise<{ string: string }> {
-        return this.web.getEmoji();
-    }
-
-    async postMessage(channel: string, text: string): Promise<{ string: any }> {
-        return this.web.postMessage(channel, text);
-    }
-
-    async deleteMessage(channel: string, timestamp: string): Promise<void> {
-        return this.web.deleteMessage(channel, timestamp);
-    }
-
-    async markRead(channel: string, timestamp: string): Promise<void> {
-        const dataStore = this.rtm.dataStore;
-        if (dataStore.getChannelById(channel)) {
-            return this.web.markRead(channel, timestamp);
-        } else if(dataStore.getDMById(channel)) {
-            return this.web.markReadDM(channel, timestamp);
-        } else {
-            return this.web.markReadGroup(channel, timestamp);
+        for(const key in cache) {
+            const info = cache[key];
+            if(!info[1]) {
+                info[0].stop();
+            }
         }
     }
 
-    async addReaction(reaction: string, channel: string, ts: string): Promise<void> {
-        return this.web.addReaction(reaction, channel, ts);
+    async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackClient): Promise<void> {
+        const target = this.infos.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+        if (target) {
+            target.addReaction(reaction);
+        }
+        console.log(reaction.reaction);
+        this._onChange.next(this);
     }
 
-    async removeReaction(reaction: string, channel: string, ts: string): Promise<void> {
-        return this.web.removeReaction(reaction, channel, ts);
+    async onReactionRemoved(reaction: SlackReactionAdded, parser: SlackParser, client: SlackClient): Promise<void> {
+        const target = this.infos.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+        if (target) {
+            target.removeReaction(reaction);
+        }
+        console.log(reaction.reaction);
+        this._onChange.next(this);
     }
 
-    async updateMessage(ts: string, channel: string, text: string): Promise<any> {
-        return this.web.updateMessage(ts, channel, text);
+    async onReceiveMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
+        console.log(message.rawMessage);
+
+        switch (message.rawMessage.subtype) {
+            case 'message_deleted':
+                await this.removeDeletedMessage(message, parser, client);
+                break;
+            case 'message_changed':
+                await this.changeMessage(message, parser, client);
+                break;
+            case 'message_replied':
+                await this.replyMessage(message, parser, client);
+                break;
+            default:
+                await this.addMessage(message, parser, client);
+                break;
+        }
+        this._onChange.next(this);
     }
 
-    async getImage(url: string): Promise<string> {
-        return this.web.getImage(url);
+    async addMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
+        if (message.message) {
+            const info = new DisplaySlackMessageInfo(message, parser, client);
+            this.infos.unshift(info);
+
+            if (message.message.file && message.message.file.mimetype.indexOf('image') !== -1) {
+                info.image = await client.getImage(this.getMaximumThumbnail(message)).catch(e => {
+                    console.log('Getting image does not work in developing mode currently');
+                    return undefined;
+                });
+            }
+
+            client.markRead(message.channelID, message.ts);
+            this._onChange.next(this);
+        }
+    }    
+
+    getMaximumThumbnail(message: SlackMessage): string {
+        const file = message.rawMessage.file;
+        if (file.thumb_480) { return file.thumb_480; }
+        if (file.thumb_360) { return file.thumb_360; }
+        if (file.thumb_160) { return file.thumb_160; }
+        if (file.thumb_80) { return file.thumb_80; }
+        if (file.thumb_64) { return file.thumb_64; }
+        return '';
+    }
+
+    async deleteMessage(message: SlackMessage, client: SlackClient): Promise<void> {
+        if (message.message) {
+            client.deleteMessage(message.channelID, message.ts);
+        }
+    }
+
+    async replyMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
+        // TODO
+    }
+
+    async removeDeletedMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
+        this.infos = this.infos.filter(m => message.rawMessage.deleted_ts !== m.message.rawMessage.ts);
+        this._onChange.next(this);
+    }
+
+    async changeMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
+        const edited = this.infos.find(m => m.message.rawMessage.ts === message.rawMessage.message.ts);
+        if (edited) {
+            edited.edited = true;
+            edited.message.text = message.rawMessage.message.text;
+            edited.message.rawMessage.attachments = message.rawMessage.message.attachments;
+            this._onChange.next(this);
+        }
     }
 }
