@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingService } from 'services/setting.service';
+import { SettingService } from '../../services/setting.service';
 
 @Component({
     selector: 'ss-setting',

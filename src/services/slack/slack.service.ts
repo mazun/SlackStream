@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { RTMClientWrapper } from 'services/slack/wrapper/rtmwrapper';
-import { WebClientWrapper } from 'services/slack/wrapper/webwrapper';
+import { RTMClientWrapper } from './wrapper/rtmwrapper';
+import { WebClientWrapper } from './wrapper/webwrapper';
 import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
 import { Observable } from 'rxjs';
-import { SettingService } from 'services/setting.service';
-import { DisplaySlackMessageInfo } from 'components/slack/list/slacklist.component';
-import { defaultEmojis } from 'services/slack/default_emoji';
-import { SlackUtil } from 'services/slack/slack-util';
+import { SettingService } from '../setting.service';
+import { DisplaySlackMessageInfo } from '../../components/slack/list/slacklist.component';
+import { defaultEmojis } from './default_emoji';
+import { SlackUtil } from './slack-util';
 
 import * as emojione from 'emojione';
 

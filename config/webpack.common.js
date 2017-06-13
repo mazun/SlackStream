@@ -2,9 +2,6 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
-var path = require('path');
-
-console.log(path.resolve(helpers.root('src')))
 
 module.exports = {
   entry: {
@@ -14,11 +11,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.js'],
-    modules: [ 
-        path.resolve(helpers.root('src')),
-        path.resolve(helpers.root('node_modules'))
-    ]
+    extensions: ['.ts', '.js']
   },
 
   module: {

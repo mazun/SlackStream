@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Attachment, DataStore } from 'services/slack/slack.types';
-import { SlackParser } from 'services/slack/slack-parser.service';
+import { Attachment, DataStore } from '../../../services/slack/slack.types';
+import { SlackParser } from '../../../services/slack/slack-parser.service';
 
 @Component({
     selector: 'ss-attachment',
