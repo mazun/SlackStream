@@ -26,7 +26,7 @@ import { Channel, DataStore } from '../../../services/slack/slack.types';
 import { SettingService } from '../../../services/setting.service';
 
 class DisplaySlackReactionInfo {
-    public showReactionUsers = false;
+    public showReactedUsers = false;
 
     constructor(public target: DisplaySlackMessageInfo, public rawReaction: string, public reaction: string, public users: string[]) {
     }
@@ -298,7 +298,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     filterContext: FilterContext = new NoFilterContext();
     subscription = new Subscription();
     submitting: boolean;
-    showing_reaction: number;
+    showingReactedUsers: number;
 
     get soloMode(): boolean {
         return this.filterContext.soloMode;
@@ -510,15 +510,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onMouseEnterReaction(reaction: DisplaySlackReactionInfo) {
-        reaction.showReactionUsers = true;
-        this.showing_reaction = setTimeout(() => {
+        reaction.showReactedUsers = true;
+        this.showingReactedUsers = setTimeout(() => {
             this.detector.detectChanges();
         }, 500);
     }
 
     onMouseLeaveReaction(reaction: DisplaySlackReactionInfo) {
-        reaction.showReactionUsers = false;
-        clearTimeout(this.showing_reaction);
+        reaction.showReactedUsers = false;
+        clearTimeout(this.showingReactedUsers);
         this.detector.detectChanges();
     }
 

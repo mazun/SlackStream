@@ -47,7 +47,7 @@
 
             <div *ngIf="info.doesReactionExist" class="reactions">
                 <div *ngFor="let reaction of info.reactions" class="reaction-container">
-                    <div *ngIf="reaction.showReactionUsers" class="reaction-users">
+                    <div *ngIf="reaction.showReactedUsers" class="reaction-users">
                         <div>{{reaction.userNames}} <span style="font-weight: normal; color: #aaaaaa;">reacted with {{reaction.rawReaction}}</span></div>
                     </div>
                     <div class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)" (mouseenter)="onMouseEnterReaction(reaction)" (mouseleave)="onMouseLeaveReaction(reaction)" >
