@@ -24,6 +24,9 @@ export class SlackUtil {
     }
 
     static getChannelName(channelLikeID: string, dataStore: DataStore): string {
+        // '@user'
+        if(channelLikeID[0] === '@') { return `DM_to_${channelLikeID.substr(1)}`; }
+
         const channel = dataStore.getChannelById(channelLikeID);
         if(channel) { return channel.name; }
 
