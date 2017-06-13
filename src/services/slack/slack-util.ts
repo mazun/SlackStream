@@ -25,20 +25,20 @@ export class SlackUtil {
 
     static getChannelName(channelLikeID: string, dataStore: DataStore): string {
         // '@user'
-        if(channelLikeID[0] === '@') { return `DM_to_${channelLikeID.substr(1)}`; }
+        if (channelLikeID[0] === '@') { return `DM_to_${channelLikeID.substr(1)}`; }
 
         const channel = dataStore.getChannelById(channelLikeID);
-        if(channel) { return channel.name; }
+        if (channel) { return channel.name; }
 
         const group = dataStore.getGroupById(channelLikeID);
-        if(group) { return group.name; }
+        if (group) { return group.name; }
 
         const dm = dataStore.getDMById(channelLikeID);
-        if(dm) {
+        if (dm) {
             const user = dataStore.getUserById(dm.user);
-            if(user) { return `DM_to_${user.name}`; }
+            if (user) { return `DM_to_${user.name}`; }
             const bot = dataStore.getBotById(dm.user);
-            if(bot) { return `DM_to_${bot.name}`; }
+            if (bot) { return `DM_to_${bot.name}`; }
         }
 
         return '???';
