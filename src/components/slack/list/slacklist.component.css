@@ -80,6 +80,36 @@ a {
     flex-wrap: wrap;
 }
 
+.reaction-container {
+    position: relative;
+}
+
+.reaction-users {
+    background-color: black;
+    color: white;
+    padding: 5px;
+    font-size: small;
+    font-weight: bold;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 28px;
+    text-align: center;
+    width: 600%;
+}
+
+.reaction-users::after {
+    border-left: solid 7px transparent;
+    border-right: solid 7px transparent;
+    border-top: solid 10px black;
+    bottom: -10px;
+    content: "";
+    display: block;
+    height: 0;
+    left: 5px;
+    position: absolute;
+    width: 0;
+}
+
 .reaction {
     margin-left: 2px;
     margin-right: 2px;
@@ -87,7 +117,6 @@ a {
     padding-top: 2px;
     padding-bottom: 0;
     padding-right: 4px;
-
     border: solid 1px #dddddd;
     border-radius: 0.5em;
 }
