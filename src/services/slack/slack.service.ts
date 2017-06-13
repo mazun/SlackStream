@@ -122,16 +122,16 @@ export class SlackService {
         this.subscription.unsubscribe();
         this.subscription = new Subscription();
 
-        const cache: {[token: string]: [SlackClient, boolean]} = {};
-        for(const slack of this.clients) {
+        const cache: { [token: string]: [SlackClient, boolean] } = {};
+        for (const slack of this.clients) {
             cache[slack.token] = [slack, false];
         }
 
         this.clients = this.setting.tokens.map(token => {
             let client: SlackClient;
-            if(cache[token]) {
+            if (cache[token]) {
                 client = cache[token][0];
-                cache[token][1] = true
+                cache[token][1] = true;
             } else {
                 client = new SlackClientImpl(token, this.http) as SlackClient;
                 client.start();
@@ -151,9 +151,9 @@ export class SlackService {
             return client;
         });
 
-        for(const key in cache) {
+        for (const key of Object.keys(cache)) {
             const info = cache[key];
-            if(!info[1]) {
+            if (!info[1]) {
                 info[0].stop();
             }
         }
@@ -212,7 +212,7 @@ export class SlackService {
             client.markRead(message.channelID, message.ts);
             this._onChange.next(this);
         }
-    }    
+    }
 
     getMaximumThumbnail(message: SlackMessage): string {
         const file = message.rawMessage.file;

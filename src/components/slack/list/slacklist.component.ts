@@ -1,30 +1,11 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SlackService, DisplaySlackMessageInfo, DisplaySlackReactionInfo } from '../../../services/slack/slack.service';
+import { SlackClient } from '../../../services/slack/slack-client';
 
-import {
-    SlackMessage,
-    SlackClient,
-    SlackReactionAdded,
-    SlackReactionRemoved,
-} from '../../../services/slack/slack-client';
-
-import { EmojiService } from '../../../services/slack/emoji.service';
-
-import {
-    SlackParser,
-    ComposedParser,
-    LinkParser,
-    EmojiParser,
-    MarkDownParser,
-    NewLineParser
-} from '../../../services/slack/slack-parser.service';
-
-import { Attachment } from '../../../services/slack/slack.types';
 import { GlobalEventService } from '../../../services/globalevent.service';
 
 import { Subscription } from 'rxjs';
-import { Channel, DataStore } from '../../../services/slack/slack.types';
 import { SettingService } from '../../../services/setting.service';
 import { SubmitContext, PostMessageContext, EditMessageContext } from './submit-context';
 import { FilterContext, SoloChannelFilterContext, NoFilterContext } from './filter-context';
@@ -109,7 +90,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     onClickSendDM(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
             info.client,
-            "@" + info.message.userName,
+            '@' + info.message.userName,
             info.message.teamID,
             this.messages
         );
@@ -179,8 +160,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     activateMessageForm() {
         if (this.submitContext === null) {
             const messages = this.filteredMessages;
-            if (messages.length != 0) {
-                var message = messages[0];
+            if (messages.length !== 0) {
+                const message = messages[0];
                 this.submitContext = new PostMessageContext(
                     message.client,
                     message.message.channelID,

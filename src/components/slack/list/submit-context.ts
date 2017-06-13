@@ -1,5 +1,5 @@
 import { SlackMessage, SlackClient } from '../../../services/slack/slack-client';
-import { Channel, DataStore } from '../../../services/slack/slack.types';
+import { DataStore } from '../../../services/slack/slack.types';
 import { EmojiService } from '../../../services/slack/emoji.service';
 import { DisplaySlackMessageInfo } from '../../../services/slack/slack.service';
 
@@ -66,13 +66,13 @@ export class PostMessageContext implements SubmitContext {
 
     changeChannelRequest(next: boolean) {
         const channels: [string, SlackClient, string][] = [];
-        for(const info of this.infos) {
-            if(!channels.find(c => c[0] === info.message.channelID)) {
+        for (const info of this.infos) {
+            if (!channels.find(c => c[0] === info.message.channelID)) {
                 channels.push([info.message.channelID, info.client, info.message.teamID]);
             }
         }
 
-        if(channels.length === 0) { return; }
+        if (channels.length === 0) { return; }
 
         const index = channels.findIndex(c => c[0] === this.channelLikeID);
 
@@ -121,11 +121,12 @@ export class EditMessageContext implements SubmitContext {
             const bar = value.indexOf('|');
             if (bar >= 0) {
                 // Channel: <#XXYYZZ|channel>  =>  #channel
-                if(value[0] == '#')
+                if (value[0] === '#') {
                     return '#' + value.substr(bar + 1);
-                // Url with no 'http': <http://github.com|github.com>  =>  github.com
-                else
+                    // Url with no 'http': <http://github.com|github.com>  =>  github.com
+                } else {
                     return value.substr(bar + 1);
+                }
             } else {
                 // Full url: <https://github.com>  =>  https://github.com
                 return value;

@@ -151,7 +151,7 @@ export interface SlackClient {
     markRead(channel: string, timestamp: string): Promise<void>;
     addReaction(reaction: string, channel: string, ts: string): Promise<void>;
     removeReaction(reaction: string, channel: string, ts: string): Promise<void>;
-    updateMessage(ts: string, channel: string, text: string): Promise<any>
+    updateMessage(ts: string, channel: string, text: string): Promise<any>;
     getImage(url: string): Promise<string>;
 }
 
@@ -206,7 +206,7 @@ export class SlackClientImpl implements SlackClient {
         const dataStore = this.rtm.dataStore;
         if (dataStore.getChannelById(channel)) {
             return this.web.markRead(channel, timestamp);
-        } else if(dataStore.getDMById(channel)) {
+        } else if (dataStore.getDMById(channel)) {
             return this.web.markReadDM(channel, timestamp);
         } else {
             return this.web.markReadGroup(channel, timestamp);

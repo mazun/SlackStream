@@ -1,5 +1,5 @@
 import { WebClient } from '@slack/client';
-import { Http, RequestOptions, RequestOptionsArgs, ResponseContentType } from '@angular/http';
+import { Http } from '@angular/http';
 
 export class WebClientWrapper {
     client: any;
@@ -69,7 +69,7 @@ export class WebClientWrapper {
             } else {
                 resolve(info as T);
             }
-        }
+        };
     }
 
     async getImage(imageURL: string): Promise<string> {

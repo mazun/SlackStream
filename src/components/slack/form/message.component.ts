@@ -55,7 +55,7 @@ export class MessageFormComponent implements OnChanges {
                     }));
                 },
                 template: (value) => {
-                    return `${this.emoji.convertEmoji(":" + value + ":")} ${value}`;
+                    return `${this.emoji.convertEmoji(':' + value + ':')} ${value}`;
                 },
                 replace: (value) => {
                     return ':' + value + ': ';
@@ -65,10 +65,10 @@ export class MessageFormComponent implements OnChanges {
             { // usernames
                 match: /\B\@([_a-zA-Z\.]*)$/,
                 search: (term, callback) => {
-                    callback($.map(users, user => term == "" || user.indexOf(term) !== -1 ? user : null));
+                    callback($.map(users, user => term === '' || user.indexOf(term) !== -1 ? user : null));
                 },
                 template: (value) => {
-                    return "@" + value;
+                    return '@' + value;
                 },
                 replace: (value) => {
                     return '@' + value + ' ';
@@ -83,15 +83,15 @@ export class MessageFormComponent implements OnChanges {
     }
 
     onSubmit(value: string): void {
-        if(this.enable) {
+        if (this.enable) {
             this.submit.emit(value);
         }
     }
 
     onKeyDown(event: KeyboardEvent, textArea: any): void {
         // Windows sends only keydown event (not keypress event) in pressing Alt/Ctrl/Shift keys
-        if(process.platform !== 'darwin') {
-            if (event.key === 'Enter' && $('.textcomplete-dropdown').css("display") == "none") {
+        if (process.platform !== 'darwin') {
+            if (event.key === 'Enter' && $('.textcomplete-dropdown').css('display') === 'none') {
                 if (event.altKey || event.shiftKey || event.ctrlKey) {
                     this.addNewline(textArea);
                 }
@@ -100,7 +100,7 @@ export class MessageFormComponent implements OnChanges {
     }
 
     onKeyPress(event: KeyboardEvent, textArea: any): void {
-        this.handleEnter (event, textArea);
+        this.handleEnter(event, textArea);
     }
 
     onKeyUp(event: KeyboardEvent, textArea: any): void {
@@ -108,13 +108,13 @@ export class MessageFormComponent implements OnChanges {
             this.close.emit();
         } else if (event.which === 38) {
             // up
-            if(event.altKey) {
+            if (event.altKey) {
                 event.preventDefault();
                 this.changeChannel.emit(false);
             }
         } else if (event.which === 40) {
             // down
-            if(event.altKey) {
+            if (event.altKey) {
                 event.preventDefault();
                 this.changeChannel.emit(true);
             }
@@ -122,18 +122,19 @@ export class MessageFormComponent implements OnChanges {
     }
 
     handleEnter(event: KeyboardEvent, textArea: any): void {
-        if (event.key === 'Enter' && $('.textcomplete-dropdown').css("display") == "none") {
+        if (event.key === 'Enter' && $('.textcomplete-dropdown').css('display') === 'none') {
             if (!event.altKey && !event.shiftKey && !event.ctrlKey) {
                 this.onSubmit(textArea.value.replace(/[<>&]/g,
-                                                     (c: string) => {
-                                                         if(c == '&')
-                                                             return '&amp;';
-                                                         else if(c == '<')
-                                                             return '&lt;';
-                                                         else
-                                                             return '&gt;';
-                                                     }));
-            } else if(process.platform === 'darwin') {
+                    (c: string) => {
+                        if (c === '&') {
+                            return '&amp;';
+                        } else if (c === '<') {
+                            return '&lt;';
+                        } else {
+                            return '&gt;';
+                        }
+                    }));
+            } else if (process.platform === 'darwin') {
                 this.addNewline(textArea);
             }
             event.preventDefault();
