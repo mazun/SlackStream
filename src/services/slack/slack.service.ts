@@ -13,7 +13,7 @@ import { SlackUtil } from './slack-util';
 import * as emojione from 'emojione';
 
 export class SlackMessage {
-    constructor(public message: RTMMessage, public dataStore: DataStore, public myUserId: string) {
+    constructor(public message: RTMMessage, public dataStore: DataStore, public teamID: string, public myUserId: string) {
     }
 
     get text(): string {
@@ -51,10 +51,6 @@ export class SlackMessage {
 
     get teamThumbnail(): string {
         return this.team ? this.team.icon.image_68 : '';
-    }
-
-    get teamID(): string {
-        return this.message.team_id || this.message.source_team || this.message.team || '';
     }
 
     get channel(): Channel {
