@@ -119,7 +119,7 @@ export class MessageFormComponent implements OnChanges {
     }
 
     handleEnter(event: KeyboardEvent, textArea: any): void {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && $('.textcomplete-dropdown').css("display") == "none") {
             if (!event.altKey && !event.shiftKey && !event.ctrlKey) {
                 this.onSubmit(textArea.value.replace(/[<>&]/g,
                                                      (c: string) => {
