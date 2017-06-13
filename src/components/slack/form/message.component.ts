@@ -131,7 +131,11 @@ export class MessageFormComponent implements OnChanges {
                                                              return '&gt;';
                                                      }));
             } else {
-                textArea.value += '\n';
+                const position: number = textArea.selectionStart;
+                const text: string = textArea.value;
+                textArea.value = text.substr(0, position) + '\n' + text.substr(position);
+                textArea.selectionStart = position + 1;
+                textArea.selectionEnd = position + 1;
             }
             event.preventDefault();
         }
