@@ -89,6 +89,36 @@ export class MessageFormComponent implements OnChanges {
     }
 
     onKeyDown(event: KeyboardEvent, textArea: any): void {
+        if(process.platform !== 'darwin') {
+            this.handleEnter (event, textArea);
+        }
+    }
+
+    onKeyPress(event: KeyboardEvent, textArea: any): void {
+        if(process.platform === 'darwin') {
+            this.handleEnter (event, textArea);
+        }
+    }
+
+    onKeyUp(event: KeyboardEvent, textArea: any): void {
+        if (event.which === 27) {
+            this.close.emit();
+        } else if (event.which === 38) {
+            // up
+            if(event.altKey) {
+                event.preventDefault();
+                this.changeChannel.emit(false);
+            }
+        } else if (event.which === 40) {
+            // down
+            if(event.altKey) {
+                event.preventDefault();
+                this.changeChannel.emit(true);
+            }
+        }
+    }
+
+    handleEnter(event: KeyboardEvent, textArea: any): void {
         if (event.key === 'Enter') {
             if (!event.altKey && !event.shiftKey && !event.ctrlKey) {
                 this.onSubmit(textArea.value.replace(/[<>&]/g,
@@ -104,24 +134,6 @@ export class MessageFormComponent implements OnChanges {
                 textArea.value += '\n';
             }
             event.preventDefault();
-        }
-    }
-
-    onKeyUp(event: KeyboardEvent): void {
-        if (event.which === 27) {
-            this.close.emit();
-        } else if (event.which === 38) {
-            // up
-            if(event.altKey) {
-                event.preventDefault();
-                this.changeChannel.emit(false);
-            }
-        } else if (event.which === 40) {
-            // down
-            if(event.altKey) {
-                event.preventDefault();
-                this.changeChannel.emit(true);
-            }
         }
     }
 }
