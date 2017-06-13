@@ -73,7 +73,7 @@ export class MessageFormComponent implements OnChanges {
                 replace: (value) => {
                     return '@' + value + ' ';
                 },
-            index: 1
+                index: 1
             }
         ]);
     }
@@ -89,15 +89,18 @@ export class MessageFormComponent implements OnChanges {
     }
 
     onKeyDown(event: KeyboardEvent, textArea: any): void {
+        // Windows sends only keydown event (not keypress event) in pressing Alt/Ctrl/Shift keys
         if(process.platform !== 'darwin') {
-            this.handleEnter (event, textArea);
+            if (event.key === 'Enter' && $('.textcomplete-dropdown').css("display") == "none") {
+                if (event.altKey || event.shiftKey || event.ctrlKey) {
+                    this.addNewline(textArea);
+                }
+            }
         }
     }
 
     onKeyPress(event: KeyboardEvent, textArea: any): void {
-        if(process.platform === 'darwin') {
-            this.handleEnter (event, textArea);
-        }
+        this.handleEnter (event, textArea);
     }
 
     onKeyUp(event: KeyboardEvent, textArea: any): void {
@@ -130,14 +133,19 @@ export class MessageFormComponent implements OnChanges {
                                                          else
                                                              return '&gt;';
                                                      }));
-            } else {
-                const position: number = textArea.selectionStart;
-                const text: string = textArea.value;
-                textArea.value = text.substr(0, position) + '\n' + text.substr(textArea.selectionEnd);
-                textArea.selectionStart = position + 1;
-                textArea.selectionEnd = position + 1;
+            } else if(process.platform === 'darwin') {
+                this.addNewline(textArea);
             }
             event.preventDefault();
         }
     }
+
+    addNewline(textArea): void {
+        const position: number = textArea.selectionStart;
+        const text: string = textArea.value;
+        textArea.value = text.substr(0, position) + '\n' + text.substr(textArea.selectionEnd);
+        textArea.selectionStart = position + 1;
+        textArea.selectionEnd = position + 1;
+    }
+
 }
