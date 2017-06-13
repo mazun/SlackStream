@@ -1,6 +1,11 @@
 # ASlack-Stream
 
-Another/Angular Slack Stream is another implimentation of https://github.com/TazuKongari/Slack-Stream
+Another/Angular Slack Stream is another implementation of https://github.com/TazuKongari/Slack-Stream
+
+## Screenshot
+
+- y.mazun belongs to two teams
+- Messages of all channels in the two teams are shown in place like a *stream*
 
 ![SS](https://github.com/mazun/ASlack-Stream/blob/master/images/screenshot01.png)
 
@@ -9,11 +14,11 @@ Another/Angular Slack Stream is another implimentation of https://github.com/Taz
 - All messages of any channnel and any team are shown in a single column
 - Multi-platform. Runs on Windows, Mac and Linux
 - Open a channel in the official slack client by clicking the channel name
-- Many features you can use in the official client are implimented
+- Many features you can use in the official client are implemented
   - Posting messages
   - Emoji and username completion
   - Reaction by posting +:some-emoji: or by clicking an existing reaction
-  - etc
+  - etc.
 
 ## Download
 
@@ -38,7 +43,7 @@ Edit the latest message you've sent.
 Change the target channel.
 
 
-## For developer
+## For developers
 
 1. Install Node.js and yarn
 2. Git clone this repository and run the following commands
