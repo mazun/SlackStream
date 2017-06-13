@@ -106,6 +106,16 @@ export class SlackListComponent implements OnInit, OnDestroy {
         this.detector.detectChanges();
     }
 
+    onClickSendDM(info: DisplaySlackMessageInfo) {
+        this.submitContext = new PostMessageContext(
+            info.client,
+            "@" + info.message.userName,
+            info.message.teamID,
+            this.messages
+        );
+        this.detector.detectChanges();
+    }
+
     onClickDelete(info: DisplaySlackMessageInfo) {
         this.slack.deleteMessage(info.message, info.client);
     }
