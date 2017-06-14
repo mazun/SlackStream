@@ -52,7 +52,11 @@
 }
 
 .footer-icon {
-    height: 5px;
+    height: 1em;
+}
+
+.footer-icon-image {
+    height: 1.2em;
 }
 
 .footer-text {
