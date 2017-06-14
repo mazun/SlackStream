@@ -70,6 +70,16 @@ a {
     cursor: pointer;
 }
 
+.mute-mode {
+    color: lightgreen;
+    opacity: 1;
+}
+
+.mute-mode:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
 .buttons {
     text-align: right;
     margin-top: -2px;
