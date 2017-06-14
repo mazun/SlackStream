@@ -42,7 +42,7 @@
         <!-- Footer -->
         <div *ngIf="!!attachment.footer" class="footer">
             <span *ngIf="!!attachment.footer_icon" class="footer-icon">
-                <img [src]="attachment.footer_icon" />
+                <img class="footer-icon-image" [src]="attachment.footer_icon" />
             </span>
 
             <span class="footer-text" [innerHTML]="parse(attachment.footer)"></span>
