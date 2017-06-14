@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SlackService, DisplaySlackMessageInfo, DisplaySlackReactionInfo } from '../../../services/slack/slack.service';
 import { SlackClient } from '../../../services/slack/slack-client';
+import { SlackUtil } from '../../../services/slack/slack-util';
 
 import { GlobalEventService } from '../../../services/globalevent.service';
 
@@ -22,6 +23,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     submitting: boolean;
     showingReactedUsers: any;
+    mutedChannel: string;
 
     get messages(): DisplaySlackMessageInfo[] {
         return this.slack.infos;
@@ -114,11 +116,17 @@ export class SlackListComponent implements OnInit, OnDestroy {
         this.detector.detectChanges();
     }
 
+    disableMuteMode() {
+        this.filterContext = new NoFilterContext();
+        this.detector.detectChanges();
+    }
+
     onClickMuteMode(info: DisplaySlackMessageInfo) {
         if (this.filterContext.muteMode) {
-            this.filterContext = new NoFilterContext();
+            this.disableMuteMode();
         } else {
             this.filterContext = new MuteChannelFilterContext(info.message.channelID);
+            this.setMutedChannel(SlackUtil.getChannelName(info.message.channelID, info.message.dataStore));
         }
         this.detector.detectChanges();
     }
@@ -204,8 +212,11 @@ export class SlackListComponent implements OnInit, OnDestroy {
         this.detector.detectChanges();
     }
 
-
     onClickSetting() {
         this.router.navigate(['setting']);
+    }
+
+    setMutedChannel(target: string) {
+        this.mutedChannel = target;
     }
 }

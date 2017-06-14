@@ -182,6 +182,10 @@ a {
     background-color: white;
 }
 
+.disable_mute {
+    cursor: pointer;
+}
+
 .menu-button {
     opacity: 0.5;
     margin-right: 10px;
