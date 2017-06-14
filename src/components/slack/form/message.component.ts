@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import '../../../jquery.textcomplete.js';
@@ -11,7 +11,7 @@ import { SlackUtil } from '../../../services/slack/slack-util';
     templateUrl: './message.component.html',
     styles: [require('./message.component.css').toString()],
 })
-export class MessageFormComponent implements OnChanges {
+export class MessageFormComponent implements OnChanges, OnDestroy {
     @Output() submit = new EventEmitter<string>();
     @Output() close = new EventEmitter();
     @Output() changeChannel = new EventEmitter<boolean>();
@@ -76,6 +76,13 @@ export class MessageFormComponent implements OnChanges {
                 index: 1
             }
         ]);
+    }
+
+    ngOnDestroy(): void {
+        // There remains gabage dom related to textcomplete.
+        // We want to destoy by `$('#slack_message_input').textcomplete('destroy')`,
+        // but it seems not to work in ngOnDestroy.
+        $('ul.dropdown-menu').remove();
     }
 
     onClose(): void {
