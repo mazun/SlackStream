@@ -203,4 +203,9 @@ export class SlackListComponent implements OnInit, OnDestroy {
         }
         this.detector.detectChanges();
     }
+
+
+    onClickSetting() {
+        this.router.navigate(['setting']);
+    }
 }

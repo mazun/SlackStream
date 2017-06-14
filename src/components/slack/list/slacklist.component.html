@@ -1,67 +1,72 @@
-<div *ngIf="showForm" class="message-form">
-    <ss-messageform
-        [channelLikeID]="submitContext.channelLikeID"
-        [dataStore]="submitContext.dataStore"
-        [teamID]="submitContext.teamID"
-        [initialText]="submitContext.initialText"
-        [extraInfo]="submitContext.extraInfo"
-        [emoji]="submitContext.emoji"
-        [enable]="!submitting"
-        (submit)="submitForm($event)"
-        (close)="closeForm()"
-        (changeChannel)="onChangeChannelRequest($event)"
-    >
-    </ss-messageform>
-</div>
+<div class="main-contents">
+    <div *ngIf="showForm" class="message-form">
+        <ss-messageform
+            [channelLikeID]="submitContext.channelLikeID"
+            [dataStore]="submitContext.dataStore"
+            [teamID]="submitContext.teamID"
+            [initialText]="submitContext.initialText"
+            [extraInfo]="submitContext.extraInfo"
+            [emoji]="submitContext.emoji"
+            [enable]="!submitting"
+            (submit)="submitForm($event)"
+            (close)="closeForm()"
+            (changeChannel)="onChangeChannelRequest($event)"
+        >
+        </ss-messageform>
+    </div>
 
-<table class="table table-striped">
-    <tr *ngFor="let info of filteredMessages">
-        <td>
-            <img class="user-thumbnail" [src]="info.message.userThumbnail"/>
-        </td>
+    <table class="table table-striped">
+        <tr *ngFor="let info of filteredMessages">
+            <td>
+                <img class="user-thumbnail" [src]="info.message.userThumbnail"/>
+            </td>
 
-        <td>
-            <div class="header">
-                <ss-teamicon [teamID]="info.message.teamID" [dataStore]="info.message.rawDataStore"></ss-teamicon>
-                <span class="user-name" (click)="onClickSendDM(info)">{{info.message.userName}}</span>
-                <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
-                <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
-                <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickSoloMode(info)"></span>
-                <span class=" glyphicon glyphicon-volume-off" [class.icon-button]="!muteMode" [class.mute-mode]="muteMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickMuteMode(info)"></span>
-                <span class="timestamp">{{info.message.ts | ts2time}}</span>
-            </div>
+            <td>
+                <div class="header">
+                    <ss-teamicon [teamID]="info.message.teamID" [dataStore]="info.message.rawDataStore"></ss-teamicon>
+                    <span class="user-name" (click)="onClickSendDM(info)">{{info.message.userName}}</span>
+                    <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
+                    <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
+                    <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickSoloMode(info)"></span>
+                    <span class=" glyphicon glyphicon-volume-off" [class.icon-button]="!muteMode" [class.mute-mode]="muteMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickMuteMode(info)"></span>
+                    <span class="timestamp">{{info.message.ts | ts2time}}</span>
+                </div>
 
-            <div class="contents">
-                <span [innerHTML]="info.text | safeHtml"></span>
-                <span *ngIf="info.edited" class="edit-mark"> (edited)</span>
-            </div>
+                <div class="contents">
+                    <span [innerHTML]="info.text | safeHtml"></span>
+                    <span *ngIf="info.edited" class="edit-mark"> (edited)</span>
+                </div>
 
-            <div *ngFor="let attachment of info.attachments">
-                <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
-            </div>
+                <div *ngFor="let attachment of info.attachments">
+                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+                </div>
 
-            <div class="buttons pull-right" [class.hide-buttons]="setting.hide_buttons">
-                <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
-                <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
-                <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
-            </div>
+                <div class="buttons pull-right" [class.hide-buttons]="setting.hide_buttons">
+                    <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
+                    <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
+                    <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>
+                </div>
 
-            <div *ngIf="info.doesReactionExist" class="reactions">
-                <div *ngFor="let reaction of info.reactions" class="reaction-container">
-                    <div *ngIf="reaction.showReactedUsers" class="reaction-users">
-                        <div>{{reaction.userNames}} <span style="font-weight: normal; color: #aaaaaa;">reacted with {{reaction.rawReaction}}</span></div>
-                    </div>
-                    <div class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)" (mouseenter)="onMouseEnterReaction(reaction)" (mouseleave)="onMouseLeaveReaction(reaction)" >
-                        <span [innerHTML]="reaction.reaction"></span>
-                        <span class="reaction-count">{{reaction.count}}</span>
+                <div *ngIf="info.doesReactionExist" class="reactions">
+                    <div *ngFor="let reaction of info.reactions" class="reaction-container">
+                        <div *ngIf="reaction.showReactedUsers" class="reaction-users">
+                            <div>{{reaction.userNames}} <span style="font-weight: normal; color: #aaaaaa;">reacted with {{reaction.rawReaction}}</span></div>
+                        </div>
+                        <div class="reaction" [class.my-reaction]="reaction.includeMine" (click)="onClickReaction(reaction)" (mouseenter)="onMouseEnterReaction(reaction)" (mouseleave)="onMouseLeaveReaction(reaction)" >
+                            <span [innerHTML]="reaction.reaction"></span>
+                            <span class="reaction-count">{{reaction.count}}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div *ngIf="!!info.image">
-                <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
-            </div>
-        </td>
-    </tr>
+                <div *ngIf="!!info.image">
+                    <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 
-</table>
+<div class="menus">
+    <span class="glyphicon glyphicon-wrench message-button menu-button" (click)="onClickSetting()"></span>
+</div>
