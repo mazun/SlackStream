@@ -8,7 +8,7 @@ import { GlobalEventService } from '../../../services/globalevent.service';
 import { Subscription } from 'rxjs';
 import { SettingService } from '../../../services/setting.service';
 import { SubmitContext, PostMessageContext, EditMessageContext } from './submit-context';
-import { FilterContext, SoloChannelFilterContext, NoFilterContext } from './filter-context';
+import { FilterContext, SoloChannelFilterContext, NoFilterContext, MuteChannelFilterContext } from './filter-context';
 
 @Component({
     selector: 'ss-list',
@@ -29,6 +29,10 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     get soloMode(): boolean {
         return this.filterContext.soloMode;
+    }
+
+    get muteMode(): boolean {
+        return this.filterContext.muteMode;
     }
 
     get filteredMessages(): DisplaySlackMessageInfo[] {
@@ -106,6 +110,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.filterContext = new NoFilterContext();
         } else {
             this.filterContext = new SoloChannelFilterContext(info.message.channelID);
+        }
+        this.detector.detectChanges();
+    }
+
+    onClickMuteMode(info: DisplaySlackMessageInfo) {
+        if (this.filterContext.muteMode) {
+            this.filterContext = new NoFilterContext();
+        } else {
+            this.filterContext = new MuteChannelFilterContext(info.message.channelID);
         }
         this.detector.detectChanges();
     }
