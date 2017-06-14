@@ -30,49 +30,8 @@ export class MarkDownParser implements SlackParser {
 export class LinkParser implements SlackParser {
     parse(text: string, dataStore: DataStore): string {
         return text.replace(/<([^>]+)>/g, (value: string) => {
-            value = value.substr(1, value.length - 2);
-            const bar = value.indexOf('|');
-            if (bar >= 0) {
-                const text1 = value.substr(0, bar);
-                const text2 = value.substr(bar + 1);
-                return this.parse2(text1, text2, dataStore);
-            } else {
-                return this.parse1(value, dataStore);
-            }
+            return SlackUtil.parseLink(value, dataStore).withLink;
         });
-    }
-
-    parse1(text: string, dataStore: DataStore): string {
-        if (text[0] === '@' || text[0] === '!') {
-            const user = dataStore.getUserById(text.substr(1));
-            if (user) {
-                return `@${user.name}`;
-            }
-            const bot = dataStore.getBotById(text.substr(1));
-            if (bot) {
-                return `@${bot.name}`;
-            }
-            return '@' + text.substr(1);
-        } else {
-            return `<a href="${text}">${text}</a>`;
-        }
-    }
-
-    parse2(text1: string, text2: string, dataStore: DataStore): string {
-        if (text1[0] === '#') {
-            const channel = dataStore.getChannelById(text1.substr(1));
-            const color = SlackUtil.channelColor(channel.name);
-            // <ss-channelname> does not work...
-            return `<span class="channel-name" style="color: ${color};">#${text2}</span>`;
-        } else if (text1[0] === '@' || text1[0] === '!') {
-            if (text2[0] === '@') {
-                return text2;
-            } else {
-                return `@${text2}`;
-            }
-        } else {
-            return `<a href="${text1}">${text2}</a>`;
-        }
     }
 }
 

@@ -2,6 +2,7 @@ import { SlackMessage, SlackClient } from '../../../services/slack/slack-client'
 import { DataStore } from '../../../services/slack/slack.types';
 import { EmojiService } from '../../../services/slack/emoji.service';
 import { DisplaySlackMessageInfo } from '../../../services/slack/slack.service';
+import { SlackUtil } from '../../../services/slack/slack-util';
 
 export interface SubmitContext {
     channelLikeID: string;
@@ -117,20 +118,7 @@ export class EditMessageContext implements SubmitContext {
     get initialText(): string {
         const messageText = this.message.text;
         return messageText.replace(/<([^>]+)>/g, (value: string) => {
-            value = value.substr(1, value.length - 2);
-            const bar = value.indexOf('|');
-            if (bar >= 0) {
-                // Channel: <#XXYYZZ|channel>  =>  #channel
-                if (value[0] === '#') {
-                    return '#' + value.substr(bar + 1);
-                    // Url with no 'http': <http://github.com|github.com>  =>  github.com
-                } else {
-                    return value.substr(bar + 1);
-                }
-            } else {
-                // Full url: <https://github.com>  =>  https://github.com
-                return value;
-            }
+            return SlackUtil.parseLink(value, this.client.dataStore).text;
         }).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
     }
 
