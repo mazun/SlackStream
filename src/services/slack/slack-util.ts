@@ -77,7 +77,7 @@ export class SlackUtil {
             }
             return new ParseLinkResult('@' + text.substr(1));
         } else if (text[0] === '#') {
-            const channel = dataStore.getChannelById(text[0].substr(1));
+            const channel = dataStore.getChannelById(text.substr(1));
             const color = SlackUtil.channelColor(channel.name);
             // <ss-channelname> does not work...
             const withLink = `<span class="channel-name" style="color: ${color};">#${channel.name}</span>`;
