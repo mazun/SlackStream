@@ -7,7 +7,6 @@ import * as $ from 'jquery';
 import * as path from 'path';
 
 require('bootstrap/dist/css/bootstrap.min.css');
-require('bootstrap/dist/css/bootstrap-theme.min.css');
 require('emojione/assets/css/emojione.min.css');
 require('emojione/assets/css/emojione-awesome.css');
 require('./assets/css/styles.css');
