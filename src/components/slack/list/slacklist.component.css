@@ -184,6 +184,7 @@ a {
 
 .disable-mute {
     cursor: pointer;
+    margin-top: -6px;
 }
 
 .menu-button {
