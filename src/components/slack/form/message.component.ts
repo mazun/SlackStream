@@ -50,9 +50,8 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
             { // emojis
                 match: /\B:([\-+\w]*)$/,
                 search: (term, callback) => {
-                    callback($.map(emojis, function (emoji) {
-                        return emoji.indexOf(term) !== -1 ? emoji : null;
-                    }));
+                    callback(emojis.filter(emoji => emoji.indexOf(term) !== -1)
+                        .sort((a, b) => a.length - b.length));
                 },
                 template: (value) => {
                     return `${this.emoji.convertEmoji(':' + value + ':')} ${value}`;
@@ -65,7 +64,8 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
             { // usernames
                 match: /\B\@([_a-zA-Z\.]*)$/,
                 search: (term, callback) => {
-                    callback($.map(users, user => term === '' || user.indexOf(term) !== -1 ? user : null));
+                    callback(users.filter(user => term === '' || user.indexOf(term) !== -1)
+                        .sort((a, b) => a.length - b.length));
                 },
                 template: (value) => {
                     return '@' + value;
