@@ -40,6 +40,8 @@ export interface Attachment {
 }
 
 export interface FileDescription {
+    id: string;
+
     mimetype: string;
     url_private: string;
 
@@ -84,9 +86,24 @@ export interface RTMMessage {
 }
 
 export interface ReactionTarget {
+    type: string;
+}
+
+// if type is message
+export interface MessageReactionTarget extends ReactionTarget {
     channel: string;
     ts: string;
-    type: string;
+}
+
+// if type is file
+export interface FileReactionTarget extends ReactionTarget {
+    file: string;
+}
+
+// if type is file_comment
+export interface FileCommentReactionTarget extends ReactionTarget {
+    file: string;
+    file_comment: string;
 }
 
 export interface RTMReactionBase {
