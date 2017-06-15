@@ -38,7 +38,7 @@ export class SoloChannelFilterContext implements FilterContext {
 }
 
 export class MuteChannelFilterContext implements FilterContext {
-    constructor(private channel: string) {
+    constructor(private channels: string[]) {
     }
 
     get soloMode(): boolean {
@@ -50,6 +50,11 @@ export class MuteChannelFilterContext implements FilterContext {
     }
 
     shouldShow(info: DisplaySlackMessageInfo): boolean {
-        return info.message.channelID !== this.channel;
+        for (const channel of this.channels) {
+            if (info.message.channelID === channel)
+                return false;
+        }
+        return true;
+
     }
 }
