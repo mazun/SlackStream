@@ -4,7 +4,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 
 import { SettingService } from '../setting.service';
 import { SlackClient, SlackClientImpl } from './slack-client';
-import { Attachment } from './slack.types';
+import { Attachment, MessageReactionTarget, FileReactionTarget, FileCommentReactionTarget } from './slack.types';
 import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from './slack-client';
 import { SlackParser, LinkParser, EmojiParser, NewLineParser, MarkDownParser, ComposedParser } from './slack-parser.service';
 
@@ -159,8 +159,48 @@ export class SlackService {
         }
     }
 
+    findReactionTarget(reaction: SlackReactionAdded): DisplaySlackMessageInfo {
+        switch(reaction.reaction.item.type) {
+            case 'message': {
+                const target = reaction.reaction.item as MessageReactionTarget;
+                return this.infos.find(m => m.message.rawMessage.ts === target.ts);
+            }
+            case 'file': {
+                const target = reaction.reaction.item as FileReactionTarget;
+                return this.infos.find(m => {
+                    return m.message.subType === 'file_share'
+                        && m.message.rawMessage.file
+                        && m.message.rawMessage.file.id == target.file;
+                });
+            }
+            case 'file_comment': {
+                const target = reaction.reaction.item as FileCommentReactionTarget;
+                const message = this.infos.find(m => {
+                    return m.message.subType === 'file_comment'
+                        && m.message.rawMessage.file
+                        && m.message.rawMessage.file.id == target.file
+                        && m.message.rawMessage.comment
+                        && m.message.rawMessage.comment.id === target.file_comment;
+                });
+                if (message) {
+                    return message;
+                }
+
+                // If no such message, the comment may be posted with file at the same time.
+                return this.infos.find(m => {
+                    return m.message.subType === 'file_share'
+                        && m.message.rawMessage.file
+                        && m.message.rawMessage.file.id == target.file;
+                });
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
     async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackClient): Promise<void> {
-        const target = this.infos.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+        const target = this.findReactionTarget(reaction);
         if (target) {
             target.addReaction(reaction);
         }
@@ -169,7 +209,7 @@ export class SlackService {
     }
 
     async onReactionRemoved(reaction: SlackReactionAdded, parser: SlackParser, client: SlackClient): Promise<void> {
-        const target = this.infos.find(m => m.message.rawMessage.ts === reaction.reaction.item.ts);
+        const target = this.findReactionTarget(reaction);
         if (target) {
             target.removeReaction(reaction);
         }
