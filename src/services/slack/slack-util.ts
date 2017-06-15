@@ -83,7 +83,7 @@ export class SlackUtil {
             const withLink = `<span class="channel-name" style="color: ${color};">#${channel.name}</span>`;
             return new ParseLinkResult('#' + channel.name, withLink);
         } else {
-            return new ParseLinkResult(text);
+            return new ParseLinkResult(text, `<a href="${text}">${text}</a>`);
         }
     }
 
