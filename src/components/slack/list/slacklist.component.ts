@@ -23,7 +23,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
     submitting: boolean;
     showingReactedUsers: any;
-    mutedChannel: string;
+    mutedChannels: string[] = [];
+    mutedChannelNames: string[] = [];
 
     get messages(): DisplaySlackMessageInfo[] {
         return this.slack.infos;
@@ -112,22 +113,31 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.filterContext = new NoFilterContext();
         } else {
             this.filterContext = new SoloChannelFilterContext(info.message.channelID);
+            this.mutedChannels = [];
+            this.mutedChannelNames = [];
         }
         this.detector.detectChanges();
     }
 
-    disableMuteMode() {
-        this.filterContext = new NoFilterContext();
+    onClickDisableMuteMode(channelName: string) {
+        const index = this.mutedChannelNames.findIndex((elm, index, array) => { return channelName === elm; });
+
+        this.mutedChannels.splice(index, 1);
+        this.mutedChannelNames.splice(index, 1);
+
+        if (this.mutedChannels.length === 0) {
+            this.filterContext = new NoFilterContext();
+        }
+        else {
+            this.filterContext = new MuteChannelFilterContext(this.mutedChannels);
+        }
         this.detector.detectChanges();
     }
 
     onClickMuteMode(info: DisplaySlackMessageInfo) {
-        if (this.filterContext.muteMode) {
-            this.disableMuteMode();
-        } else {
-            this.filterContext = new MuteChannelFilterContext(info.message.channelID);
-            this.setMutedChannel(SlackUtil.getChannelName(info.message.channelID, info.message.dataStore));
-        }
+        this.mutedChannels.push(info.message.channelID);
+        this.mutedChannelNames.push(SlackUtil.getChannelName(info.message.channelID, info.message.dataStore));
+        this.filterContext = new MuteChannelFilterContext(this.mutedChannels);
         this.detector.detectChanges();
     }
 
@@ -214,9 +224,5 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickSetting() {
         this.router.navigate(['setting']);
-    }
-
-    setMutedChannel(target: string) {
-        this.mutedChannel = target;
     }
 }
