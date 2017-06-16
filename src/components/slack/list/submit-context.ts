@@ -78,32 +78,36 @@ export class PostMessageContext implements SubmitContext {
 
     changeMessageRequest(next: boolean) {
         this.changeRequest((index) => {
-            return next ? Math.min(index + 1, this.infos.length - 1) : Math.max(index - 1, 0);
+            let nextIndex = next ? index + 1 : index - 1;
+            if (nextIndex >= this.infos.length) { nextIndex = 0; }
+            if (nextIndex < 0) { nextIndex = this.infos.length - 1; }
+            return nextIndex;
         });
     }
 
     changeChannelRequest(next: boolean) {
         this.changeRequest((index) => {
             let nextIndex = -1;
+
             if (next) {
-                for (let i = index + 1; i < this.infos.length; i++) {
-                    if (
-                        this.infos[i].message.teamID !== this.teamID ||
-                        this.infos[i].message.channelID !== this.channelLikeID
-                    ) {
-                        nextIndex = i;
-                        break;
-                    }
+                nextIndex = this.infos.slice(index).findIndex((info) => {
+                    return info.message.teamID !== this.teamID || info.message.channelID !== this.channelLikeID;
+                });
+
+                if (nextIndex < 0) {
+                    nextIndex = 0;
+                } else {
+                    nextIndex += index;
                 }
             } else {
-                for (let i = index - 1; i >= 0; i--) {
-                    if (
-                        this.infos[i].message.teamID !== this.teamID ||
-                        this.infos[i].message.channelID !== this.channelLikeID
-                    ) {
-                        nextIndex = i;
-                        break;
-                    }
+                nextIndex = this.infos.slice(0, index).reverse().findIndex((e) => {
+                    return e.message.teamID !== this.teamID || e.message.channelID !== this.channelLikeID;
+                });
+
+                if (nextIndex < 0) {
+                    nextIndex = this.infos.length - 1;
+                } else {
+                    nextIndex = Math.abs(nextIndex - (index - 1));
                 }
             }
             return nextIndex;

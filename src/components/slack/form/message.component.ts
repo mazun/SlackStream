@@ -129,7 +129,6 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
                 this.changeChannel.emit(true);
             }
         }
-
     }
 
     handleEnter(event: KeyboardEvent, textArea: any): void {
