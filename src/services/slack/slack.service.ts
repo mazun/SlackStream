@@ -72,6 +72,7 @@ export class DisplaySlackMessageInfo {
         return this.reactions.length > 0;
     }
 
+
     addReaction(info: SlackReactionAdded) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
         const user = info.reaction.user;

@@ -15,6 +15,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     @Output() submit = new EventEmitter<string>();
     @Output() close = new EventEmitter();
     @Output() changeChannel = new EventEmitter<boolean>();
+    @Output() changeMessage = new EventEmitter<boolean>();
 
     @Input() channelLikeID: string;
     @Input() dataStore: DataStore;
@@ -113,19 +114,22 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     onKeyUp(event: KeyboardEvent, textArea: any): void {
         if (event.which === 27) {
             this.close.emit();
-        } else if (event.which === 38) {
-            // up
-            if (event.altKey) {
+        } else if (event.altKey) {
+            if (event.which === 38) { // up
+                event.preventDefault();
+                this.changeMessage.emit(false);
+            } else if (event.which === 40) { // down
+                event.preventDefault();
+                this.changeMessage.emit(true);
+            } else if (event.which === 37) { // left
                 event.preventDefault();
                 this.changeChannel.emit(false);
-            }
-        } else if (event.which === 40) {
-            // down
-            if (event.altKey) {
+            } else if (event.which === 39) { // right
                 event.preventDefault();
                 this.changeChannel.emit(true);
             }
         }
+
     }
 
     handleEnter(event: KeyboardEvent, textArea: any): void {
