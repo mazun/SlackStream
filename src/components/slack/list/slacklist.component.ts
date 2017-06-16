@@ -94,7 +94,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             info.message.channelID,
             info.message.teamID,
             info.message.ts,
-            this.messages
+            this.filteredMessages
         );
         this.detector.detectChanges();
     }
