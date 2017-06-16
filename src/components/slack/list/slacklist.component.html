@@ -11,16 +11,16 @@
             (submit)="submitForm($event)"
             (close)="closeForm()"
             (changeChannel)="onChangeChannelRequest($event)"
+            (changeMessage)="onChangeMessageRequest($event)"
         >
         </ss-messageform>
     </div>
 
     <table class="table table-striped">
-        <tr *ngFor="let info of filteredMessages">
+        <tr *ngFor="let info of filteredMessages" [class.selected-message]="selected(info)">
             <td>
                 <img class="user-thumbnail" [src]="info.message.userThumbnail"/>
             </td>
-
             <td>
                 <div class="header">
                     <ss-teamicon [teamID]="info.message.teamID" [dataStore]="info.message.rawDataStore"></ss-teamicon>

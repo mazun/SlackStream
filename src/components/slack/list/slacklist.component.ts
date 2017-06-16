@@ -50,6 +50,10 @@ export class SlackListComponent implements OnInit, OnDestroy {
         return false;
     }
 
+    selected(info: DisplaySlackMessageInfo): boolean {
+        return this.submitContext && this.submitContext.teamID === info.message.teamID && this.submitContext.ts === info.message.ts;
+    }
+
     constructor(
         private slack: SlackService,
         private events: GlobalEventService,
@@ -89,7 +93,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
             info.client,
             info.message.channelID,
             info.message.teamID,
-            this.messages
+            info.message.ts,
+            this.filteredMessages
         );
         this.detector.detectChanges();
     }
@@ -99,6 +104,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             info.client,
             '@' + info.message.userName,
             info.message.teamID,
+            info.message.ts,
             this.messages
         );
         this.detector.detectChanges();
@@ -197,6 +203,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
                     message.client,
                     message.message.channelID,
                     message.message.teamID,
+                    message.message.ts,
                     messages
                 );
                 this.detector.detectChanges();
@@ -213,6 +220,13 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    onChangeMessageRequest(next: boolean) {
+        if (this.submitContext) {
+            this.submitContext.changeMessageRequest(next);
+        }
+        this.detector.detectChanges();
     }
 
     onChangeChannelRequest(next: boolean) {

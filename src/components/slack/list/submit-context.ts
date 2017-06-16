@@ -8,6 +8,7 @@ export interface SubmitContext {
     channelLikeID: string;
     dataStore: DataStore;
     teamID: string;
+    ts: string;
 
     extraInfo: string;
     initialText: string;
@@ -17,6 +18,7 @@ export interface SubmitContext {
     submit(text: string): Promise<any>;
 
     changeChannelRequest(next: boolean);
+    changeMessageRequest(next: boolean);
 }
 
 export class PostMessageContext implements SubmitContext {
@@ -24,6 +26,7 @@ export class PostMessageContext implements SubmitContext {
         public client: SlackClient,
         public channelLikeID: string,
         public teamID: string,
+        public ts: string,
         public infos: DisplaySlackMessageInfo[],
     ) {
     }
@@ -34,15 +37,6 @@ export class PostMessageContext implements SubmitContext {
 
     get emoji(): EmojiService {
         return this.client.emoji;
-    }
-
-    get lastMessageTs(): string {
-        for (let i = 0; i < this.infos.length; i++) {
-            if (this.infos[i].message.channelID === this.channelLikeID) {
-                return this.infos[i].message.ts;
-            }
-        }
-        return '';
     }
 
     get initialText(): string {
@@ -56,31 +50,68 @@ export class PostMessageContext implements SubmitContext {
     async submit(text: string): Promise<any> {
         if (text.trim().match(/^\+:(.*):$/)) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
-            return this.client.addReaction(reaction, this.channelLikeID, this.lastMessageTs);
+            return this.client.addReaction(reaction, this.channelLikeID, this.ts);
         } else if (text.trim().match(/^\-:(.*):$/)) {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
-            return this.client.removeReaction(reaction, this.channelLikeID, this.lastMessageTs);
+            return this.client.removeReaction(reaction, this.channelLikeID, this.ts);
         } else {
             return this.client.postMessage(this.channelLikeID, text);
         }
     }
 
+    changeRequest(nextIndexFunc: (i: number) => number) {
+        if (this.infos.length === 0) { return; }
+
+        const index = this.infos.findIndex(
+            info => info.message.teamID === this.teamID && info.message.channelID === this.channelLikeID && info.message.ts === this.ts
+        );
+        if (index === -1) { return; }
+
+        const nextIndex = nextIndexFunc(index);
+        if (nextIndex < 0) { return; }
+
+        this.channelLikeID = this.infos[nextIndex].message.channelID;
+        this.client = this.infos[nextIndex].client;
+        this.teamID = this.infos[nextIndex].message.teamID;
+        this.ts = this.infos[nextIndex].message.ts;
+    }
+
+    changeMessageRequest(next: boolean) {
+        this.changeRequest((index) => {
+            let nextIndex = next ? index + 1 : index - 1;
+            if (nextIndex >= this.infos.length) { nextIndex = 0; }
+            if (nextIndex < 0) { nextIndex = this.infos.length - 1; }
+            return nextIndex;
+        });
+    }
+
     changeChannelRequest(next: boolean) {
-        const channels: [string, SlackClient, string][] = [];
-        for (const info of this.infos) {
-            if (!channels.find(c => c[0] === info.message.channelID)) {
-                channels.push([info.message.channelID, info.client, info.message.teamID]);
+        this.changeRequest((index) => {
+            let nextIndex = -1;
+
+            if (next) {
+                nextIndex = this.infos.slice(index).findIndex((info) => {
+                    return info.message.teamID !== this.teamID || info.message.channelID !== this.channelLikeID;
+                });
+
+                if (nextIndex < 0) {
+                    nextIndex = 0;
+                } else {
+                    nextIndex += index;
+                }
+            } else {
+                nextIndex = this.infos.slice(0, index).reverse().findIndex((e) => {
+                    return e.message.teamID !== this.teamID || e.message.channelID !== this.channelLikeID;
+                });
+
+                if (nextIndex < 0) {
+                    nextIndex = this.infos.length - 1;
+                } else {
+                    nextIndex = Math.abs(nextIndex - (index - 1));
+                }
             }
-        }
-
-        if (channels.length === 0) { return; }
-
-        const index = channels.findIndex(c => c[0] === this.channelLikeID);
-
-        const nextIndex = (index + (next ? 1 : -1) + channels.length) % channels.length;
-        this.channelLikeID = channels[nextIndex][0];
-        this.client = channels[nextIndex][1];
-        this.teamID = channels[nextIndex][2];
+            return nextIndex;
+        });
     }
 }
 
@@ -115,6 +146,10 @@ export class EditMessageContext implements SubmitContext {
         return this.message.teamID;
     }
 
+    get ts(): string {
+        return this.message.ts;
+    }
+
     get initialText(): string {
         const messageText = this.message.text;
         return messageText.replace(/<([^>]+)>/g, (value: string) => {
@@ -131,5 +166,8 @@ export class EditMessageContext implements SubmitContext {
     }
 
     changeChannelRequest(next: boolean) {
+    }
+
+    changeMessageRequest(next: boolean) {
     }
 }
