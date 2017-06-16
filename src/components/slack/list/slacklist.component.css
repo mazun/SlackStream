@@ -201,3 +201,7 @@ a {
 .main-contents {
     margin-bottom: 25px;
 }
+
+.selected-message {
+    background-color: #e0f7ff !important;
+}
