@@ -1,5 +1,7 @@
 # ASlack-Stream
 
+[![CircleCI](https://circleci.com/gh/mazun/ASlack-Stream.svg?style=svg)](https://circleci.com/gh/mazun/ASlack-Stream)
+
 Another/Angular Slack Stream is another implementation of https://github.com/TazuKongari/Slack-Stream
 
 ## Screenshot
