@@ -68,9 +68,9 @@
 </div>
 
 <div class="menus">
-    <div *ngFor="let mutedChannel of mutedChannelNames" class="disable-mute btn btn-default btn-xs" (click)="onClickDisableMuteMode(mutedChannel)">
+    <div *ngFor="let mutedChannel of mutedChannels;" class="disable-mute btn btn-default btn-xs" (click)="onClickDisableMuteMode(mutedChannel)">
       <span class="glyphicon glyphicon-volume-off"></span>
-      <span style="font-weight: bold;" [style.color]="mutedChannel | channelColor">#{{mutedChannel}}</span>
+      <span style="font-weight: bold;" [style.color]="mutedChannel.name | channelColor">#{{mutedChannel.name}}</span>
     </div>
     <span class="glyphicon glyphicon-wrench message-button menu-button" (click)="onClickSetting()"></span>
 </div>
