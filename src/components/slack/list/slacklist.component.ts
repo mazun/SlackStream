@@ -14,10 +14,18 @@ import { FilterContext, SoloChannelFilterContext, NoFilterContext, MuteChannelFi
 class MutedChannel {
     ID: string;
     name: string;
+    lastTs: string;
+    numUnread: number;
 
-    constructor(private info: DisplaySlackMessageInfo) {
+    constructor(private info: DisplaySlackMessageInfo, lastTs: string) {
         this.ID = info.message.channelID;
         this.name = SlackUtil.getChannelName(info.message.channelID, info.message.dataStore);
+        this.lastTs = lastTs;
+        this.numUnread = 0;
+    }
+
+    get hasUnread(): boolean {
+        return this.numUnread > 0;
     }
 }
 
@@ -94,6 +102,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onChange(slack: SlackService): void {
+        this.mutedChannels.forEach((ch, index) => {
+            ch.numUnread = this.messages.filter((e, i, a) => {
+                if (e.message.channelID === ch.ID && Number(e.message.ts) > Number(ch.lastTs))
+                    return true;
+            }).length;
+        });
         this.detector.detectChanges();
     }
 
@@ -152,7 +166,13 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onClickMuteMode(info: DisplaySlackMessageInfo) {
-        this.mutedChannels.push(new MutedChannel(info));
+        const lastTsOfThisCh = this.messages.find((e, i, a) => {
+            // typeof(e) == DisplaySlackMessageInfo
+            if (info.message.channelID === e.message.channelID) {
+                return true;
+            }
+        }).message.ts;
+        this.mutedChannels.push(new MutedChannel(info, lastTsOfThisCh));
         const mutedChannelIDs = [];
         this.mutedChannels.forEach((item, index) => {
             mutedChannelIDs.push(item.ID);

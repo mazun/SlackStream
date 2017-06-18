@@ -71,6 +71,7 @@
     <div *ngFor="let mutedChannel of mutedChannels;" class="disable-mute btn btn-default btn-xs" (click)="onClickDisableMuteMode(mutedChannel)">
       <span class="glyphicon glyphicon-volume-off"></span>
       <span style="font-weight: bold;" [style.color]="mutedChannel.name | channelColor">#{{mutedChannel.name}}</span>
+      <span *ngIf="mutedChannel.hasUnread">({{mutedChannel.numUnread}})</span>
     </div>
     <span class="glyphicon glyphicon-wrench message-button menu-button" (click)="onClickSetting()"></span>
 </div>
