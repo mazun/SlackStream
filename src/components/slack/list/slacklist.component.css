@@ -172,10 +172,10 @@ a {
 
 .menus {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
-    height: 25px;
     border-top: 1px solid #cccccc;
+    padding: 3px 6px;
 
     text-align: right;
     z-index: 999;
@@ -184,13 +184,10 @@ a {
 
 .disable-mute {
     cursor: pointer;
-    margin-top: -6px;
 }
 
 .menu-button {
     opacity: 0.5;
-    margin-right: 10px;
-    margin-top: 5px;
 }
 
 .menu-button:hover {
