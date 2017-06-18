@@ -73,5 +73,5 @@
       <span style="font-weight: bold;" [style.color]="mutedChannel.name | channelColor">#{{mutedChannel.name}}</span>
       <span *ngIf="mutedChannel.hasUnread">({{mutedChannel.numUnread}})</span>
     </div>
-    <span class="glyphicon glyphicon-wrench message-button menu-button" (click)="onClickSetting()"></span>
+    <div class="glyphicon glyphicon-wrench message-button menu-button" (click)="onClickSetting()"></div>
 </div>
