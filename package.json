@@ -8,7 +8,7 @@
     "electron": "electron .",
     "test": "karma start karma.webpack.conf.js",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --bail",
-    "lint": "tslint ./src/**/*.ts -t verbose"
+    "lint": "find src -name \"*.ts\" | xargs tslint -t verbose"
   },
   "keywords": [],
   "author": "",
