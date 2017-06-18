@@ -148,8 +148,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
         this.detector.detectChanges();
     }
 
-    onClickDisableMuteMode(channelName: string) {
-        const indexToDelete = this.mutedChannels.findIndex((elm, index, array) => { return channelName === elm.name; });
+    onClickDisableMuteMode(channelID: string) {
+        const indexToDelete = this.mutedChannels.findIndex((elm, index, array) => { return channelID === elm.ID; });
 
         this.mutedChannels.splice(indexToDelete, 1);
 
