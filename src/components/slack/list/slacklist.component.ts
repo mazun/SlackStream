@@ -156,7 +156,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.filterContext = new NoFilterContext();
         }
         else {
-            this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map((ch) => { return ch.ID; }));
+            this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map(ch => ch.ID));
         }
         this.detector.detectChanges();
     }
@@ -169,7 +169,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             }
         }).message.ts;
         this.mutedChannels.push(new MutedChannel(info, lastTsOfThisCh));
-        this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map((ch) => { return ch.ID; }));
+        this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map(ch => ch.ID));
         this.detector.detectChanges();
     }
 
