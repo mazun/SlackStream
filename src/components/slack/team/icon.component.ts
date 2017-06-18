@@ -7,12 +7,7 @@ import { DataStore, Team } from '../../../services/slack/slack.types';
     styles: [ require('./icon.component.css').toString() ]
 })
 export class TeamIconComponent {
-    @Input() teamID: string;
-    @Input() dataStore: DataStore;
-
-    get team(): Team {
-        return this.dataStore.getTeamById(this.teamID);
-    }
+    @Input() team: Team;
 
     get teamName(): string {
         return this.team ? this.team.name : '?';
