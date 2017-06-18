@@ -104,8 +104,9 @@ export class SlackListComponent implements OnInit, OnDestroy {
     onChange(slack: SlackService): void {
         this.mutedChannels.forEach((ch, index) => {
             ch.numUnread = this.messages.filter((e, i, a) => {
-                if (e.message.channelID === ch.ID && Number(e.message.ts) > Number(ch.lastTs))
+                if (e.message.channelID === ch.ID && Number(e.message.ts) > Number(ch.lastTs)) {
                     return true;
+                }
             }).length;
         });
         this.detector.detectChanges();
@@ -154,8 +155,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
         if (this.mutedChannels.length === 0) {
             this.filterContext = new NoFilterContext();
-        }
-        else {
+        } else {
             this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map(ch => ch.ID));
         }
         this.detector.detectChanges();
