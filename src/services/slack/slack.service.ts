@@ -161,7 +161,8 @@ export class SlackService {
     }
 
     findReactionTarget(reaction: SlackReactionAdded): DisplaySlackMessageInfo {
-        switch(reaction.reaction.item.type) {
+        /* tslint:disable:no-switch-case-fall-through */
+        switch (reaction.reaction.item.type) {
             case 'message': {
                 const target = reaction.reaction.item as MessageReactionTarget;
                 return this.infos.find(m => m.message.rawMessage.ts === target.ts);
@@ -171,7 +172,7 @@ export class SlackService {
                 return this.infos.find(m => {
                     return m.message.subType === 'file_share'
                         && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id == target.file;
+                        && m.message.rawMessage.file.id === target.file;
                 });
             }
             case 'file_comment': {
@@ -179,7 +180,7 @@ export class SlackService {
                 const message = this.infos.find(m => {
                     return m.message.subType === 'file_comment'
                         && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id == target.file
+                        && m.message.rawMessage.file.id === target.file
                         && m.message.rawMessage.comment
                         && m.message.rawMessage.comment.id === target.file_comment;
                 });
@@ -191,13 +192,14 @@ export class SlackService {
                 return this.infos.find(m => {
                     return m.message.subType === 'file_share'
                         && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id == target.file;
+                        && m.message.rawMessage.file.id === target.file;
                 });
             }
             default: {
                 return null;
             }
         }
+        /* tslint:enable:no-switch-case-fall-through */
     }
 
     async onReactionAdded(reaction: SlackReactionAdded, parser: SlackParser, client: SlackClient): Promise<void> {
