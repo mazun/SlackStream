@@ -51,8 +51,9 @@ export class MuteChannelFilterContext implements FilterContext {
 
     shouldShow(info: DisplaySlackMessageInfo): boolean {
         for (const channel of this.channels) {
-            if (info.message.channelID === channel)
+            if (info.message.channelID === channel) {
                 return false;
+            }
         }
         return true;
 
