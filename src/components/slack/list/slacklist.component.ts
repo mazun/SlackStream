@@ -10,28 +10,21 @@ import { Subscription } from 'rxjs';
 import { SettingService } from '../../../services/setting.service';
 import { SubmitContext, PostMessageContext, EditMessageContext } from './submit-context';
 import { FilterContext, SoloChannelFilterContext, NoFilterContext, MuteChannelFilterContext } from './filter-context';
+import { Team } from '../../../services/slack/slack.types';
 
 class MutedChannel {
     ID: string;
     name: string;
-    teamID: string;
-    teamName: string;
-    teamThumbnail: string;
+    team: Team;
     lastTs: string;
     numUnread: number;
 
     constructor(private info: DisplaySlackMessageInfo, lastTs: string) {
         this.ID = info.message.channelID;
         this.name = SlackUtil.getChannelName(info.message.channelID, info.message.dataStore);
-        this.teamID = info.message.teamID;
-        this.teamName = info.message.teamName;
+        this.team = info.message.dataStore.getTeamById(info.message.teamID);
         this.lastTs = lastTs;
         this.numUnread = 0;
-        if (info.message.teamHasThumbnail) {
-            this.teamThumbnail = info.message.teamThumbnail;
-        } else {
-            this.teamThumbnail = null;
-        }
     }
 
     get hasUnread(): boolean {

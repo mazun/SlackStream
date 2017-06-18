@@ -1,6 +1,6 @@
 <div class="message-form">
     <div class="message-window">
-    <ss-teamicon [teamID]="teamID" [dataStore]="dataStore"></ss-teamicon>
+    <ss-teamicon [team]="dataStore.getTeamById(teamID)"></ss-teamicon>
     <ss-channelname [channelName]="channelName" [channelID]="channelID" [teamID]="teamID"></ss-channelname>
     <span class="extra-info">{{extraInfo}}</span>
     <span class="glyphicon glyphicon-remove pull-right message-close" (click)="onClose()"></span>
