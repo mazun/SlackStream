@@ -30,7 +30,7 @@ https://github.com/mazun/ASlack-Stream/releases
 
 ### Unstable latest build
 
-http://1341shangrila.dip.jp/aslackstream/build
+http://1341shangrila.dip.jp/slackstream/build
 
 ## Keyboard shortcuts
 
