@@ -26,7 +26,7 @@ Slack Stream, an all-at-a-glance slack client, is just for you!
 
 ### Stable
 
-https://github.com/mazun/ASlack-Stream/releases
+https://github.com/mazun/SlackStream/releases
 
 ### Unstable latest build
 
