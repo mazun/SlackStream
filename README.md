@@ -1,8 +1,8 @@
-# ASlack-Stream
+# Slack Stream
 
-[![CircleCI](https://circleci.com/gh/mazun/ASlack-Stream.svg?style=svg)](https://circleci.com/gh/mazun/ASlack-Stream)
+Ever had troubles clicking the slack client many times to find the conversation you're looking for?
 
-Another/Angular Slack Stream is another implementation of https://github.com/TazuKongari/Slack-Stream
+Slack Stream, an all-at-a-glance slack client, is just for you!
 
 ## Screenshot
 
@@ -60,3 +60,7 @@ yarn start
 # Run electron (in another shell)
 ENV=development yarn electron
 ```
+
+## Old repository
+
+https://github.com/TazuKongari/Slack-Stream
