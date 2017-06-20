@@ -2384,6 +2384,12 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+license-webpack-plugin@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/license-webpack-plugin/-/license-webpack-plugin-0.5.0.tgz#4100d000e29abf4fd5bf75b5b2d2aa78bb100a37"
+  dependencies:
+    object-assign "^4.1.0"
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -3609,7 +3615,7 @@ request-progress@~2.0.1:
   dependencies:
     throttleit "^1.0.0"
 
-request@^2.45.0, request@^2.64.0, request@^2.78.0, request@~2.79.0:
+request@^2.45.0, request@^2.78.0, request@~2.79.0:
   version "2.79.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
   dependencies:
@@ -3634,7 +3640,7 @@ request@^2.45.0, request@^2.64.0, request@^2.78.0, request@~2.79.0:
     tunnel-agent "~0.4.1"
     uuid "^3.0.0"
 
-request@^2.81.0:
+request@^2.64.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:
