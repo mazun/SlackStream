@@ -8,6 +8,7 @@
             [extraInfo]="submitContext.extraInfo"
             [emoji]="submitContext.emoji"
             [enable]="!submitting"
+            [subTeams]="submitContext.subTeams"
             (submit)="submitForm($event)"
             (close)="closeForm()"
             (changeChannel)="onChangeChannelRequest($event)"

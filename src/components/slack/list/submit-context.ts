@@ -14,6 +14,7 @@ export interface SubmitContext {
     initialText: string;
 
     emoji: EmojiService;
+    subTeams: string[];
 
     submit(text: string): Promise<any>;
 
@@ -45,6 +46,10 @@ export class PostMessageContext implements SubmitContext {
 
     get extraInfo(): string {
         return '';
+    }
+
+    get subTeams(): string[] {
+        return this.client.subTeams;
     }
 
     async submit(text: string): Promise<any> {
@@ -148,6 +153,10 @@ export class EditMessageContext implements SubmitContext {
 
     get ts(): string {
         return this.message.ts;
+    }
+
+    get subTeams(): string[] {
+        return this.client.subTeams;
     }
 
     get initialText(): string {

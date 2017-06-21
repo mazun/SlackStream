@@ -25,6 +25,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     @Input() extraInfo: string = '';
     @Input() emoji: EmojiService;
     @Input() enable: boolean;
+    @Input() subTeams: string[] = [];
 
     get channel(): Channel {
         return this.dataStore.getChannelById(this.channelLikeID);
@@ -44,7 +45,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
 
     ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
-        const users = (this.channel ? this.channel.members.map(m => this.dataStore.getUserById(m).name) : []);
+        const users = this.subTeams.concat(this.channel ? this.channel.members.map(m => this.dataStore.getUserById(m).name) : []);
 
         $('#slack_message_input').textcomplete('destroy');
         $('#slack_message_input').textcomplete([
