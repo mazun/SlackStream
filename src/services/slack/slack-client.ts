@@ -142,6 +142,7 @@ export interface SlackClient {
     emoji: EmojiService;
     token: string;
     dataStore: DataStore;
+    subTeams: string[];
 
     start(): void;
     stop(): void;
@@ -188,6 +189,10 @@ export class SlackClientImpl implements SlackClient {
 
     get reactionRemoved(): Observable<SlackReactionRemoved> {
         return this.rtm.reactionRemoved;
+    }
+
+    get subTeams(): string[] {
+        return this.rtm.subTeams;
     }
 
     async getEmoji(): Promise<{ string: string }> {
