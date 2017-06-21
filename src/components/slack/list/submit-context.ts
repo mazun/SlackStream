@@ -162,7 +162,11 @@ export class EditMessageContext implements SubmitContext {
     }
 
     async submit(text: string): Promise<any> {
-        return this.client.updateMessage(this.message.ts, this.message.channelID, text);
+        if(text.match(/\s*/)) {
+            return this.client.deleteMessage(this.message.channelID, this.message.ts);
+        } else {
+            return this.client.updateMessage(this.message.ts, this.message.channelID, text);
+        }
     }
 
     changeChannelRequest(next: boolean) {
