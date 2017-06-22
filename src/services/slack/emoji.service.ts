@@ -23,7 +23,7 @@ export class EmojiService {
 
     convertEmoji(emoji: string): string {
         if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
-            let image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
+            const image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
             if (image_url.substr(0, 6) === 'alias:') {
                 return this.convertEmoji(`:${image_url.substr(6)}:`);
             } else {
