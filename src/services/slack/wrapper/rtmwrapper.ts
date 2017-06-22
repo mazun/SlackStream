@@ -19,7 +19,8 @@ export class RTMClientWrapper {
         this.client = new RtmClient(token, { logLevel: 'debug' }, new MemoryDataStore());
         this.client.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
             console.log(`start ${this.token} ${rtmStartData}`);
-            this.subTeams = rtmStartData.subteams.all.map(s => s.name);
+            console.log(rtmStartData);
+            this.subTeams = rtmStartData.subteams.all.map(s => s.handle);
             this.teamID = rtmStartData.team.id;
         });
 
