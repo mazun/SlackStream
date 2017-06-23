@@ -27,7 +27,7 @@ export class EmojiService {
             if (image_url.substr(0, 6) === 'alias:') {
                 return this.convertEmoji(`:${image_url.substr(6)}:`);
             } else {
-                return `<img class="emojione" src="${image_url}" />`;
+                return `<img class="emojione" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
             }
         } else if (emoji !== emojione.shortnameToImage(emoji)) {
             return emojione.shortnameToImage(emoji);
