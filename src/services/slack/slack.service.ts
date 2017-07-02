@@ -34,7 +34,7 @@ export class DisplaySlackReactionInfo {
     get userNames(): string {
         return this.users.map((userID) => {
             return this.target.message.dataStore.getUserById(userID).name;
-        }).join(',');
+        }).join(', ');
     }
 }
 
