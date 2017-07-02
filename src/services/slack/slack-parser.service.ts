@@ -21,8 +21,9 @@ export class EmojiParser implements SlackParser {
             for (const s of str.split('::')) {
                 if (s === 'notitle') { // notitle modifier
                     withTitle = false;
-                } else if (s.match('skin-tone-([1-5])')) { // skin-tone modifier
-                    skinTone = Number(s.match('skin-tone-([1-5])')[1]);
+                } else if (s.match('skin-tone-([1-9])')) { // skin-tone modifier
+                    const n = Number(RegExp.$1);
+                    skinTone = (n > 5 ? 5 : n); // Emojione supports up to 5 only
                 } else { // An emoji appears. Print the previous emoji with the found modifiers.
                     if (!!emoji) {
                         ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone);
