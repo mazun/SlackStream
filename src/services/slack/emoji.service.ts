@@ -2,6 +2,7 @@ import { defaultEmojis } from './default_emoji';
 import { SlackClient } from './slack-client';
 
 import * as emojione from 'emojione';
+import * as $ from 'jquery';
 
 export class EmojiService {
     emojiList: { string: string };
@@ -21,16 +22,24 @@ export class EmojiService {
         }
     }
 
-    convertEmoji(emoji: string): string {
+    convertEmoji(emoji: string, withTitle = true, skinTone = 0): string {
         if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
             const image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
             if (image_url.substr(0, 6) === 'alias:') {
                 return this.convertEmoji(`:${image_url.substr(6)}:`);
             } else {
-                return `<img class="emojione" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
+                if (withTitle) {
+                    return `<img class="emojione" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
+                } else {
+                    return `<img class="emojione" src="${image_url}" />`;
+                }
             }
         } else if (emoji !== emojione.shortnameToImage(emoji)) {
-            return emojione.shortnameToImage(emoji);
+            let $img = $(emojione.shortnameToImage(emoji));
+            if (!withTitle) {
+                $img.removeAttr('title');
+            }
+            return $img[0].outerHTML;
         } else {
             return emoji;
         }
