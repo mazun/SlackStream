@@ -86,7 +86,7 @@ export class DisplaySlackMessageInfo {
     }
 
     removeReaction(info: SlackReactionRemoved) {
-        const reaction = this.parser.parse(`:${info.reaction.reaction}:`, this.message.dataStore);
+        const reaction = this.parser.parse(`:${info.reaction.reaction}::notitle:`, this.message.dataStore);
         const target = this.reactions.find(r => r.reaction === reaction);
 
         if (target) {
