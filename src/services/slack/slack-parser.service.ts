@@ -11,8 +11,39 @@ export class EmojiParser implements SlackParser {
     }
 
     parse(text: string, dataStore: DataStore): string {
-        return text.replace(/:[a-zA-Z0-9_+\-]+:/g, (value: string) => {
-            return this.emojiService.convertEmoji(value);
+        return text.replace(/(:[a-zA-Z0-9_+\-]+:)+/g, (value) => {
+            let emoji: string;
+            let withTitle: boolean;
+            let skinTone: number;
+            let ret = '';
+            const str = value.substr(1, value.length - 2);
+
+            for (const s of str.split('::')) {
+                if (s === 'notitle') { // notitle modifier
+                    withTitle = false;
+                } else if (s.match('skin-tone-[1-9]')) { // TODO: skin-tone modifier
+                    skinTone = 0;
+                } else { // An emoji appears. Print the previous emoji with the found modifiers.
+                    if (!!emoji) {
+                        ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone);
+                    }
+                    // Reset modifiers for the next emoji.
+                    emoji = ':' + s + ':';
+                    withTitle = true;
+                    skinTone = 0;
+                }
+            }
+
+            if (!!emoji) {
+                ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone);
+            }
+
+            if (ret === '') {
+                // something matched but no emoji found (e.g. value == ':notitle:')
+                return value;
+            } else {
+                return ret;
+            }
         });
     }
 }
