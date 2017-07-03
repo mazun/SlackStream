@@ -35,6 +35,10 @@ export class EmojiService {
                 }
             }
         } else if (emoji !== emojione.shortnameToImage(emoji)) {
+            if (skinTone !== 0) {
+                emoji = emoji.substr(0, emoji.length - 1) + '_tone' + skinTone + ':';
+            }
+
             let $img = $(emojione.shortnameToImage(emoji));
             if (!withTitle) {
                 $img.removeAttr('title');
