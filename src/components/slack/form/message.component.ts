@@ -55,7 +55,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
                 search: (term, callback) => {
                     callback(emojis.filter(emoji => emoji.indexOf(term) !== -1)
                              .sort((a, b) => {
-                                 // two sort creteria (frequency, length) used together,
+                                 // two sort criteria (frequency, length) used together,
                                  // but cannot be separated to two .sort()s because
                                  // .sort() seems not "stable" in some environments
                                  const f1 = (freq[a] ? freq[a] : 0);
