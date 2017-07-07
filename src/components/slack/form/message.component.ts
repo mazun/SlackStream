@@ -45,6 +45,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
 
     ngOnChanges(): void {
         const emojis = this.emoji.allEmojis;
+        const freq = this.emoji.usedFrequency;
         const users = this.subTeams.concat(this.channel ? this.channel.members.map(m => this.dataStore.getUserById(m).name) : []);
 
         $('#slack_message_input').textcomplete('destroy');
@@ -53,12 +54,24 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
                 match: /\B:([\-+\w]*)$/,
                 search: (term, callback) => {
                     callback(emojis.filter(emoji => emoji.indexOf(term) !== -1)
-                        .sort((a, b) => a.length - b.length));
+                             .sort((a, b) => {
+                                 // two sort creteria (frequency, length) used together,
+                                 // but cannot be separated to two .sort()s because
+                                 // .sort() seems not "stable" in some environments
+                                 const f1 = (freq[a] ? freq[a] : 0);
+                                 const f2 = (freq[b] ? freq[b] : 0);
+                                 if (f1 !== f2) {
+                                     return f2 - f1;
+                                 } else {
+                                     return a.length - b.length;
+                                 }
+                             }));
                 },
                 template: (value) => {
                     return `${this.emoji.convertEmoji(':' + value + ':')} ${value}`;
                 },
                 replace: (value) => {
+                    this.emoji.useEmoji(value);
                     return ':' + value + ': ';
                 },
                 index: 1
