@@ -3,6 +3,7 @@ import { enableProdMode } from '@angular/core';
 import { AppModule } from './app/app.module';
 import { shell, ipcRenderer } from 'electron';
 import { setSettingPath } from './services/setting.service';
+import { setUsedFrequencyPath } from './services/slack/emoji.service';
 import * as $ from 'jquery';
 import * as path from 'path';
 
@@ -24,6 +25,7 @@ document.ondragover = document.ondrop = function (e) {
 ipcRenderer.on('userData', (event, arg) => {
     const userData = arg;
     setSettingPath(path.join(userData, 'setting.json'));
+    setUsedFrequencyPath(userData);
 
     if (process.env.ENV !== 'development') {
         enableProdMode();
