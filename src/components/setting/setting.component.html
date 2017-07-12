@@ -23,6 +23,17 @@
             <input type="checkbox" value="true" id="hide-buttons-checkbox" [(ngModel)]="hideButtons">
             <label for="hide-buttons-checkbox">Hide buttons</label>
         </div>
+
+        <h3>Image expansion</h3>
+        <div>
+            <input type="radio" name="img_exp" value="normal" id="image-expansion-normal" [(ngModel)]="imageExpansion">
+            <label for="image-expansion-normal">Normal</label>
+            <input type="radio" name="img_exp" value="small" id="image-expansion-small" [(ngModel)]="imageExpansion">
+            <label for="image-expansion-small">Small</label>
+            <input type="radio" name="img_exp" value="never" id="image-expansion-never" [(ngModel)]="imageExpansion">
+            <label for="image-expansion-never">Never</label>
+        </div>
+
     </div>
 
     <hr>
