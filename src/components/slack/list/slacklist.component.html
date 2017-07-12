@@ -28,8 +28,8 @@
                     <span class="user-name" (click)="onClickSendDM(info)">{{info.message.userName}}</span>
                     <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
                     <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
-                    <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hide_buttons" (click)="onClickSoloMode(info)"></span>
-                    <span class="glyphicon glyphicon-volume-off muteMode icon-button" [class.hide-buttons]="setting.hide_buttons" (click)="onClickMuteMode(info)"></span>
+                    <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hideButtons" (click)="onClickSoloMode(info)"></span>
+                    <span class="glyphicon glyphicon-volume-off muteMode icon-button" [class.hide-buttons]="setting.hideButtons" (click)="onClickMuteMode(info)"></span>
                     <span class="timestamp">{{info.message.ts | ts2time}}</span>
                 </div>
 
@@ -42,7 +42,7 @@
                     <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
                 </div>
 
-                <div class="buttons pull-right" [class.hide-buttons]="setting.hide_buttons">
+                <div class="buttons pull-right" [class.hide-buttons]="setting.hideButtons">
                     <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
                     <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
                     <span class="glyphicon glyphicon-pencil message-button icon-button" (click)="onClickWrite(info)"></span>

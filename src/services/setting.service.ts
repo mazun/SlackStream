@@ -8,7 +8,7 @@ export function setSettingPath(path: string) {
 
 interface Setting {
     tokens: string[];
-    hide_buttons: boolean;
+    hideButtons: boolean;
 }
 
 @Injectable()
@@ -19,8 +19,8 @@ export class SettingService {
         return this.setting.tokens;
     }
 
-    get hide_buttons(): boolean {
-        return this.setting.hide_buttons;
+    get hideButtons(): boolean {
+        return this.setting.hideButtons;
     }
 
     constructor() {
@@ -31,7 +31,7 @@ export class SettingService {
         }
 
         if (this.setting.tokens === undefined) { this.setting.tokens = []; }
-        if (this.setting.hide_buttons === undefined) { this.setting.hide_buttons = false; }
+        if (this.setting.hideButtons === undefined) { this.setting.hideButtons = false; }
     }
 
     save() {
