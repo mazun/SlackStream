@@ -39,7 +39,7 @@
                 </div>
 
                 <div *ngFor="let attachment of info.attachments">
-                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" [setting]="setting" ></ss-attachment>
                 </div>
 
                 <div class="buttons pull-right" [class.hide-buttons]="setting.hideButtons">

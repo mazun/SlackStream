@@ -10,6 +10,7 @@ import { SettingService } from '../../services/setting.service';
 export class SettingComponent implements OnInit {
     tokens: string[];
     hideButtons: boolean;
+    imageExpansion: string;
 
     get tokenIndexes(): number[] {
         return this.tokens.map((elem, index, array) => index);
@@ -18,6 +19,7 @@ export class SettingComponent implements OnInit {
     constructor(public setting: SettingService, private router: Router) {
         this.tokens = this.setting.tokens;
         this.hideButtons = this.setting.hideButtons;
+        this.imageExpansion = this.setting.imageExpansion;
         if (this.tokens.length === 0) {
             this.tokens = [''];
         }
@@ -34,6 +36,7 @@ export class SettingComponent implements OnInit {
     exit() {
         this.setting.setting.tokens = this.tokens;
         this.setting.setting.hideButtons = this.hideButtons;
+        this.setting.setting.imageExpansion = this.imageExpansion;
         this.setting.save();
         this.router.navigate(['/']);
     }
