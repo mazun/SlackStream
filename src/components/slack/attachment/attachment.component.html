@@ -50,8 +50,8 @@
             <a *ngIf="!!attachment.ts" class="footer-ts" [href]="attachment.from_url">{{attachment.ts | ts2time}}</a>
         </div>
 
-        <div *ngIf="!!attachment.image_url">
-            <img [src]="attachment.image_url" class="image"/>
+        <div *ngIf="showImage">
+            <img [src]="attachment.image_url" class="image" [class.small]="smallImage"/>
         </div>
     </span>
 

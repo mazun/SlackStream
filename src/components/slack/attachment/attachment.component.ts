@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Attachment, DataStore } from '../../../services/slack/slack.types';
 import { SlackParser } from '../../../services/slack/slack-parser.service';
+import { SettingService } from '../../../services/setting.service';
 
 @Component({
     selector: 'ss-attachment',
@@ -11,6 +12,10 @@ export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
     @Input() parser: SlackParser;
     @Input() dataStore: DataStore;
+
+    constructor(
+        private setting: SettingService
+    ) { }
 
     parse(text: string): string {
         return this.parser.parse(text, this.dataStore);
@@ -26,5 +31,17 @@ export class SlackAttachmentComponent {
         } else {
             return '#cccccc';
         }
+    }
+
+    get showImage(): boolean {
+        if (!!this.attachment['image_url'] && this.setting.imageExpansion !== 'never') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    get smallImage(): boolean {
+        return (this.setting.imageExpansion === 'small');
     }
 }
