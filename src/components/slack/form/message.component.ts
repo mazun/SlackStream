@@ -68,7 +68,13 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
                              }));
                 },
                 template: (value) => {
-                    return `${this.emoji.convertEmoji(':' + value + ':')} ${value}`;
+                    let shortName: string;
+                    if (value.length > 15) {
+                        shortName = value.substr(0, 15) + '...';
+                    } else {
+                        shortName = value;
+                    }
+                    return `${this.emoji.convertEmoji(':' + value + ':')} ${shortName}`;
                 },
                 replace: (value) => {
                     this.emoji.useEmoji(value);
