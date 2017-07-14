@@ -12,7 +12,10 @@ export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
     @Input() parser: SlackParser;
     @Input() dataStore: DataStore;
-    @Input() setting: SettingService;
+
+    constructor(
+        private setting: SettingService
+    ) { }
 
     parse(text: string): string {
         return this.parser.parse(text, this.dataStore);
