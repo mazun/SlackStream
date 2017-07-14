@@ -46,6 +46,11 @@
     max-width: 100%;
 }
 
+.small {
+    max-width: 25% !important;
+}
+
+
 .right {
     margin-left: 10px;
     margin-right: 10px;
