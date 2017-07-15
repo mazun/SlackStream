@@ -15,9 +15,11 @@ electron-packager package slack-stream --platform=linux --arch=ia32,x64 --overwr
 for f in slack-stream*
 do
     cp 3rdpartylicenses.txt $f/LICENSES.3rdParty
-    echo "Creating zip: $f.zip"
-    zip $f.zip -r $f > /dev/null
 done
+
+n_cores=`grep processor /proc/cpuinfo | wc -l`
+echo "Creating zips using ${n_cores} processes"
+parallel -j ${n_cores} zip {}.zip -r {} > /dev/null ::: `find -name "slack-stream-*"`
 
 rm -f 3rdpartylicenses.txt
 rm -rf package
