@@ -19,7 +19,7 @@ done
 
 n_cores=`grep processor /proc/cpuinfo | wc -l`
 echo "Creating zips using ${n_cores} processes"
-parallel -j ${n_cores} zip {}.zip -r {} > /dev/null ::: `find -name "slack-stream-*"`
+parallel -j ${n_cores} zip {}.zip -r {} > /dev/null ::: `find -maxdepth 1 -name "slack-stream-*"`
 
 rm -f 3rdpartylicenses.txt
 rm -rf package
