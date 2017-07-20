@@ -11,6 +11,7 @@ import { SettingService } from '../../../services/setting.service';
 export class SlackAttachmentComponent {
     @Input() attachment: Attachment;
     @Input() parser: SlackParser;
+    @Input() attachmentTextParser: SlackParser;
     @Input() dataStore: DataStore;
 
     constructor(
@@ -19,6 +20,10 @@ export class SlackAttachmentComponent {
 
     parse(text: string): string {
         return this.parser.parse(text, this.dataStore);
+    }
+
+    attachmentTextParse(text: string): string {
+        return this.attachmentTextParser.parse(text, this.dataStore);
     }
 
     get borderColor(): string {
