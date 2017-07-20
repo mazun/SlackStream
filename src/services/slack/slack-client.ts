@@ -6,6 +6,7 @@ import { WebClientWrapper } from './wrapper/webwrapper';
 import { EmojiService } from './emoji.service';
 import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
 import { SlackUtil } from './slack-util';
+import { SlackParser } from './slack-parser.service';
 
 export class SlackReactionAdded {
     constructor(public reaction: RTMReactionAdded, public dataStore: DataStore) {
@@ -143,6 +144,7 @@ export interface SlackClient {
     token: string;
     dataStore: DataStore;
     subTeams: string[];
+    attachmentTextParser: SlackParser;
 
     start(): void;
     stop(): void;
@@ -160,6 +162,7 @@ export class SlackClientImpl implements SlackClient {
     rtm: RTMClientWrapper;
     web: WebClientWrapper;
     emoji: EmojiService;
+    attachmentTextParser: SlackParser;
 
     constructor(public token: string, private http: Http) {
         this.rtm = new RTMClientWrapper(token);
