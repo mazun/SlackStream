@@ -39,7 +39,11 @@
                 </div>
 
                 <div *ngFor="let attachment of info.attachments">
-                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [attachmentTextParser]="info.client.attachmentTextParser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+                </div>
+
+                <div *ngIf="!!info.image">
+                    <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
                 </div>
 
                 <div class="buttons pull-right" [class.hide-buttons]="setting.hideButtons">
@@ -58,10 +62,6 @@
                             <span class="reaction-count">{{reaction.count}}</span>
                         </div>
                     </div>
-                </div>
-
-                <div *ngIf="!!info.image">
-                    <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
                 </div>
             </td>
         </tr>

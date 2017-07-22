@@ -145,6 +145,12 @@ export class SlackService {
                 new MarkDownParser()
             ]);
 
+            client.attachmentTextParser = new ComposedParser([
+                new LinkParser(),
+                new NewLineParser(),
+                new EmojiParser(client.emoji)
+            ]);
+
             this.subscription.add(client.messages.subscribe(message => this.onReceiveMessage(message, parser, client)));
             this.subscription.add(client.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, client)));
             this.subscription.add(client.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, client)));

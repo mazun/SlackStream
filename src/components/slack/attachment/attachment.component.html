@@ -30,7 +30,7 @@
         </div>
 
         <!-- Text -->
-        <div *ngIf="!!attachment.text" class="text" [innerHTML]="parse(attachment.text) | safeHtml">
+        <div *ngIf="!!attachment.text" class="text" [innerHTML]="attachmentTextParse(attachment.text) | safeHtml">
         </div>
 
         <!-- Fields -->
