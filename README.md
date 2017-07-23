@@ -24,11 +24,11 @@ Slack Stream, an all-at-a-glance slack client, is just for you!
 
 ## Download
 
-### Stable
+### Stable Releases
 
 https://github.com/mazun/SlackStream/releases
 
-### Unstable latest build
+### Nightly Builds (based on the latest commit)
 
 http://1341shangrila.dip.jp/slackstream/build
 
