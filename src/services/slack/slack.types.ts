@@ -157,10 +157,13 @@ export interface UserProfile {
     image_512: string;
 }
 
-export interface Channel {
+export interface Members {
+    members: string[];
+}
+
+export interface Channel extends Members {
     id: string;
     name: string;
-    members: string[];
 
     is_archived: boolean;
     is_channel: boolean;
@@ -190,7 +193,7 @@ export interface Team {
     plan: string;
 }
 
-export interface Group {
+export interface Group extends Members {
     id: string;
     name: string;
     name_normalized: string;
@@ -202,8 +205,6 @@ export interface Group {
     is_group: boolean;
     is_mpim: boolean;
     is_open: boolean;
-
-    members: string[];
 }
 
 export interface DM {
