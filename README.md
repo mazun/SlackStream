@@ -36,7 +36,7 @@ http://1341shangrila.dip.jp/slackstream/build
 
 - **Ctrl+Alt+Enter**:
 Activate ASlack-Stream window and open a message writing form (the target channel is the channel of the latest message).
-You can use this shortcut even when ASlack-Stream window is not active.
+You can use this shortcut even when Slack-Stream window is not active.
 
 - **↑**:
 Edit the latest message you've sent.
