@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import 'jquery-textcomplete';
 import { EmojiService } from '../../../services/slack/emoji.service';
-import { Channel, DM, DataStore } from '../../../services/slack/slack.types';
+import { DM, DataStore, Members } from '../../../services/slack/slack.types';
 import { SlackUtil } from '../../../services/slack/slack-util';
 
 @Component({
@@ -27,8 +27,10 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     @Input() enable: boolean;
     @Input() subTeams: string[] = [];
 
-    get channel(): Channel {
-        return this.dataStore.getChannelById(this.channelLikeID);
+    get channel(): Members {
+        const channel = this.dataStore.getChannelById(this.channelLikeID);
+        if (channel) { return channel; }
+        return this.dataStore.getGroupById (this.channelLikeID);
     }
 
     get dm(): DM {
