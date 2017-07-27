@@ -34,7 +34,7 @@
         </div>
 
         <!-- Fields -->
-        <div *ngIf="!!attachment.fields" class="row">
+        <div *ngIf="!!attachment.fields" class="row" style="margin-right: 0;">
             <div *ngFor="let field of attachment.fields" class="field col-xs-6">
                 <label style="margin-bottom: 0;" [innerHTML]="parse(field.title)"></label>
                 <div [innerHTML]="parse(field.value)"></div>
