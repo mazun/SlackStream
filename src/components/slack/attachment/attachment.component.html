@@ -24,8 +24,8 @@
         <!-- Title -->
         <div *ngIf="!!attachment.title" class="title">
             <span [ngSwitch]="!!attachment.title_link">
-                <a class="title" [href]="attachment.title_link" *ngSwitchCase="true">{{attachment.title}}</a>
-                <b class="title" *ngSwitchDefault>{{attachment.title}}</b>
+                <a class="title" [href]="attachment.title_link" *ngSwitchCase="true" [innerHTML]="attachment.title"></a>
+                <b class="title" *ngSwitchDefault [innerHTML]="attachment.title"></b>
             </span>
         </div>
 
@@ -34,8 +34,10 @@
         </div>
 
         <!-- Fields -->
-        <div *ngIf="!!attachment.fields">
-            <div *ngFor="let field of attachment.fields" class="field" [innerHTML]="parse(field.value)">
+        <div *ngIf="!!attachment.fields" class="row" style="margin-right: 0;">
+            <div *ngFor="let field of attachment.fields" class="field col-xs-6">
+                <label style="margin-bottom: 0;" [innerHTML]="parse(field.title)"></label>
+                <div [innerHTML]="parse(field.value)"></div>
             </div>
         </div>
 
