@@ -17,6 +17,11 @@ do
     cp 3rdpartylicenses.txt $f/LICENSES.3rdParty
 done
 
+for f in slack-stream-darwin*
+do
+    mv $f `echo $f | sed "s/darwin/mac/g"`
+done
+
 n_cores=`grep processor /proc/cpuinfo | wc -l`
 echo "Creating zips using ${n_cores} processes"
 parallel -j ${n_cores} zip {}.zip -r {} > /dev/null ::: `find -maxdepth 1 -name "slack-stream-*"`
