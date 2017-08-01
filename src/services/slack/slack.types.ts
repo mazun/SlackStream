@@ -218,6 +218,8 @@ export interface DM {
 }
 
 export interface DataStore {
+    teamID: string;
+
     getUserById(id: string): User;
     getUserByName(name: string): User;
     getUserByEmail(email: string): User;

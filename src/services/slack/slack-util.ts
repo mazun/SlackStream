@@ -77,10 +77,12 @@ export class SlackUtil {
             }
             return new ParseLinkResult('@' + text.substr(1));
         } else if (text[0] === '#') {
+            const team = dataStore.getTeamById (dataStore.teamID);
             const channel = dataStore.getChannelById(text.substr(1));
             const color = SlackUtil.channelColor(channel.name);
+            const url = `slack://channel?team=${team.id}&id=${channel.id}`;
             // <ss-channelname> does not work...
-            const withLink = `<span class="channel-name" style="color: ${color};">#${channel.name}</span>`;
+            const withLink = `<a href = "${url}" class="channel-name" style="color: ${color};">#${channel.name}</a>`;
             return new ParseLinkResult('#' + channel.name, withLink);
         } else {
             return new ParseLinkResult(text, `<a href="${text}">${text}</a>`);
@@ -89,10 +91,12 @@ export class SlackUtil {
 
     static parseLink2(text1: string, text2: string, dataStore: DataStore): ParseLinkResult {
         if (text1[0] === '#') {
+            const team = dataStore.getTeamById (dataStore.teamID);
             const channel = dataStore.getChannelById(text1.substr(1));
             const color = SlackUtil.channelColor(channel.name);
+            const url = `slack://channel?team=${team.id}&id=${channel.id}`;
             // <ss-channelname> does not work...
-            const withLink = `<span class="channel-name" style="color: ${color};">#${text2}</span>`;
+            const withLink = `<a href = "${url}" class="channel-name" style="color: ${color};">#${channel.name}</a>`;
             return new ParseLinkResult('#' + text2, withLink);
         } else if (text1[0] === '@' || text1[0] === '!') {
             if (text2[0] === '@') {

@@ -41,6 +41,11 @@ a {
 
 .channel-name {
   font-weight: bold;
+  text-decoration: none;
+}
+
+.channel-name:hover {
+  text-decoration: none;
 }
 
 .contents {

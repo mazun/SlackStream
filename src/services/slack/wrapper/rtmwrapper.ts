@@ -22,6 +22,7 @@ export class RTMClientWrapper {
             console.log(rtmStartData);
             this.subTeams = rtmStartData.subteams.all.map(s => s.handle);
             this.teamID = rtmStartData.team.id;
+            this.client.dataStore.teamID = rtmStartData.team.id; // for convenience
         });
 
         this.client.on(RTM_EVENTS.MESSAGE, (message: RTMMessage) => {
