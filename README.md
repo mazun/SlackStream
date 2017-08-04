@@ -9,7 +9,7 @@ Slack Stream, an all-at-a-glance slack client, is just for you!
 - y.mazun belongs to two teams
 - Messages of all channels in the two teams are shown in place like a *stream*
 
-![SS](https://github.com/mazun/ASlack-Stream/blob/master/images/screenshot01.png)
+![SS](https://github.com/mazun/SlackStream/blob/master/images/screenshot01.png)
 
 ## Features
 
@@ -35,7 +35,7 @@ http://1341shangrila.dip.jp/slackstream/build
 ## Keyboard shortcuts
 
 - **Ctrl+Alt+Enter**:
-Activate ASlack-Stream window and open a message writing form (the target channel is the channel of the latest message).
+Activate the SlackStream window and open a message writing form (the target channel is the channel of the latest message).
 You can use this shortcut even when Slack-Stream window is not active.
 
 - **↑**:
