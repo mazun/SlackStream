@@ -61,10 +61,6 @@ yarn start
 ENV=development yarn electron
 ```
 
-## Old repository
-
-https://github.com/TazuKongari/Slack-Stream
-
 ## Mascot Character
 
 <img src="https://github.com/mazun/SlackStream/blob/master/images/ss-chan.png" height="256px">
