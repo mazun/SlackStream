@@ -1,0 +1,11 @@
+github.com/kongaribug
+- original idea
+- maintainer for Windows
+
+github.com/mazun
+- porting to Angular
+- maintainer for MacOS
+
+github.com/soramichi
+- various bug fixes
+- maintainer for Linux
