@@ -1,6 +1,6 @@
 # Slack Stream
 [![CircleCI](https://circleci.com/gh/mazun/SlackStream.svg?style=svg)](https://circleci.com/gh/mazun/SlackStream)
-[English](https://github.com/mazun/SlackStream/blob/master/README.md)
+[[English]](https://github.com/mazun/SlackStream/blob/master/README.md)
 [日本語]
 
 目的のチャンネルを見つけるためにSlack クライアントを何度もクリックして消耗していませんか？
