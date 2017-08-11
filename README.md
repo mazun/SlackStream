@@ -1,5 +1,7 @@
 # Slack Stream
 [![CircleCI](https://circleci.com/gh/mazun/SlackStream.svg?style=svg)](https://circleci.com/gh/mazun/SlackStream)
+[English]
+[[日本語]](https://github.com/mazun/SlackStream/blob/master/README.ja.md)
 
 Ever had troubles clicking the slack client many times to find the conversation you're looking for?
 
