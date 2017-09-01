@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { RTMClientWrapper } from './wrapper/rtmwrapper';
 import { WebClientWrapper } from './wrapper/webwrapper';
 import { EmojiService } from './emoji.service';
-import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved, Channel } from './slack.types';
+import { RTMMessage, DataStore, Team, RTMReactionAdded, RTMReactionRemoved,
+         RTMEmojiAdded, RTMEmojiRemoved, Channel } from './slack.types';
 import { SlackUtil } from './slack-util';
 import { SlackParser } from './slack-parser.service';
 
@@ -15,6 +16,16 @@ export class SlackReactionAdded {
 
 export class SlackReactionRemoved {
     constructor(public reaction: RTMReactionRemoved, public dataStore: DataStore) {
+    }
+}
+
+export class SlackEmojiAdded {
+    constructor(public emojiAdded: RTMEmojiAdded) {
+    }
+}
+
+export class SlackEmojiRemoved {
+    constructor(public emojiRemoved: RTMEmojiRemoved) {
     }
 }
 
@@ -140,6 +151,8 @@ export interface SlackClient {
     messages: Observable<SlackMessage>;
     reactionAdded: Observable<SlackReactionAdded>;
     reactionRemoved: Observable<SlackReactionRemoved>;
+    emojiAdded: Observable<SlackEmojiAdded>;
+    emojiRemoved: Observable<SlackEmojiRemoved>;
     emoji: EmojiService;
     token: string;
     dataStore: DataStore;
@@ -192,6 +205,14 @@ export class SlackClientImpl implements SlackClient {
 
     get reactionRemoved(): Observable<SlackReactionRemoved> {
         return this.rtm.reactionRemoved;
+    }
+
+    get emojiAdded(): Observable<SlackEmojiAdded> {
+        return this.rtm.emojiAdded;
+    }
+
+    get emojiRemoved(): Observable<SlackEmojiRemoved> {
+        return this.rtm.emojiRemoved;
     }
 
     get subTeams(): string[] {

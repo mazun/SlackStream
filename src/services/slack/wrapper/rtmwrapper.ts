@@ -1,12 +1,15 @@
 import { RtmClient, RTM_EVENTS, MemoryDataStore, CLIENT_EVENTS } from '@slack/client';
-import { RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved } from '../slack.types';
+import { RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved,
+         RTMEmojiChanged, RTMEmojiAdded, RTMEmojiRemoved } from '../slack.types';
 import { Subject } from 'rxjs';
-import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from '../slack-client';
+import { SlackMessage, SlackReactionAdded, SlackReactionRemoved, SlackEmojiAdded, SlackEmojiRemoved } from '../slack-client';
 
 export class RTMClientWrapper {
     messages = new Subject<SlackMessage>();
     reactionAdded = new Subject<SlackReactionAdded>();
     reactionRemoved = new Subject<SlackReactionRemoved>();
+    emojiAdded = new Subject<SlackEmojiAdded>();
+    emojiRemoved = new Subject<SlackEmojiRemoved>();
     subTeams: string[] = [];
     teamID: string;
 
@@ -35,6 +38,14 @@ export class RTMClientWrapper {
 
         this.client.on(RTM_EVENTS.REACTION_REMOVED, (reaction: RTMReactionRemoved) => {
             this.reactionRemoved.next(new SlackReactionAdded(reaction, this.client.dataStore as DataStore));
+        });
+
+        this.client.on(RTM_EVENTS.EMOJI_CHANGED, (emojiChanged: RTMEmojiChanged) => {
+            if (emojiChanged.subtype === 'add') {
+                this.emojiAdded.next(new SlackEmojiAdded(emojiChanged as RTMEmojiAdded));
+            } else if (emojiChanged.subtype === 'remove') {
+                this.emojiRemoved.next(new SlackEmojiRemoved(emojiChanged as RTMEmojiRemoved));
+            }
         });
     }
 

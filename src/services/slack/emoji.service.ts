@@ -36,6 +36,14 @@ export class EmojiService {
         }
     }
 
+    addEmoji(name: string, value: string) {
+        this.emojiList[name] = value;
+    }
+
+    removeEmoji(names: string[]) {
+        // TODO
+    }
+
     useEmoji(emoji: string) {
         if (!this.usedFrequency[emoji]) {
             this.usedFrequency[emoji] = 1;
