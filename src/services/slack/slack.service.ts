@@ -5,7 +5,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { SettingService } from '../setting.service';
 import { SlackClient, SlackClientImpl } from './slack-client';
 import { Attachment, MessageReactionTarget, FileReactionTarget, FileCommentReactionTarget } from './slack.types';
-import { SlackMessage, SlackReactionAdded, SlackReactionRemoved } from './slack-client';
+import { SlackMessage, SlackReactionAdded, SlackReactionRemoved, SlackEmojiAdded, SlackEmojiRemoved } from './slack-client';
 import { SlackParser, LinkParser, EmojiParser, NewLineParser, MarkDownParser, ComposedParser } from './slack-parser.service';
 
 export class DisplaySlackReactionInfo {
@@ -154,6 +154,8 @@ export class SlackService {
             this.subscription.add(client.messages.subscribe(message => this.onReceiveMessage(message, parser, client)));
             this.subscription.add(client.reactionAdded.subscribe(reaction => this.onReactionAdded(reaction, parser, client)));
             this.subscription.add(client.reactionRemoved.subscribe(reaction => this.onReactionRemoved(reaction, parser, client)));
+            this.subscription.add(client.emojiAdded.subscribe(emojiAdded => this.onEmojiAdded(emojiAdded, client)));
+            this.subscription.add(client.emojiRemoved.subscribe(emojiRemoved => this.onEmojiRemoved(emojiRemoved, client)));
 
             return client;
         });
@@ -224,6 +226,16 @@ export class SlackService {
         }
         console.log(reaction.reaction);
         this._onChange.next(this);
+    }
+
+    async onEmojiAdded(emojiAdded: SlackEmojiAdded, client: SlackClient): Promise<void> {
+        console.log('onEmojiAdded');
+        client.emoji.addEmoji(emojiAdded.emojiAdded.name, emojiAdded.emojiAdded.value);
+        this._onChange.next(this);
+    }
+
+    async onEmojiRemoved(emojiRemoved: SlackEmojiRemoved, client: SlackClient): Promise<void> {
+        // TODO
     }
 
     async onReceiveMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
