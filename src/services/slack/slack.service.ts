@@ -229,7 +229,6 @@ export class SlackService {
     }
 
     async onEmojiAdded(emojiAdded: SlackEmojiAdded, client: SlackClient): Promise<void> {
-        console.log('onEmojiAdded');
         client.emoji.addEmoji(emojiAdded.emojiAdded.name, emojiAdded.emojiAdded.value);
         this._onChange.next(this);
     }
