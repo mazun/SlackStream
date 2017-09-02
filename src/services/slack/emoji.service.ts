@@ -41,7 +41,9 @@ export class EmojiService {
     }
 
     removeEmoji(names: string[]) {
-        // TODO
+        for (const name of names) {
+            delete this.emojiList[name];
+        }
     }
 
     useEmoji(emoji: string) {
