@@ -123,6 +123,21 @@ export interface RTMReactionAdded extends RTMReactionBase {
 export interface RTMReactionRemoved extends RTMReactionBase {
 }
 
+export interface RTMEmojiChanged {
+    type: string;
+    subtype: string;
+    event_ts: string;
+}
+
+export interface RTMEmojiAdded extends RTMEmojiChanged {
+    name: string;
+    value: string;
+}
+
+export interface RTMEmojiRemoved extends RTMEmojiChanged {
+    names: string[];
+}
+
 export interface User {
     id: string;
     name: string;
