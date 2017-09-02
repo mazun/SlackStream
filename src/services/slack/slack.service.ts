@@ -234,7 +234,8 @@ export class SlackService {
     }
 
     async onEmojiRemoved(emojiRemoved: SlackEmojiRemoved, client: SlackClient): Promise<void> {
-        // TODO
+        client.emoji.removeEmoji(emojiRemoved.emojiRemoved.names);
+        this._onChange.next(this);
     }
 
     async onReceiveMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
