@@ -10,7 +10,17 @@ export class EmojiParser implements SlackParser {
     constructor(private emojiService: EmojiService) {
     }
 
+    isEmojiOnly(text: string): boolean {
+        if (text.match(/^(:[a-zA-Z0-9_+\-]+: *)+$/)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     parse(text: string, dataStore: DataStore): string {
+        const emojiOnly = this.isEmojiOnly(text);
+
         return text.replace(/(:[a-zA-Z0-9_+\-]+:)+/g, (value) => {
             let emoji: string;
             let withTitle: boolean;
@@ -26,7 +36,7 @@ export class EmojiParser implements SlackParser {
                     skinTone = (n > 5 ? 5 : n); // Emojione supports up to 5 only
                 } else { // An emoji appears. Print the previous emoji with the found modifiers.
                     if (!!emoji) {
-                        ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone);
+                        ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone, emojiOnly);
                     }
                     // Reset modifiers for the next emoji.
                     emoji = ':' + s + ':';
@@ -36,7 +46,7 @@ export class EmojiParser implements SlackParser {
             }
 
             if (!!emoji) {
-                ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone);
+                ret += this.emojiService.convertEmoji(emoji, withTitle, skinTone, emojiOnly);
             }
 
             if (ret === '') {
