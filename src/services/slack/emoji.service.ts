@@ -55,16 +55,17 @@ export class EmojiService {
         fs.writeFile(this.frequencyFile, JSON.stringify(this.usedFrequency), () => {}); // async
     };
 
-    convertEmoji(emoji: string, withTitle = true, skinTone = 0): string {
+    convertEmoji(emoji: string, withTitle = true, skinTone = 0, emojiOnly = false): string {
+        const emojiBigClass = (emojiOnly ? 'emoji-big' : '');
         if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
             const image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
             if (image_url.substr(0, 6) === 'alias:') {
                 return this.convertEmoji(`:${image_url.substr(6)}:`);
             } else {
                 if (withTitle) {
-                    return `<img class="emojione" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
+                    return `<img class="emojione ${emojiBigClass}" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
                 } else {
-                    return `<img class="emojione" src="${image_url}" />`;
+                    return `<img class="emojione ${emojiBigClass}" src="${image_url}" />`;
                 }
             }
         } else if (emoji !== emojione.shortnameToImage(emoji)) {
@@ -75,6 +76,9 @@ export class EmojiService {
             let $img = $(emojione.shortnameToImage(emoji));
             if (!withTitle) {
                 $img.removeAttr('title');
+            }
+            if (emojiOnly) {
+                $img.addClass(emojiBigClass);
             }
             return $img[0].outerHTML;
         } else {
