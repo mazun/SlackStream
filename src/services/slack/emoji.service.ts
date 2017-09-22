@@ -56,33 +56,30 @@ export class EmojiService {
     };
 
     convertEmoji(emoji: string, withTitle = true, skinTone = 0, emojiOnly = false): string {
-        const emojiOnlyClass = (emojiOnly ? 'emoji-only' : '');
+        let $img;
+
         if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
             const image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
             if (image_url.substr(0, 6) === 'alias:') {
                 return this.convertEmoji(`:${image_url.substr(6)}:`);
             } else {
-                if (withTitle) {
-                    return `<img class="emojione ${emojiOnlyClass}" title="${emoji.substr(1, emoji.length - 2)}" src="${image_url}" />`;
-                } else {
-                    return `<img class="emojione ${emojiOnlyClass}" src="${image_url}" />`;
-                }
+                $img = $(`<img class="emojione" src="${image_url}" title="${emoji.substr(1, emoji.length - 2)}"/>`);
             }
         } else if (emoji !== emojione.shortnameToImage(emoji)) {
             if (skinTone !== 0) {
                 emoji = emoji.substr(0, emoji.length - 1) + '_tone' + skinTone + ':';
             }
-
-            let $img = $(emojione.shortnameToImage(emoji));
-            if (!withTitle) {
-                $img.removeAttr('title');
-            }
-            if (emojiOnly) {
-                $img.addClass(emojiOnlyClass);
-            }
-            return $img[0].outerHTML;
+            $img = $(emojione.shortnameToImage(emoji));
         } else {
             return emoji;
         }
+
+        if (!withTitle) {
+            $img.removeAttr('title');
+        }
+        if (emojiOnly) {
+            $img.addClass('emoji-only');
+        }
+        return $img[0].outerHTML;
     }
 }
