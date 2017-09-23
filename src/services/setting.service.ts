@@ -20,12 +20,24 @@ export class SettingService {
         return this.setting.tokens;
     }
 
+    set tokens(tokens: string[]) {
+        this.setting.tokens = tokens;
+    }
+
     get hideButtons(): boolean {
         return this.setting.hideButtons;
     }
 
+    set hideButtons(hideButtons: boolean) {
+        this.setting.hideButtons = hideButtons;
+    }
+
     get imageExpansion(): string {
         return this.setting.imageExpansion;
+    }
+
+    set imageExpansion(imageExpansion: string) {
+        this.setting.imageExpansion = imageExpansion;
     }
 
     constructor() {
@@ -35,9 +47,9 @@ export class SettingService {
             this.setting = {} as Setting;
         }
 
-        if (this.setting.tokens === undefined) { this.setting.tokens = []; }
-        if (this.setting.hideButtons === undefined) { this.setting.hideButtons = false; }
-        if (this.setting.imageExpansion === undefined) { this.setting.imageExpansion = 'normal'; }
+        if (this.tokens === undefined) { this.tokens = ['']; }
+        if (this.hideButtons === undefined) { this.hideButtons = false; }
+        if (this.imageExpansion === undefined) { this.imageExpansion = 'normal'; }
     }
 
     save() {

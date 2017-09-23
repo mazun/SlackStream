@@ -7,7 +7,7 @@
 
         <div *ngFor="let index of tokenIndexes">
             <div class="input-group token">
-                <input type="text" class="form-control" [(ngModel)]="tokens[index]" placeholder="Your token">
+                <input type="text" class="form-control" [(ngModel)]="setting.tokens[index]" placeholder="Your token">
                 <span class="input-group-btn">
                     <button class="btn" (click)="removeToken(index)">
                         <span class="glyphicon glyphicon-remove"></span>
@@ -20,17 +20,17 @@
 
         <h3>View Settings</h3>
         <div>
-            <input type="checkbox" value="true" id="hide-buttons-checkbox" [(ngModel)]="hideButtons">
+            <input type="checkbox" value="true" id="hide-buttons-checkbox" [(ngModel)]="setting.hideButtons">
             <label for="hide-buttons-checkbox">Hide buttons</label>
         </div>
 
         <h3>Image expansion</h3>
         <div>
-            <input type="radio" name="img_exp" value="normal" id="image-expansion-normal" [(ngModel)]="imageExpansion">
+            <input type="radio" name="img_exp" value="normal" id="image-expansion-normal" [(ngModel)]="setting.imageExpansion">
             <label for="image-expansion-normal">Normal</label>
-            <input type="radio" name="img_exp" value="small" id="image-expansion-small" [(ngModel)]="imageExpansion">
+            <input type="radio" name="img_exp" value="small" id="image-expansion-small" [(ngModel)]="setting.imageExpansion">
             <label for="image-expansion-small">Small</label>
-            <input type="radio" name="img_exp" value="never" id="image-expansion-never" [(ngModel)]="imageExpansion">
+            <input type="radio" name="img_exp" value="never" id="image-expansion-never" [(ngModel)]="setting.imageExpansion">
             <label for="image-expansion-never">Never</label>
         </div>
 
