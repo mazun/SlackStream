@@ -8,21 +8,11 @@ import { SettingService } from '../../services/setting.service';
     styles: [require('./setting.component.css').toString()]
 })
 export class SettingComponent implements OnInit {
-    tokens: string[];
-    hideButtons: boolean;
-    imageExpansion: string;
-
     get tokenIndexes(): number[] {
-        return this.tokens.map((elem, index, array) => index);
+        return this.setting.tokens.map((elem, index, array) => index);
     }
 
     constructor(public setting: SettingService, private router: Router) {
-        this.tokens = this.setting.tokens;
-        this.hideButtons = this.setting.hideButtons;
-        this.imageExpansion = this.setting.imageExpansion;
-        if (this.tokens.length === 0) {
-            this.tokens = [''];
-        }
     }
 
     ngOnInit() {
@@ -30,18 +20,15 @@ export class SettingComponent implements OnInit {
     }
 
     addToken() {
-        this.tokens.push('');
+        this.setting.tokens.push('');
     }
 
     exit() {
-        this.setting.setting.tokens = this.tokens;
-        this.setting.setting.hideButtons = this.hideButtons;
-        this.setting.setting.imageExpansion = this.imageExpansion;
         this.setting.save();
         this.router.navigate(['/']);
     }
 
     removeToken(index: number) {
-        this.tokens.splice(index, 1);
+        this.setting.tokens.splice(index, 1);
     }
 }
