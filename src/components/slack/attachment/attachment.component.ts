@@ -39,7 +39,7 @@ export class SlackAttachmentComponent {
     }
 
     get showImage(): boolean {
-        if (!!this.attachment['image_url'] && this.setting.imageExpansion !== 'never') {
+        if (!!this.attachment['image_url'] && this.setting.imageExpansionSize.selected !== 'Never') {
             return true;
         } else {
             return false;
@@ -47,6 +47,6 @@ export class SlackAttachmentComponent {
     }
 
     get smallImage(): boolean {
-        return (this.setting.imageExpansion === 'small');
+        return (this.setting.imageExpansionSize.selected === 'Small');
     }
 }

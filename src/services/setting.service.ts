@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { RadioButton, RadioButtonFactory } from '../components/setting/radiobutton/radiobutton';
 import * as fs from 'fs';
 
 let settingPath = '';
@@ -9,7 +10,7 @@ export function setSettingPath(path: string) {
 interface Setting {
     tokens: string[];
     hideButtons: boolean;
-    imageExpansion: string;
+    imageExpansionSize: RadioButton;
 }
 
 @Injectable()
@@ -32,12 +33,12 @@ export class SettingService {
         this.setting.hideButtons = hideButtons;
     }
 
-    get imageExpansion(): string {
-        return this.setting.imageExpansion;
+    get imageExpansionSize(): RadioButton {
+        return this.setting.imageExpansionSize;
     }
 
-    set imageExpansion(imageExpansion: string) {
-        this.setting.imageExpansion = imageExpansion;
+    set imageExpansionSize(imageExpansionSize: RadioButton) {
+        this.setting.imageExpansionSize = imageExpansionSize;
     }
 
     constructor() {
@@ -49,7 +50,9 @@ export class SettingService {
 
         if (this.tokens === undefined) { this.tokens = ['']; }
         if (this.hideButtons === undefined) { this.hideButtons = false; }
-        if (this.imageExpansion === undefined) { this.imageExpansion = 'normal'; }
+        if (this.imageExpansionSize === undefined) {
+            this.imageExpansionSize = RadioButtonFactory.get('Image Expansion', ['Normal', 'Small', 'Never'], 'Normal');
+        }
     }
 
     save() {
