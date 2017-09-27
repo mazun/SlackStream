@@ -24,16 +24,7 @@
             <label for="hide-buttons-checkbox">Hide buttons</label>
         </div>
 
-        <h3>Image expansion</h3>
-        <div>
-            <input type="radio" name="img_exp" value="normal" id="image-expansion-normal" [(ngModel)]="setting.imageExpansion">
-            <label for="image-expansion-normal">Normal</label>
-            <input type="radio" name="img_exp" value="small" id="image-expansion-small" [(ngModel)]="setting.imageExpansion">
-            <label for="image-expansion-small">Small</label>
-            <input type="radio" name="img_exp" value="never" id="image-expansion-never" [(ngModel)]="setting.imageExpansion">
-            <label for="image-expansion-never">Never</label>
-        </div>
-
+        <ss-radiobutton [button]="setting.imageExpansionSize"></ss-radiobutton>
     </div>
 
     <hr>

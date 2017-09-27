@@ -1,0 +1,7 @@
+<h3>{{button.title}}</h3>
+<div>
+  <span *ngFor="let choice of choices">
+    <input type="radio" [name]="button.name" [value]="choice.value" [id]="choice.id" [(ngModel)]="selected">
+    <label [for]="choice.id">{{choice.value}}</label>
+  </span>
+</div>
