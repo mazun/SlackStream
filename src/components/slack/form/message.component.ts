@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, OnChanges, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms'; // tslint:disable-line
 import * as $ from 'jquery';
 import 'jquery-textcomplete';
 import { EmojiService } from '../../../services/slack/emoji.service';
