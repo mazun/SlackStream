@@ -301,7 +301,10 @@ export class SlackService {
     }
 
     async changeMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
-        const edited = this.infos.find(m => m.message.rawMessage.ts === message.rawMessage.message.ts);
+        const edited = this.infos.find(m =>
+            m.message.rawMessage.ts === message.rawMessage.message.ts &&
+            m.message.rawMessage.channel === message.rawMessage.channel
+        );
         if (edited) {
             edited.edited = true;
             edited.message.text = message.rawMessage.message.text;
