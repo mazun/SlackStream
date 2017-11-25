@@ -120,12 +120,6 @@ export class SlackMessage {
         return SlackUtil.getChannelName(this.message.channel, this.dataStore);
     }
 
-    get channelLink(): string {
-        const team = this.dataStore.getTeamById(this.message.team_id);
-        const channel = this.dataStore.getChannelById(this.message.channel);
-        return `slack://channel?team=${team.id}&id=${channel.id}`;
-    }
-
     get subType(): string {
         return this.message.subtype;
     }
