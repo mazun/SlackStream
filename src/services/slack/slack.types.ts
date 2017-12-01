@@ -170,6 +170,8 @@ export interface UserProfile {
     image_72: string;
     image_192: string;
     image_512: string;
+
+    display_name: string;
 }
 
 export interface Members {
