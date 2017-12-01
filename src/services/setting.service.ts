@@ -95,7 +95,7 @@ export class SettingService {
         let loadedSetting: Setting;
         try {
             loadedSetting = JSON.parse(fs.readFileSync(settingPath, 'utf8'));
-            // if setting.json exists but no version number is included, support it is version 1
+            // if setting.json exists but no version number is included, suppose it is version 1
             if (loadedSetting.version === undefined) {
                 loadedSetting.version = 1;
             }
