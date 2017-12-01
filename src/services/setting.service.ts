@@ -48,7 +48,7 @@ export class SettingService {
             this.setting = {} as Setting;
         }
 
-        if (this.tokens === undefined) { this.tokens = ['']; }
+        if (this.tokens === undefined) { this.tokens = []; }
         if (this.hideButtons === undefined) { this.hideButtons = false; }
         if (this.imageExpansionSize === undefined) {
             this.imageExpansionSize = RadioButtonFactory.get('Image Expansion', ['Normal', 'Small', 'Never'], 'Normal');
