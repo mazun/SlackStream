@@ -33,12 +33,6 @@ export class SettingComponent implements OnInit {
     }
 
     toggleToken(index: number) {
-        const currentlyEnabled =  this.setting.tokens[index].enabled;
-
-        if (currentlyEnabled) {
-            this.setting.tokens[index].enabled = false;
-        } else {
-            this.setting.tokens[index].enabled = true;
-        }
+        this.setting.tokens[index].enabled = !this.setting.tokens[index].enabled;
     }
 }
