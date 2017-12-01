@@ -128,8 +128,9 @@ export class SlackService {
             cache[slack.token] = [slack, false];
         }
 
-        this.clients = this.setting.tokens.map(token => {
+        this.clients = this.setting.tokens.map(t => {
             let client: SlackClient;
+            const token: string = t.value;
             if (cache[token]) {
                 client = cache[token][0];
                 cache[token][1] = true;

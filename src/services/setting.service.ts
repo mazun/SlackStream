@@ -8,21 +8,69 @@ export function setSettingPath(path: string) {
 }
 
 interface Setting {
+    version: number;
+}
+
+interface SettingVer1 extends Setting {
+    version: number;
     tokens: string[];
     hideButtons: boolean;
     imageExpansionSize: RadioButton;
 }
 
+function MigrateSettingEmptyToVer1(): SettingVer1 {
+    let newSetting = {} as SettingVer1;
+
+    newSetting.version = 1;
+    newSetting.tokens = [];
+    newSetting.hideButtons = false;
+    newSetting.imageExpansionSize = RadioButtonFactory.get('Image Expansion', ['Normal', 'Small', 'Never'], 'Normal');
+
+    return newSetting;
+}
+
+export interface Token {
+    value: string;
+    enabled: boolean;
+}
+
+interface SettingVer2 extends Setting {
+    version: number;
+    tokens: Token[];
+    hideButtons: boolean;
+    imageExpansionSize: RadioButton;
+}
+
+function MigrateSettingVer1ToVer2(oldSetting: SettingVer1): SettingVer2 {
+    let newSetting: SettingVer2 = {} as SettingVer2;
+
+    newSetting.version = 2;
+    newSetting.tokens = [];
+    for (const t of oldSetting.tokens) {
+        newSetting.tokens.push({ value: t, enabled: true } as Token);
+    }
+    newSetting.hideButtons = oldSetting.hideButtons;
+    newSetting.imageExpansionSize = oldSetting.imageExpansionSize;
+
+    return newSetting;
+}
+
 @Injectable()
 export class SettingService {
-    setting: Setting;
+    currentSettingVersion: number = 2;
+    setting: SettingVer2;
+    settingMigrations: any[];
 
-    get tokens(): string[] {
+    get tokens(): Token[] {
         return this.setting.tokens;
     }
 
-    set tokens(tokens: string[]) {
+    set tokens(tokens: Token[]) {
         this.setting.tokens = tokens;
+    }
+
+    isTokenEnabled(token: string): boolean {
+        return this.setting.tokens[this.setting.tokens.findIndex(t => t.value === token)].enabled;
     }
 
     get hideButtons(): boolean {
@@ -42,16 +90,33 @@ export class SettingService {
     }
 
     constructor() {
+        let loadedSetting: Setting;
         try {
-            this.setting = JSON.parse(fs.readFileSync(settingPath, 'utf8'));
+            loadedSetting = JSON.parse(fs.readFileSync(settingPath, 'utf8'));
+            // if setting.json exists but no version number is included, support it is version 1
+            if (loadedSetting.version === undefined) {
+                loadedSetting.version = 1;
+            }
         } catch (e) {
-            this.setting = {} as Setting;
+            // if setting.json does not exist, it is version 0 (empty setting)
+            loadedSetting = {} as Setting;
+            loadedSetting.version = 0;
         }
 
-        if (this.tokens === undefined) { this.tokens = []; }
-        if (this.hideButtons === undefined) { this.hideButtons = false; }
-        if (this.imageExpansionSize === undefined) {
-            this.imageExpansionSize = RadioButtonFactory.get('Image Expansion', ['Normal', 'Small', 'Never'], 'Normal');
+        this.settingMigrations = [];
+        this.settingMigrations.push(MigrateSettingEmptyToVer1);
+        this.settingMigrations.push(MigrateSettingVer1ToVer2);
+
+        let migrated = false;
+        for (let v = loadedSetting.version; v < this.currentSettingVersion; v++) {
+            migrated = true;
+            loadedSetting = this.settingMigrations[v](loadedSetting);
+        }
+        this.setting = loadedSetting as SettingVer2;
+
+        // save if a migration is invoked
+        if (migrated) {
+            this.save();
         }
     }
 
