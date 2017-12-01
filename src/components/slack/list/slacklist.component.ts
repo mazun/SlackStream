@@ -59,7 +59,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     get filteredMessages(): DisplaySlackMessageInfo[] {
-        return this.messages.filter(m => this.filterContext.shouldShow(m));
+        const filteredByWorkplace = this.messages.filter(m => this.setting.isTokenEnabled(m.client.token));
+        return filteredByWorkplace.filter(m => this.filterContext.shouldShow(m));
     }
 
     get doesHaveMultipleTeams(): boolean {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingService } from '../../services/setting.service';
+import { SettingService, Token } from '../../services/setting.service';
 
 @Component({
     selector: 'ss-setting',
@@ -20,7 +20,7 @@ export class SettingComponent implements OnInit {
     }
 
     addToken() {
-        this.setting.tokens.push('');
+        this.setting.tokens.push({ value: '', enabled: true } as Token);
     }
 
     exit() {
@@ -30,5 +30,9 @@ export class SettingComponent implements OnInit {
 
     removeToken(index: number) {
         this.setting.tokens.splice(index, 1);
+    }
+
+    toggleToken(index: number) {
+        this.setting.tokens[index].enabled = !this.setting.tokens[index].enabled;
     }
 }

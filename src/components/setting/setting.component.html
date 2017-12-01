@@ -7,10 +7,16 @@
 
         <div *ngFor="let index of tokenIndexes">
             <div class="input-group token">
-                <input type="text" class="form-control" [(ngModel)]="setting.tokens[index]" placeholder="Your token">
+                <input type="text" class="form-control" [(ngModel)]="setting.tokens[index].value" placeholder="Your token" [disabled]="!setting.tokens[index].enabled">
                 <span class="input-group-btn">
                     <button class="btn" (click)="removeToken(index)">
                         <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button *ngIf="setting.tokens[index].enabled" class="btn" (click)="toggleToken(index)">
+                        <span class="glyphicon glyphicon-volume-up"></span>
+                    </button>
+                    <button *ngIf="!setting.tokens[index].enabled" class="btn" (click)="toggleToken(index)">
+                        <span class="glyphicon glyphicon-volume-off"></span>
                     </button>
                 </span>
             </div>
