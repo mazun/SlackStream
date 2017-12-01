@@ -55,10 +55,12 @@ function MigrateSettingVer1ToVer2(oldSetting: SettingVer1): SettingVer2 {
     return newSetting;
 }
 
+const currentSettingVersion = 2;
+type SettingCurrent = SettingVer2;
+
 @Injectable()
 export class SettingService {
-    currentSettingVersion: number = 2;
-    setting: SettingVer2;
+    setting: SettingCurrent;
     settingMigrations: any[];
 
     get tokens(): Token[] {
@@ -108,11 +110,11 @@ export class SettingService {
         this.settingMigrations.push(MigrateSettingVer1ToVer2);
 
         let migrated = false;
-        for (let v = loadedSetting.version; v < this.currentSettingVersion; v++) {
+        for (let v = loadedSetting.version; v < currentSettingVersion; v++) {
             migrated = true;
             loadedSetting = this.settingMigrations[v](loadedSetting);
         }
-        this.setting = loadedSetting as SettingVer2;
+        this.setting = loadedSetting as SettingCurrent;
 
         // save if a migration is invoked
         if (migrated) {
