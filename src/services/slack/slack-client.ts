@@ -128,6 +128,14 @@ export class SlackMessage {
         return this.message.ts;
     }
 
+    get threadTs(): string {
+        return this.message.thread_ts;
+    }
+
+    get isThread(): boolean {
+        return (this.threadTs !== undefined);
+    }
+
     get rawMessage(): RTMMessage {
         return this.message;
     }

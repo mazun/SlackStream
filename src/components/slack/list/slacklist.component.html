@@ -27,6 +27,7 @@
                     <ss-teamicon [team]="info.message.dataStore.getTeamById(info.message.teamID)"></ss-teamicon>
                     <span class="user-name" (click)="onClickSendDM(info)">{{info.message.userName}}</span>
                     <ss-channelname [channelName]="info.message.channelName" [channelID]="info.message.channelID" [teamID]="info.message.teamID"></ss-channelname>
+                    <span *ngIf="info.message.isThread" class="thread">(thread)</span>
                     <span *ngIf="showTeamName" class="team-name">({{info.message.teamName}})</span>
                     <span class="glyphicon glyphicon-off solo-button" [class.icon-button]="!soloMode" [class.solo-mode]="soloMode" [class.hide-buttons]="setting.hideButtons" (click)="onClickSoloMode(info)"></span>
                     <span class="glyphicon glyphicon-volume-off muteMode icon-button" [class.hide-buttons]="setting.hideButtons" (click)="onClickMuteMode(info)"></span>
