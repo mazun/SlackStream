@@ -12,7 +12,6 @@ interface Setting {
 }
 
 interface SettingVer1 extends Setting {
-    version: number;
     tokens: string[];
     hideButtons: boolean;
     imageExpansionSize: RadioButton;
@@ -35,7 +34,6 @@ export interface Token {
 }
 
 interface SettingVer2 extends Setting {
-    version: number;
     tokens: Token[];
     hideButtons: boolean;
     imageExpansionSize: RadioButton;
