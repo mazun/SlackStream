@@ -27,6 +27,12 @@ a {
   float: right;
 }
 
+.thread {
+  font-size: small;
+  font-weight: bold;
+  color: #000000;
+}
+
 .user-name {
   font-weight: bold;
   cursor: pointer;

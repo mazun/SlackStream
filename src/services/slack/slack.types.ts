@@ -65,6 +65,7 @@ export interface RTMMessage {
     bot_id: string;
     text: string;
     ts: string;
+    thread_ts: string;
 
     attachments: Attachment[];
     comment: Comment;
