@@ -159,6 +159,8 @@ export interface SlackClient {
     token: string;
     dataStore: DataStore;
     subTeams: string[];
+    team: Team;
+    channels: Channel[];
     attachmentTextParser: SlackParser;
 
     start(): void;
@@ -219,6 +221,18 @@ export class SlackClientImpl implements SlackClient {
 
     get subTeams(): string[] {
         return this.rtm.subTeams;
+    }
+
+    get team(): Team {
+        return this.rtm.dataStore.getTeamById(this.rtm.teamID);
+    }
+
+    get channels(): Channel[] {
+        return this.rtm.channels;
+    }
+
+    get memberChannels(): Channel[] {
+        return this.rtm.memberChannels;
     }
 
     async getEmoji(): Promise<{ string: string }> {

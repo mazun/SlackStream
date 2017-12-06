@@ -12,6 +12,10 @@ import { SubmitContext, PostMessageContext, EditMessageContext } from './submit-
 import { FilterContext, SoloChannelFilterContext, NoFilterContext, MuteChannelFilterContext } from './filter-context';
 import { Team } from '../../../services/slack/slack.types';
 
+import * as $ from 'jquery';
+import 'bootstrap';
+import 'select2';
+
 class MutedChannel {
     ID: string;
     name: string;
@@ -91,6 +95,14 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.router.navigate(['/setting']);
             return;
         }
+
+        $('.search-channel-form').select2({
+            dropdownParent: $('#channel-search-modal')
+        });
+        $('.search-channel-form').on('change', (e) => {
+            $('#channel-search-modal').modal('hide');
+            this.onSelectChannelRequest($(e.target).val());
+        });
 
         this.subscription.add(this.slack.onChange.subscribe(s => this.onChange(s)));
         this.subscription.add(this.events.activateMessageForm.subscribe(() => this.activateMessageForm()));
@@ -268,5 +280,37 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickSetting() {
         this.router.navigate(['setting']);
+    }
+
+    onSelectChannelRequest(id: string) {
+        let teamID = id.split('-')[0];
+        let channelID = id.split('-')[1];
+        let client = null;
+        for (let i = 0; i < this.slackServices.length; i++) {
+            if (this.slackServices[i].team.id === teamID) {
+                client = this.slackServices[i];
+            }
+        }
+
+        this.submitContext = null;
+        this.detector.detectChanges();
+        setTimeout(() => {
+            this.submitContext = new PostMessageContext(
+                client,
+                channelID,
+                teamID,
+                null,
+                this.filteredMessages
+            );
+            this.detector.detectChanges();
+        }, 1);
+    }
+
+    onKeyDown(event: KeyboardEvent) {
+        if (event.ctrlKey && event.which === 84) { // Ctrl + T
+            event.preventDefault();
+            $('#channel-search-modal').modal('show');
+            $('.search-channel-form').select2('open');
+        }
     }
 }

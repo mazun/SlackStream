@@ -1,4 +1,4 @@
-<div class="main-contents">
+<div class="main-contents" (window:keydown)="onKeyDown($event, textArea)">
     <div *ngIf="showForm" class="message-form">
         <ss-messageform
             [channelLikeID]="submitContext.channelLikeID"
@@ -15,6 +15,21 @@
             (changeMessage)="onChangeMessageRequest($event)"
         >
         </ss-messageform>
+    </div>
+
+    <div id="channel-search-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label>Message to ...</label>
+                    <select name="selectedChannel" class="search-channel-form" style="width: 100%;" #selectedChannel>
+                        <ng-container *ngFor="let slackService of slackServices" >
+                            <option *ngFor="let channel of slackService.memberChannels" [value]="slackService.dataStore.teamID + '-' + channel['id']">{{slackService.team.name}}: {{channel['name']}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 
     <table class="table table-striped">
