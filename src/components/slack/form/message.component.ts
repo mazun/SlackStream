@@ -15,6 +15,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     @Output() close = new EventEmitter();
     @Output() changeChannel = new EventEmitter<boolean>();
     @Output() changeMessage = new EventEmitter<boolean>();
+    @Output() searchChannel = new EventEmitter();
 
     @Input() channelLikeID: string;
     @Input() dataStore: DataStore;
@@ -180,4 +181,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
         textArea.selectionEnd = position + 1;
     }
 
+    onSearchChannelRequest(): void {
+        this.searchChannel.emit();
+    }
 }
