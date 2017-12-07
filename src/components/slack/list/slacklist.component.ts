@@ -106,7 +106,11 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
         this.subscription.add(this.slack.onChange.subscribe(s => this.onChange(s)));
         this.subscription.add(this.events.activateMessageForm.subscribe(() => this.activateMessageForm()));
-        this.subscription.add(this.events.keydown.filter(e => e.which === 38 && !($('#channel-search-modal').data('bs.modal') || {}).isShown).subscribe(() => this.editLatestMessage()));
+        this.subscription.add(
+            this.events.keydown
+                .filter(e => e.which === 38 && !($('#channel-search-modal').data('bs.modal') || {}).isShown)
+                .subscribe(() => this.editLatestMessage())
+        );
         this.subscription.add(this.events.keydown.filter(e => e.ctrlKey && e.which === 84).subscribe(() => this.onSearchChannelRequest()));
     }
 
