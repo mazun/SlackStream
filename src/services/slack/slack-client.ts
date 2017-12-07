@@ -231,7 +231,7 @@ export class SlackClientImpl implements SlackClient {
         return this.rtm.channels;
     }
 
-    get memberChannels(): Channel[] {
+    get memberChannels(): any[] {
         return this.rtm.memberChannels;
     }
 

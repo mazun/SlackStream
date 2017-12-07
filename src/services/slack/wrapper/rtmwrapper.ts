@@ -1,6 +1,8 @@
 import { RtmClient, RTM_EVENTS, MemoryDataStore, CLIENT_EVENTS } from '@slack/client';
-import { RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved,
-         RTMEmojiChanged, RTMEmojiAdded, RTMEmojiRemoved, Channel } from '../slack.types';
+import {
+    RTMMessage, DataStore, RTMReactionAdded, RTMReactionRemoved,
+    RTMEmojiChanged, RTMEmojiAdded, RTMEmojiRemoved, Channel, Group
+} from '../slack.types';
 import { Subject } from 'rxjs';
 import { SlackMessage, SlackReactionAdded, SlackReactionRemoved, SlackEmojiAdded, SlackEmojiRemoved } from '../slack-client';
 
@@ -12,6 +14,7 @@ export class RTMClientWrapper {
     emojiRemoved = new Subject<SlackEmojiRemoved>();
     subTeams: string[] = [];
     channels: Channel[] = [];
+    groups: Group[] = [];
     teamID: string;
 
     client: any;
@@ -19,11 +22,17 @@ export class RTMClientWrapper {
         return this.client.dataStore;
     }
 
-    get memberChannels(): Channel[] {
+    get memberChannels(): any[] {
         let memberChannels = [];
         for (let i = 0; i < this.channels.length; i++) {
             if (this.channels[i].is_member) {
                 memberChannels.push(this.channels[i]);
+            }
+        }
+
+        for (let i = 0; i < this.groups.length; i++) {
+            if (!this.groups[i].is_mpim) {
+                memberChannels.push(this.groups[i]);
             }
         }
 
@@ -37,6 +46,7 @@ export class RTMClientWrapper {
             console.log(rtmStartData);
             this.subTeams = rtmStartData.subteams.all.map(s => s.handle);
             this.channels = rtmStartData.channels;
+            this.groups = rtmStartData.groups;
             this.teamID = rtmStartData.team.id;
             this.client.dataStore.teamID = rtmStartData.team.id; // for convenience
         });
