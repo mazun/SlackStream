@@ -310,6 +310,9 @@ export class SlackListComponent implements OnInit, OnDestroy {
         if (event.ctrlKey && event.which === 84) { // Ctrl + T
             event.preventDefault();
             $('#channel-search-modal').modal('show');
+            $('.search-channel-form').each(function() {
+                this.selectedIndex  = -1;
+            });
             $('.search-channel-form').select2('open');
         }
     }
