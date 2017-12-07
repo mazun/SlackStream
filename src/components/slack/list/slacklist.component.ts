@@ -316,4 +316,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
             $('.search-channel-form').select2('open');
         }
     }
+
+    closeSearchChannelModal(): void {
+        $('#channel-search-modal').modal('hide');
+    }
 }

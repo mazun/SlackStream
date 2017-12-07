@@ -21,7 +21,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <label>Message to ...</label>
+                    <div class="pull-left">
+                        <label>Message to ...</label>
+                    </div>
+                    <div class="pull-right">
+                        <span class="glyphicon glyphicon-remove" (click)="closeSearchChannelModal()"></span>
+                    </div>
                     <select name="selectedChannel" class="search-channel-form" style="width: 100%;" #selectedChannel>
                         <ng-container *ngFor="let slackService of slackServices" >
                             <option *ngFor="let channel of slackService.memberChannels" [value]="slackService.dataStore.teamID + '-' + channel['id']">{{slackService.team.name}}: {{channel['name']}}</option>
