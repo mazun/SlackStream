@@ -173,6 +173,7 @@ export interface UserProfile {
     image_512: string;
 
     display_name: string;
+    real_name: string;
 }
 
 export interface Members {

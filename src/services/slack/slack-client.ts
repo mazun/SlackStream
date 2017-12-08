@@ -81,12 +81,20 @@ export class SlackMessage {
     get userName(): string {
         if (this.message.comment) {
             const user = this.dataStore.getUserById(this.message.comment.user);
-            return user ? user.profile.display_name : '???';
+            if (user !== undefined) {
+                return (user.profile.display_name !== '' ? user.profile.display_name : user.profile.real_name);
+            } else {
+                return '???';
+            }
         }
 
         if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
-            return user ? user.profile.display_name : '???';
+            if (user !== undefined) {
+                return (user.profile.display_name !== '' ? user.profile.display_name : user.profile.real_name);
+            } else {
+                return '???';
+            }
         }
 
         if (this.message.bot_id) {
