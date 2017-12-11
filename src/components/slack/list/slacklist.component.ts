@@ -288,8 +288,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onSelectChannelRequest(id: string) {
-        let teamID = id.split('-')[0];
-        let channelID = id.split('-')[1];
+        const teamID = id.split('-')[0];
+        const channelID = id.split('-')[1];
         let client = null;
         for (let i = 0; i < this.slackServices.length; i++) {
             if (this.slackServices[i].team.id === teamID) {
