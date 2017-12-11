@@ -1,24 +1,25 @@
 <div class="message-form">
     <div class="message-window">
-    <ss-teamicon [team]="dataStore.getTeamById(teamID)"></ss-teamicon>
-    <ss-channelname [channelName]="channelName" [channelID]="channelID" [teamID]="teamID"></ss-channelname>
-    <span class="extra-info">{{extraInfo}}</span>
-    <span class="glyphicon glyphicon-remove pull-right message-close" (click)="onClose()"></span>
-    <textarea
-        type="text"
-        class="form-control message-textarea"
-        placeholder="Message"
-        wrap="soft"
-        rows="3"
-        id="slack_message_input"
-        (keydown)="onKeyDown($event, textArea)"
-        (keypress)="onKeyPress($event, textArea)"
-        (keyup)="onKeyUp($event, textArea)"
-        [autofocus]
-        [value]="initialText"
-        [disabled]="!enable"
-        #textArea
-    ></textarea>
-    <button class="btn btn-default btn-xs pull-right" type="button" [disabled]="!enable" (click)="onSubmit(textArea.value)">Post</button>
+        <ss-teamicon [team]="dataStore.getTeamById(teamID)"></ss-teamicon>
+        <ss-channelname [channelName]="channelName" [channelID]="channelID" [teamID]="teamID"></ss-channelname>
+        <span class="glyphicon glyphicon-search" (click)="onSearchChannelRequest()"></span>
+        <span class="extra-info">{{extraInfo}}</span>
+        <span class="glyphicon glyphicon-remove pull-right message-close" (click)="onClose()"></span>
+        <textarea
+            type="text"
+            class="form-control message-textarea"
+            placeholder="Message"
+            wrap="soft"
+            rows="3"
+            id="slack_message_input"
+            (keydown)="onKeyDown($event, textArea)"
+            (keypress)="onKeyPress($event, textArea)"
+            (keyup)="onKeyUp($event, textArea)"
+            [autofocus]
+            [value]="initialText"
+            [disabled]="!enable"
+            #textArea
+        ></textarea>
+        <button class="btn btn-default btn-xs pull-right" type="button" [disabled]="!enable" (click)="onSubmit(textArea.value)">Post</button>
     </div>
 </div>

@@ -53,10 +53,10 @@ export class PostMessageContext implements SubmitContext {
     }
 
     async submit(text: string): Promise<any> {
-        if (text.trim().match(/^\+:(.*):$/)) {
+        if (text.trim().match(/^\+:(.*):$/) && this.ts) {
             let reaction = text.trim().match(/^\+:(.*):$/)[1];
             return this.client.addReaction(reaction, this.channelLikeID, this.ts);
-        } else if (text.trim().match(/^\-:(.*):$/)) {
+        } else if (text.trim().match(/^\-:(.*):$/) && this.ts) {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
             return this.client.removeReaction(reaction, this.channelLikeID, this.ts);
         } else {
