@@ -3,3 +3,8 @@ dist
 *.log
 *~
 .idea
+
+# Working directories and files for packaging script
+package
+slack-stream-*
+3rdpartylicenses.txt

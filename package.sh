@@ -1,4 +1,6 @@
 #! /bin/bash
+rm -rf slack-stream-*
+
 yarn build
 
 mv dist/3rdpartylicenses.txt .
