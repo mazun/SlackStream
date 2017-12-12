@@ -48,7 +48,13 @@ function MigrateSettingVer1ToVer2(oldSetting: SettingVer1): SettingVer2 {
         newSetting.tokens.push({ value: t, enabled: true } as Token);
     }
     newSetting.hideButtons = oldSetting.hideButtons;
-    newSetting.imageExpansionSize = oldSetting.imageExpansionSize;
+    if (oldSetting.imageExpansionSize !== undefined) {
+        newSetting.imageExpansionSize = oldSetting.imageExpansionSize;
+    } else {
+        // SettingVer1 may not contain imageExpansionSize because there was no setting version control
+        // when imageExpansionSize was added as a new setting item.
+        newSetting.imageExpansionSize = RadioButtonFactory.get('Image Expansion', ['Normal', 'Small', 'Never'], 'Normal');
+    }
 
     return newSetting;
 }
