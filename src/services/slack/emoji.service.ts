@@ -61,7 +61,7 @@ export class EmojiService {
         if (this.emojiList && !!this.emojiList[emoji.substr(1, emoji.length - 2)]) {
             const image_url = this.emojiList[emoji.substr(1, emoji.length - 2)];
             if (image_url.substr(0, 6) === 'alias:') {
-                return this.convertEmoji(`:${image_url.substr(6)}:`);
+                return this.convertEmoji(`:${image_url.substr(6)}:`, withTitle, skinTone, emojiOnly);
             } else {
                 $img = $(`<img class="emojione" src="${image_url}" title="${emoji.substr(1, emoji.length - 2)}"/>`);
             }
