@@ -42,7 +42,6 @@ export class DisplaySlackMessageInfo {
     edited: boolean = false;
     image: string = null;
     reactions: DisplaySlackReactionInfo[] = [];
-    permalink: string;
 
     constructor(
         public message: SlackMessage,
@@ -73,6 +72,9 @@ export class DisplaySlackMessageInfo {
         return this.reactions.length > 0;
     }
 
+    get permalink(): string {
+        return `slack://channel?team=${this.message.teamID}&id=${this.message.channelID}&message=${this.message.ts}`;
+    }
 
     addReaction(info: SlackReactionAdded) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}::notitle:`, this.message.dataStore);
@@ -271,8 +273,6 @@ export class SlackService {
                     return undefined;
                 });
             }
-
-            info.permalink = await client.getPermalink(message.channelID, message.ts);
 
             client.markRead(message.channelID, message.ts);
             this._onChange.next(this);
