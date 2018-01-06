@@ -42,6 +42,7 @@ export class DisplaySlackMessageInfo {
     edited: boolean = false;
     image: string = null;
     reactions: DisplaySlackReactionInfo[] = [];
+    permalink: string;
 
     constructor(
         public message: SlackMessage,
@@ -270,6 +271,8 @@ export class SlackService {
                     return undefined;
                 });
             }
+
+            info.permalink = await client.getPermalink(message.channelID, message.ts);
 
             client.markRead(message.channelID, message.ts);
             this._onChange.next(this);

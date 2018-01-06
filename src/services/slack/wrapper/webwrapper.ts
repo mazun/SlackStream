@@ -26,6 +26,12 @@ export class WebClientWrapper {
         });
     }
 
+    async getPermalink(channel: string, timestamp: string): Promise<string> {
+        return new Promise<any>((resolve, reject) => {
+            this.client.chat.getPermalink(channel, timestamp, this.handler<any>(resolve, reject))
+        }).then(res => res.permalink);
+    }
+
     async getEmoji(): Promise<{ string: string }> {
         return new Promise<any>((resolve, reject) => {
             this.client.emoji.list(this.handler<any>(resolve, reject));
