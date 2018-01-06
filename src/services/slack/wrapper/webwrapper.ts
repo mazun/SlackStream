@@ -28,7 +28,7 @@ export class WebClientWrapper {
 
     async getPermalink(channel: string, timestamp: string): Promise<string> {
         return new Promise<any>((resolve, reject) => {
-            this.client.chat.getPermalink(channel, timestamp, this.handler<any>(resolve, reject))
+            this.client.chat.getPermalink(channel, timestamp, this.handler<any>(resolve, reject));
         }).then(res => res.permalink);
     }
 
