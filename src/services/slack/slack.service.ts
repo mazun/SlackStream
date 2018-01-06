@@ -72,6 +72,9 @@ export class DisplaySlackMessageInfo {
         return this.reactions.length > 0;
     }
 
+    get permalink(): string {
+        return `slack://channel?team=${this.message.teamID}&id=${this.message.channelID}&message=${this.message.ts}`;
+    }
 
     addReaction(info: SlackReactionAdded) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}::notitle:`, this.message.dataStore);
