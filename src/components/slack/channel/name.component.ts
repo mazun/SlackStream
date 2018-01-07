@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { SlackUtil} from '../../../services/slack/slack-util';
 
 @Component({
     selector: 'ss-channelname',
@@ -15,6 +16,6 @@ export class ChannelNameComponent {
     @Input() teamID: string;
 
     get channelURL(): string {
-        return `slack://channel?team=${this.teamID}&id=${this.channelID}`;
+        return SlackUtil.getChannelLink(this.teamID, this.channelID);
     }
 }

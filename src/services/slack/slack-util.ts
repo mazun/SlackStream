@@ -80,7 +80,7 @@ export class SlackUtil {
             const team = dataStore.getTeamById (dataStore.teamID);
             const channel = dataStore.getChannelById(text.substr(1));
             const color = SlackUtil.channelColor(channel.name);
-            const url = `slack://channel?team=${team.id}&id=${channel.id}`;
+            const url = SlackUtil.getChannelLink(team.id, channel.id);
             // <ss-channelname> does not work...
             const withLink = `<a href = "${url}" class="channel-name" style="color: ${color};">#${channel.name}</a>`;
             return new ParseLinkResult('#' + channel.name, withLink);
@@ -94,7 +94,7 @@ export class SlackUtil {
             const team = dataStore.getTeamById (dataStore.teamID);
             const channel = dataStore.getChannelById(text1.substr(1));
             const color = SlackUtil.channelColor(channel.name);
-            const url = `slack://channel?team=${team.id}&id=${channel.id}`;
+            const url = SlackUtil.getChannelLink(team.id, channel.id);
             // <ss-channelname> does not work...
             const withLink = `<a href = "${url}" class="channel-name" style="color: ${color};">#${channel.name}</a>`;
             return new ParseLinkResult('#' + text2, withLink);
@@ -107,5 +107,9 @@ export class SlackUtil {
         } else {
             return new ParseLinkResult(text2, `<a href="${text1}">${text2}</a>`);
         }
+    }
+
+    static getChannelLink(teamID: string, channelID: string) {
+        return `slack://channel?team=${teamID}&id=${channelID}`;
     }
 }
