@@ -67,7 +67,7 @@ http://1341shangrila.dip.jp/slackstream/build
 - Clicking the timestamp of each message opens the same message in the official Slack client.
 
 # Hacking and contributing
-See the contribution guide (to be added).
+See the [contribution guide](https://github.com/mazun/SlackStream/blob/master/Contributing.md).
 
 # Mascot Character
 
