@@ -22,7 +22,7 @@ This command does not stop but it rather keeps running and re-builds the code as
 **The typical usage is to keep it running during the whole period of your development.**
 
 ```
-$ yarn start
+~/SlackStream$ yarn start
 ...
 webpack: Compiled with warnings.
 ```
