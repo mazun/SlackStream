@@ -41,19 +41,22 @@ http://1341shangrila.dip.jp/slackstream/build
 ![retreving tokens](https://github.com/mazun/SlackStream/blob/master/images/token_web.png)
 
 4. Click 'save' and you're ready to go! You'll see new messages from any channel / team appearing in the SlackStream window!
+Note that SlackStream is not intended to replace the official client, but is rather a complementary of it.
+Therefore, it does not show messages that had been sent before it was invoked.
+We suggest to put SlackStream on an edge of your monitor so that you can keep glances on it, and go back to the official client once you find something really matters.
 
 # How to Use
 ### Posting a message
-- Click the pencil (![pencil button](https://github.com/mazun/SlackStream/blob/master/images/write.png)) shown in the bottom-right of each message. You can post a message to the channel to which the original message belongs.
+- Click the pencil (![pencil button](https://github.com/mazun/SlackStream/blob/master/images/write.png)) in the bottom-right of each message. You can post a message to the channel to which the original message belongs.
 - Also, a keyboard shortcut (Ctrl + Alt + Enter) opens a posting form to the channel to which the top-most message belongs.
 - While the form is open, you can change the target channel posting by clicking the magnifying glass (![magnifying glass](https://github.com/mazun/SlackStream/blob/master/images/glass.png)) or a keyboard shortcut 'Ctrl + t'.
 
 ### Editing a message
-- Click the edit button (![edit button](https://github.com/mazun/SlackStream/blob/master/images/edit.png)) shown in the bottom-right of each message. You selected and you can overwrite the message by posting an edited one.
+- Click the edit button (![edit button](https://github.com/mazun/SlackStream/blob/master/images/edit.png)) in the bottom-right of each message. You selected and you can overwrite the message by posting an edited one.
 - Also, a keyboard shortcut (:arrow_up:) opens a form to edit the latest message you have posted.
 
 ### Deleting a message
-- Click the delete button (![delete button](https://github.com/mazun/SlackStream/blob/master/images/delete.png)) shown in the bottom-right of each message, and the message will be deleted.
+- Click the delete button (![delete button](https://github.com/mazun/SlackStream/blob/master/images/delete.png)) in the bottom-right of each message, and the message will be deleted.
 - Also, editing the message you want to delete to an empty message will delete it.
 
 ### Sending an emoji reaction
@@ -63,8 +66,8 @@ http://1341shangrila.dip.jp/slackstream/build
 - Clicking the name of a user will open a form where you can post a DM to the user.
 
 ### Smooth interactions with the official client
-- Clicking the channel name opens the same channel in the offcial Slack client.
-- Clicking the timestamp of each message opens the same message in the official Slack client.
+- Clicking a channel name opens the same channel in the offcial Slack client.
+- Clicking a timestamp of each message opens the same message in the official Slack client.
 
 # Hacking and contributing
 See the [contribution guide](https://github.com/mazun/SlackStream/blob/master/Contributing.md).
