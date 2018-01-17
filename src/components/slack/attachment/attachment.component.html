@@ -2,7 +2,7 @@
     <div class="left" style="width: 100%;">
         <!-- Author -->
         <span *ngIf="!!attachment.author_link" class="author">
-            <img *ngIf="!!attachment.author_icon" [src]="attachment.author_icon" class="author-icon" />
+            <img *ngIf="!!attachment.author_icon" [src]="authorIcon" class="author-icon" />
             <span>
                 <a class="author-name" [href]="attachment.author_link">{{attachment.author_name}}</a>
 

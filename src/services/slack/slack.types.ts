@@ -30,6 +30,7 @@ export interface Attachment {
     title: string;
     title_link: string;
 
+    author_id: string;
     author_icon: string;
     author_link: string;
     author_name: string;
