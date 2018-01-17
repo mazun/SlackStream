@@ -26,6 +26,11 @@ export class SlackAttachmentComponent {
         return this.attachmentTextParser.parse(text, this.dataStore);
     }
 
+    get authorIcon(): string {
+        const user = this.dataStore.getUserById(this.attachment.author_id);
+        return user.profile.image_32;
+    }
+
     get borderColor(): string {
         if (this.attachment.color) {
             if (this.attachment.color[0] === '#') {
