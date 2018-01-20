@@ -27,8 +27,14 @@ export class SlackAttachmentComponent {
     }
 
     get authorIcon(): string {
-        const user = this.dataStore.getUserById(this.attachment.author_id);
-        return user.profile.image_32;
+        const author_id = this.attachment.author_id;
+
+        if (!!author_id) {
+            const user = this.dataStore.getUserById(author_id);
+            return user.profile.image_32;
+        } else {
+            return this.attachment.author_icon;
+        }
     }
 
     get borderColor(): string {
