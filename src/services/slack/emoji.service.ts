@@ -65,11 +65,19 @@ export class EmojiService {
             } else {
                 $img = $(`<img class="emojione" src="${image_url}" title="${emoji.substr(1, emoji.length - 2)}"/>`);
             }
-        } else if (emoji !== emojione.shortnameToImage(emoji)) {
+        } else if (
+            emoji !== emojione.shortnameToImage(emoji) ||
+            emoji.replace(/-/g, '_') !== emojione.shortnameToImage(emoji.replace(/-/g, '_'))
+        ) {
             if (skinTone !== 0) {
                 emoji = emoji.substr(0, emoji.length - 1) + '_tone' + skinTone + ':';
             }
-            $img = $(emojione.shortnameToImage(emoji));
+
+            if (emoji !== emojione.shortnameToImage(emoji)) {
+                $img = $(emojione.shortnameToImage(emoji));
+            } else {
+                $img = $(emojione.shortnameToImage(emoji.replace(/-/g, '_')));
+            }
         } else {
             return emoji;
         }

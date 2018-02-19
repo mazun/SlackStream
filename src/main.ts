@@ -8,8 +8,8 @@ import * as $ from 'jquery';
 import * as path from 'path';
 
 require('bootstrap/dist/css/bootstrap.min.css');
-require('emojione/assets/css/emojione.min.css');
-require('emojione/assets/css/emojione-awesome.css');
+require('emojione/extras/css/emojione.min.css');
+require('emojione/extras/css/emojione-awesome.css');
 require('select2/dist/css/select2.min.css');
 require('./assets/css/styles.css');
 
