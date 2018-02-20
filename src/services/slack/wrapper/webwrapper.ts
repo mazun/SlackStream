@@ -16,10 +16,11 @@ export class WebClientWrapper {
 
     async postReply(channel: string, ts: string, text: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
-            this.client.chat.postMessage(channel, text, { 'thread_ts': ts, 'as_user': true, 'link_names': 1 }, this.handler<any>(resolve, reject));
+            this.client.chat.postMessage(channel, text,
+                 { 'thread_ts': ts, 'as_user': true, 'link_names': 1 }, this.handler<any>(resolve, reject));
         });
     }
-    
+
     async updateMessage(ts: string, channel: string, text: string): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             this.client.chat.update(ts, channel, text, { 'as_user': true, 'link_names': 1 }, this.handler<any>(resolve, reject));
