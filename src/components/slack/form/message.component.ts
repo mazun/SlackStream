@@ -21,6 +21,7 @@ export class MessageFormComponent implements OnChanges, OnDestroy {
     @Input() dataStore: DataStore;
 
     @Input() teamID: string = '';
+    @Input() threadTs: string = null;
     @Input() initialText: string = '';
     @Input() extraInfo: string = '';
     @Input() emoji: EmojiService;
