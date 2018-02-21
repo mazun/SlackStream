@@ -2,6 +2,7 @@
     <div class="message-window">
         <ss-teamicon [team]="dataStore.getTeamById(teamID)"></ss-teamicon>
         <ss-channelname [channelName]="channelName" [channelID]="channelID" [teamID]="teamID"></ss-channelname>
+        <span *ngIf="threadTs" class="thread">(thread)</span>
         <span class="glyphicon glyphicon-search" (click)="onSearchChannelRequest()"></span>
         <span class="extra-info">{{extraInfo}}</span>
         <span class="glyphicon glyphicon-remove pull-right message-close" (click)="onClose()"></span>

@@ -139,6 +139,19 @@ export class SlackListComponent implements OnInit, OnDestroy {
             info.message.channelID,
             info.message.teamID,
             info.message.ts,
+            null,
+            this.filteredMessages
+        );
+        this.detector.detectChanges();
+    }
+
+    onClickReply(info: DisplaySlackMessageInfo) {
+        this.submitContext = new PostMessageContext(
+            info.client,
+            info.message.channelID,
+            info.message.teamID,
+            info.message.ts,
+            info.message.threadTs ? info.message.threadTs : info.message.ts,
             this.filteredMessages
         );
         this.detector.detectChanges();
@@ -150,6 +163,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             '@' + info.message.userName,
             info.message.teamID,
             info.message.ts,
+            null,
             this.messages
         );
         this.detector.detectChanges();
@@ -251,6 +265,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
                     message.message.channelID,
                     message.message.teamID,
                     message.message.ts,
+                    message.message.threadTs,
                     messages
                 );
                 this.detector.detectChanges();
@@ -304,6 +319,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 client,
                 channelID,
                 teamID,
+                null,
                 null,
                 this.filteredMessages
             );

@@ -175,6 +175,7 @@ export interface SlackClient {
     stop(): void;
     getEmoji(): Promise<{ string: string }>;
     postMessage(channel: string, text: string): Promise<{ string: any }>;
+    postReply(channel: string, ts: string, text: string): Promise<{ string: any }>;
     deleteMessage(channel: string, timestamp: string): Promise<void>;
     getPermalink(channel: string, timestamp: string): Promise<string>;
     markRead(channel: string, timestamp: string): Promise<void>;
@@ -251,6 +252,11 @@ export class SlackClientImpl implements SlackClient {
     async postMessage(channel: string, text: string): Promise<{ string: any }> {
         return this.web.postMessage(channel, text);
     }
+
+    async postReply(channel: string, ts: string, text: string): Promise<{ string: any }> {
+        return this.web.postReply(channel, ts, text);
+    }
+
 
     async deleteMessage(channel: string, timestamp: string): Promise<void> {
         return this.web.deleteMessage(channel, timestamp);

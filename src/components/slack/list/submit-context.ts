@@ -9,6 +9,7 @@ export interface SubmitContext {
     dataStore: DataStore;
     teamID: string;
     ts: string;
+    threadTs: string;
 
     extraInfo: string;
     initialText: string;
@@ -28,6 +29,7 @@ export class PostMessageContext implements SubmitContext {
         public channelLikeID: string,
         public teamID: string,
         public ts: string,
+        public threadTs: string,
         public infos: DisplaySlackMessageInfo[],
     ) {
     }
@@ -60,7 +62,11 @@ export class PostMessageContext implements SubmitContext {
             let reaction = text.trim().match(/^\-:(.*):$/)[1];
             return this.client.removeReaction(reaction, this.channelLikeID, this.ts);
         } else {
-            return this.client.postMessage(this.channelLikeID, text);
+            if (this.threadTs) {
+                return this.client.postReply(this.channelLikeID, this.threadTs, text);
+            } else {
+                return this.client.postMessage(this.channelLikeID, text);
+            }
         }
     }
 
@@ -79,6 +85,7 @@ export class PostMessageContext implements SubmitContext {
         this.client = this.infos[nextIndex].client;
         this.teamID = this.infos[nextIndex].message.teamID;
         this.ts = this.infos[nextIndex].message.ts;
+        this.threadTs = this.infos[nextIndex].message.threadTs;
     }
 
     changeMessageRequest(next: boolean) {
@@ -157,6 +164,10 @@ export class EditMessageContext implements SubmitContext {
 
     get subTeams(): string[] {
         return this.client.subTeams;
+    }
+
+    get threadTs(): string {
+        return this.message.rawMessage.thread_ts;
     }
 
     get initialText(): string {
