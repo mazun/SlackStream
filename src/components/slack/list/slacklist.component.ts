@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SlackService, DisplaySlackMessageInfo, DisplaySlackReactionInfo } from '../../../services/slack/slack.service';
 import { SlackClient } from '../../../services/slack/slack-client';
@@ -82,7 +82,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
     constructor(
         private slack: SlackService,
         private events: GlobalEventService,
-        private detector: ChangeDetectorRef,
         private router: Router,
         private setting: SettingService
     ) {
@@ -130,7 +129,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 }
             }).length;
         });
-        this.detector.detectChanges();
     }
 
     onClickWrite(info: DisplaySlackMessageInfo) {
@@ -142,7 +140,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
             null,
             this.filteredMessages
         );
-        this.detector.detectChanges();
     }
 
     onClickReply(info: DisplaySlackMessageInfo) {
@@ -154,7 +151,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
             info.message.threadTs ? info.message.threadTs : info.message.ts,
             this.filteredMessages
         );
-        this.detector.detectChanges();
     }
 
     onClickSendDM(info: DisplaySlackMessageInfo) {
@@ -166,7 +162,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
             null,
             this.messages
         );
-        this.detector.detectChanges();
     }
 
     onClickDelete(info: DisplaySlackMessageInfo) {
@@ -180,7 +175,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
             this.filterContext = new SoloChannelFilterContext(info.message.channelID);
             this.mutedChannels = [];
         }
-        this.detector.detectChanges();
     }
 
     onClickDisableMuteMode(channelID: string) {
@@ -193,7 +187,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
         } else {
             this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map(ch => ch.ID));
         }
-        this.detector.detectChanges();
     }
 
     onClickMuteMode(info: DisplaySlackMessageInfo) {
@@ -205,18 +198,15 @@ export class SlackListComponent implements OnInit, OnDestroy {
         }).message.ts;
         this.mutedChannels.push(new MutedChannel(info, lastTsOfThisCh));
         this.filterContext = new MuteChannelFilterContext(this.mutedChannels.map(ch => ch.ID));
-        this.detector.detectChanges();
     }
 
     onClickEdit(info: DisplaySlackMessageInfo) {
         this.submitContext = new EditMessageContext(info.client, info.message);
-        this.detector.detectChanges();
     }
 
     async submitForm(text: string) {
         if (this.submitContext != null) {
             this.submitting = true;
-            this.detector.detectChanges();
 
             await this.submitContext.submit(text).catch(
                 // slack server may have returned an error. print the error and continue
@@ -224,13 +214,11 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
             this.submitting = false;
             this.submitContext = null;
-            this.detector.detectChanges();
         }
     }
 
     closeForm() {
         this.submitContext = null;
-        this.detector.detectChanges();
     }
 
     onClickReaction(reaction: DisplaySlackReactionInfo) {
@@ -243,16 +231,14 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onMouseEnterReaction(reaction: DisplaySlackReactionInfo) {
-        reaction.showReactedUsers = true;
         this.showingReactedUsers = setTimeout(() => {
-            this.detector.detectChanges();
+            reaction.showReactedUsers = true;
         }, 500);
     }
 
     onMouseLeaveReaction(reaction: DisplaySlackReactionInfo) {
         reaction.showReactedUsers = false;
         clearTimeout(this.showingReactedUsers);
-        this.detector.detectChanges();
     }
 
     activateMessageForm() {
@@ -268,7 +254,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
                     message.message.threadTs,
                     messages
                 );
-                this.detector.detectChanges();
             }
         }
     }
@@ -288,14 +273,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
         if (this.submitContext) {
             this.submitContext.changeMessageRequest(next);
         }
-        this.detector.detectChanges();
     }
 
     onChangeChannelRequest(next: boolean) {
         if (this.submitContext) {
             this.submitContext.changeChannelRequest(next);
         }
-        this.detector.detectChanges();
     }
 
     onClickSetting() {
@@ -313,7 +296,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
         }
 
         this.submitContext = null;
-        this.detector.detectChanges();
         setTimeout(() => {
             this.submitContext = new PostMessageContext(
                 client,
@@ -323,7 +305,6 @@ export class SlackListComponent implements OnInit, OnDestroy {
                 null,
                 this.filteredMessages
             );
-            this.detector.detectChanges();
         }, 1);
     }
 
