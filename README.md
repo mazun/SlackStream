@@ -7,6 +7,8 @@ Ever had troubles clicking the slack client many times to find the conversation 
 
 SlackStream, an all-at-a-glance slack client, is just for you!
 
+**SlackStream is a community-based alternative Slack client and has nothing to do with the official Slack client nor the Slack company.*
+
 # Download
 
 ### Stable Releases
