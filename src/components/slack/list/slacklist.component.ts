@@ -1,7 +1,6 @@
 import { Component, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { SlackService, DisplaySlackMessageInfo, DisplaySlackReactionInfo } from '../../../services/slack/slack.service';
-import { SlackClient } from '../../../services/slack/slack-client';
 import { SlackUtil } from '../../../services/slack/slack-util';
 
 import { GlobalEventService } from '../../../services/globalevent.service';
@@ -42,7 +41,6 @@ class MutedChannel {
     styles: [require('./slacklist.component.css').toString()],
 })
 export class SlackListComponent implements OnInit, OnDestroy {
-    slackServices: SlackClient[];
     submitContext: SubmitContext = null;
     filterContext: FilterContext = new NoFilterContext();
     subscription = new Subscription();
@@ -63,12 +61,13 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     get filteredMessages(): DisplaySlackMessageInfo[] {
-        const filteredByWorkplace = this.messages.filter(m => this.setting.isTokenEnabled(m.client.token));
+        const filteredByWorkplace =
+            this.messages.filter(m => this.setting.isTokenEnabled(this.slack.getClientOf(m.message.teamID).token));
         return filteredByWorkplace.filter(m => this.filterContext.shouldShow(m));
     }
 
     get doesHaveMultipleTeams(): boolean {
-        return this.slackServices.length >= 2;
+        return this.slack.numTeams >= 2;
     }
 
     get showTeamName(): boolean {
@@ -87,11 +86,10 @@ export class SlackListComponent implements OnInit, OnDestroy {
         private setting: SettingService
     ) {
         this.slack.refresh();
-        this.slackServices = slack.clients;
     }
 
     ngOnInit(): void {
-        if (this.slackServices.length === 0) {
+        if (this.slack.numTeams === 0) {
             this.router.navigate(['/setting']);
             return;
         }
@@ -135,7 +133,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickWrite(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
-            info.client,
+            this.slack,
             info.message.channelID,
             info.message.teamID,
             info.message.ts,
@@ -147,7 +145,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickReply(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
-            info.client,
+            this.slack,
             info.message.channelID,
             info.message.teamID,
             info.message.ts,
@@ -159,7 +157,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
 
     onClickSendDM(info: DisplaySlackMessageInfo) {
         this.submitContext = new PostMessageContext(
-            info.client,
+            this.slack,
             '@' + info.message.userName,
             info.message.teamID,
             info.message.ts,
@@ -170,7 +168,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onClickDelete(info: DisplaySlackMessageInfo) {
-        this.slack.deleteMessage(info.message, info.client);
+        this.slack.deleteMessage(info.message);
     }
 
     onClickSoloMode(info: DisplaySlackMessageInfo) {
@@ -209,7 +207,8 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onClickEdit(info: DisplaySlackMessageInfo) {
-        this.submitContext = new EditMessageContext(info.client, info.message);
+        const client = this.slack.getClientOf(info.message.teamID);
+        this.submitContext = new EditMessageContext(client, info.message);
         this.detector.detectChanges();
     }
 
@@ -234,7 +233,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     }
 
     onClickReaction(reaction: DisplaySlackReactionInfo) {
-        const client = reaction.target.client;
+        const client = this.slack.getClientOf(reaction.target.message.teamID);
         if (!reaction.includeMine) {
             client.addReaction(reaction.rawReaction, reaction.target.message.channelID, reaction.target.message.ts);
         } else {
@@ -261,7 +260,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
             if (messages.length !== 0) {
                 const message = messages[0];
                 this.submitContext = new PostMessageContext(
-                    message.client,
+                    this.slack,
                     message.message.channelID,
                     message.message.teamID,
                     message.message.ts,
@@ -305,18 +304,12 @@ export class SlackListComponent implements OnInit, OnDestroy {
     onSelectChannelRequest(id: string) {
         const teamID = id.split('-')[0];
         const channelID = id.split('-')[1];
-        let client = null;
-        for (let i = 0; i < this.slackServices.length; i++) {
-            if (this.slackServices[i].team.id === teamID) {
-                client = this.slackServices[i];
-            }
-        }
 
         this.submitContext = null;
         this.detector.detectChanges();
         setTimeout(() => {
             this.submitContext = new PostMessageContext(
-                client,
+                this.slack,
                 channelID,
                 teamID,
                 null,

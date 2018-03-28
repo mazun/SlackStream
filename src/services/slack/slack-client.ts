@@ -168,6 +168,7 @@ export interface SlackClient {
     dataStore: DataStore;
     subTeams: string[];
     team: Team;
+    teamID: string;
     channels: Channel[];
     attachmentTextParser: SlackParser;
 
@@ -235,6 +236,10 @@ export class SlackClientImpl implements SlackClient {
 
     get team(): Team {
         return this.rtm.dataStore.getTeamById(this.rtm.teamID);
+    }
+
+    get teamID(): string {
+        return this.rtm.teamID;
     }
 
     get channels(): Channel[] {

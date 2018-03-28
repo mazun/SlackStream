@@ -1,7 +1,7 @@
 import { SlackMessage, SlackClient } from '../../../services/slack/slack-client';
 import { DataStore } from '../../../services/slack/slack.types';
 import { EmojiService } from '../../../services/slack/emoji.service';
-import { DisplaySlackMessageInfo } from '../../../services/slack/slack.service';
+import { SlackService, DisplaySlackMessageInfo } from '../../../services/slack/slack.service';
 import { SlackUtil } from '../../../services/slack/slack-util';
 
 export interface SubmitContext {
@@ -24,14 +24,17 @@ export interface SubmitContext {
 }
 
 export class PostMessageContext implements SubmitContext {
+    public client: SlackClient;
+
     constructor(
-        public client: SlackClient,
+        public slack: SlackService,
         public channelLikeID: string,
         public teamID: string,
         public ts: string,
         public threadTs: string,
         public infos: DisplaySlackMessageInfo[],
     ) {
+        this.client = this.slack.getClientOf(this.teamID);
     }
 
     get dataStore(): DataStore {
@@ -82,7 +85,7 @@ export class PostMessageContext implements SubmitContext {
         if (nextIndex < 0) { return; }
 
         this.channelLikeID = this.infos[nextIndex].message.channelID;
-        this.client = this.infos[nextIndex].client;
+        this.client = this.slack.getClientOf(this.infos[nextIndex].message.teamID);
         this.teamID = this.infos[nextIndex].message.teamID;
         this.ts = this.infos[nextIndex].message.ts;
         this.threadTs = this.infos[nextIndex].message.threadTs;

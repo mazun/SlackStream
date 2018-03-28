@@ -46,7 +46,6 @@ export class DisplaySlackMessageInfo {
     constructor(
         public message: SlackMessage,
         public parser: SlackParser,
-        public client: SlackClient
     ) {
     }
 
@@ -264,7 +263,7 @@ export class SlackService {
 
     async addMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
         if (message.message) {
-            const info = new DisplaySlackMessageInfo(message, parser, client);
+            const info = new DisplaySlackMessageInfo(message, parser);
             this.infos.unshift(info);
 
             if (message.message.file && message.message.file.mimetype.indexOf('image') !== -1) {
@@ -289,8 +288,9 @@ export class SlackService {
         return '';
     }
 
-    async deleteMessage(message: SlackMessage, client: SlackClient): Promise<void> {
+    async deleteMessage(message: SlackMessage): Promise<void> {
         if (message.message) {
+            const client = this.getClientOf(message.teamID);
             client.deleteMessage(message.channelID, message.ts);
         }
     }
@@ -315,5 +315,13 @@ export class SlackService {
             edited.message.rawMessage.attachments = message.rawMessage.message.attachments;
             this._onChange.next(this);
         }
+    }
+
+    getClientOf(teamID: string): SlackClient {
+        return this.clients.find(c => c.teamID === teamID);
+    }
+
+    get numTeams(): number {
+        return this.clients.length;
     }
 }
