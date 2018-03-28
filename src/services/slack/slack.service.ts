@@ -102,11 +102,6 @@ export class DisplaySlackMessageInfo {
     }
 }
 
-class SlackClientInfo {
-    started: boolean;
-    client: SlackClient;
-}
-
 @Injectable()
 export class SlackService {
     clients: SlackClient[] = [];
