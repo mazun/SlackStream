@@ -30,8 +30,8 @@
                         <span class="glyphicon glyphicon-remove" (click)="closeSearchChannelModal()"></span>
                     </div>
                     <select name="selectedChannel" class="search-channel-form" style="width: 100%;" #selectedChannel>
-                        <ng-container *ngFor="let slackService of slackServices" >
-                            <option *ngFor="let channel of slackService.memberChannels" [value]="slackService.dataStore.teamID + '-' + channel['id']">{{slackService.team.name}}: {{channel['name']}}</option>
+                        <ng-container *ngFor="let client of slack.clients" >
+                            <option *ngFor="let channel of client.memberChannels" [value]="client.teamID + '-' + channel['id']">{{client.team.name}}: {{channel['name']}}</option>
                         </ng-container>
                     </select>
                 </div>
