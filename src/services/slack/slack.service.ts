@@ -54,11 +54,11 @@ export class DisplaySlackMessageInfo {
     }
 
     get imageSrc(): string {
-        return `data:${this.message.rawMessage.file.mimetype};base64,${this.image}`;
+        return `data:${this.message.rawMessage.files[0].mimetype};base64,${this.image}`;
     }
 
     get imageURL(): string {
-        return this.message.rawMessage.file.url_private;
+        return this.message.rawMessage.files[0].url_private;
     }
 
     get attachments(): Attachment[] {
@@ -177,16 +177,16 @@ export class SlackService {
                 const target = reaction.reaction.item as FileReactionTarget;
                 return this.infos.find(m => {
                     return m.message.subType === 'file_share'
-                        && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id === target.file;
+                        && m.message.rawMessage.files
+                        && m.message.rawMessage.files[0].id === target.file;
                 });
             }
             case 'file_comment': {
                 const target = reaction.reaction.item as FileCommentReactionTarget;
                 const message = this.infos.find(m => {
                     return m.message.subType === 'file_comment'
-                        && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id === target.file
+                        && m.message.rawMessage.files
+                        && m.message.rawMessage.files[0].id === target.file
                         && m.message.rawMessage.comment
                         && m.message.rawMessage.comment.id === target.file_comment;
                 });
@@ -197,8 +197,8 @@ export class SlackService {
                 // If no such message, the comment may be posted with file at the same time.
                 return this.infos.find(m => {
                     return m.message.subType === 'file_share'
-                        && m.message.rawMessage.file
-                        && m.message.rawMessage.file.id === target.file;
+                        && m.message.rawMessage.files
+                        && m.message.rawMessage.files[0].id === target.file;
                 });
             }
             default: {
@@ -261,7 +261,7 @@ export class SlackService {
             const info = new DisplaySlackMessageInfo(message, parser);
             this.infos.unshift(info);
 
-            if (message.message.file && message.message.file.mimetype.indexOf('image') !== -1) {
+            if (message.message.files && message.message.files[0].mimetype.indexOf('image') !== -1) {
                 info.image = await client.getImage(this.getMaximumThumbnail(message)).catch(e => {
                     console.log('Getting image does not work in developing mode currently');
                     return undefined;
@@ -274,7 +274,7 @@ export class SlackService {
     }
 
     getMaximumThumbnail(message: SlackMessage): string {
-        const file = message.rawMessage.file;
+        const file = message.rawMessage.files[0];
         if (file.thumb_480) { return file.thumb_480; }
         if (file.thumb_360) { return file.thumb_360; }
         if (file.thumb_160) { return file.thumb_160; }

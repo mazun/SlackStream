@@ -71,7 +71,7 @@ export interface RTMMessage {
     attachments: Attachment[];
     comment: Comment;
 
-    file: FileDescription;
+    files: FileDescription[];
 
     // which one?
     team: string;
