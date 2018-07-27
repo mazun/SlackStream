@@ -62,7 +62,7 @@
                 </div>
 
                 <div *ngFor="let attachment of info.attachments">
-                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [attachmentTextParser]="info.client.attachmentTextParser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
+                    <ss-attachment [attachment]="attachment" [parser]="info.parser" [attachmentTextParser]="info.attachmentTextParser" [dataStore]="info.message.rawDataStore" ></ss-attachment>
                 </div>
 
                 <div *ngIf="!!info.image">
