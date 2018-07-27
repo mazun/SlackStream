@@ -46,6 +46,7 @@ export class DisplaySlackMessageInfo {
     constructor(
         public message: SlackMessage,
         public parser: SlackParser,
+        public attachmentTextParser: SlackParser
     ) {
     }
 
@@ -258,7 +259,7 @@ export class SlackService {
 
     async addMessage(message: SlackMessage, parser: SlackParser, client: SlackClient): Promise<void> {
         if (message.message) {
-            const info = new DisplaySlackMessageInfo(message, parser);
+            const info = new DisplaySlackMessageInfo(message, parser, client.attachmentTextParser);
             this.infos.unshift(info);
 
             if (message.message.files && message.message.files[0].mimetype.indexOf('image') !== -1) {
