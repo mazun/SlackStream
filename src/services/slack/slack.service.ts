@@ -76,6 +76,18 @@ export class DisplaySlackMessageInfo {
         return `slack://channel?team=${this.message.teamID}&id=${this.message.channelID}&message=${this.message.ts}`;
     }
 
+    get hasFile(): boolean {
+        return this.message.rawMessage.files && this.message.rawMessage.files.length > 0;
+    }
+
+    get filename(): string {
+        return this.message.rawMessage.files[0].name;
+    }
+
+    get fileURL(): string {
+        return this.message.rawMessage.files[0].url_private;
+    }
+
     addReaction(info: SlackReactionAdded) {
         const reaction = this.parser.parse(`:${info.reaction.reaction}::notitle:`, this.message.dataStore);
         const user = info.reaction.user;
