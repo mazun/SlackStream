@@ -45,6 +45,7 @@ export interface FileDescription {
 
     mimetype: string;
     url_private: string;
+    name: string;
 
     thumb_64: string;
     thumb_80: string;

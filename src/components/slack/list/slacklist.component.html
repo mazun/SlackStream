@@ -69,6 +69,10 @@
                     <a [href]="info.imageURL"><img class="shared-image" [src]="info.imageSrc" [alt]="info.imageURL"/></a>
                 </div>
 
+                <div *ngIf="info.hasFile && !info.image">
+                    <a [href]="info.fileURL">{{info.filename}}</a> was uploaded.
+                </div>
+
                 <div class="buttons pull-right" [class.hide-buttons]="setting.hideButtons">
                     <span *ngIf="info.message.mine" class="glyphicon glyphicon-edit edit-button icon-button" (click)="onClickEdit(info)"></span>
                     <span *ngIf="info.message.mine" class="glyphicon glyphicon-remove message-button icon-button" (click)="onClickDelete(info)"></span>
