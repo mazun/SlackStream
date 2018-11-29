@@ -60,6 +60,11 @@ export interface Comment {
     user: string;
 }
 
+export interface RTMMessageIcon {
+    emoji: string;
+    image_64: string;
+}
+
 export interface RTMMessage {
     type: string;
     channel: string;
@@ -73,6 +78,8 @@ export interface RTMMessage {
     comment: Comment;
 
     files: FileDescription[];
+
+    icons: RTMMessageIcon;
 
     // which one?
     team: string;

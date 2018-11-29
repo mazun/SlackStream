@@ -111,6 +111,10 @@ export class SlackMessage {
             return user ? user.profile.image_48 : '';
         }
 
+        if (this.message.icons && this.message.icons.image_64) {
+            return this.message.icons.image_64;
+        }
+
         if (this.message.user) {
             const user = this.dataStore.getUserById(this.message.user);
             return user ? user.profile.image_48 : '';
