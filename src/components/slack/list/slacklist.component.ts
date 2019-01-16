@@ -323,7 +323,7 @@ export class SlackListComponent implements OnInit, OnDestroy {
     updateView() {
         this.detector.detectChanges();
 
-        if(this.submitContext instanceof PostMessageContext) {
+        if (this.submitContext instanceof PostMessageContext) {
             (this.submitContext as PostMessageContext).infos = this.filteredMessages;
         }
     }
