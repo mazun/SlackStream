@@ -30,7 +30,7 @@
     "@slack/client": "mazun/node-slack-sdk#slack-stream",
     "angular-in-memory-web-api": "~0.3.1",
     "bootstrap": "^3.3.7",
-    "bufferutil": "3.0.3",
+    "bufferutil": "^4.0.1",
     "core-js": "^2.4.1",
     "dateformat": "^2.0.0",
     "electron": "^1.6.7",
@@ -40,7 +40,6 @@
     "rxjs": "5.0.1",
     "seedrandom": "^2.4.3",
     "select2": "^4.0.6-rc.1",
-    "utf-8-validate": "^3.0.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
@@ -55,7 +54,7 @@
     "html-webpack-plugin": "^2.16.1",
     "jasmine": "~2.4.1",
     "jasmine-core": "~2.4.1",
-    "karma": "^2.0.0",
+    "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
