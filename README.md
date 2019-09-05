@@ -17,7 +17,7 @@ https://github.com/mazun/SlackStream/releases
 
 ### Nightly Builds (based on the latest commit)
 
-http://1341shangrila.dip.jp/slackstream/build
+https://1341shangrila.dip.jp/slackstream/build
 
 # What is SlackStream?
 
