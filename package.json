@@ -29,7 +29,7 @@
     "@angular/upgrade": "^4.0.0",
     "@slack/client": "mazun/node-slack-sdk#slack-stream",
     "angular-in-memory-web-api": "~0.3.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "bufferutil": "^4.0.1",
     "core-js": "^2.4.1",
     "dateformat": "^2.0.0",
