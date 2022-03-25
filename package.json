@@ -33,7 +33,7 @@
     "bufferutil": "^4.0.1",
     "core-js": "^2.4.1",
     "dateformat": "^2.0.0",
-    "electron": "^1.6.7",
+    "electron": "^13.6.6",
     "emojione": "tazu-yyy/emojione",
     "jquery": "^3.5.0",
     "jquery-textcomplete": "^1.8.0",
